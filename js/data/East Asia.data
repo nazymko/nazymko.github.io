@@ -1,0 +1,115 @@
+"china": {
+  "name": "China",
+  "currency": "CNY",
+  "system": "progressive",
+  "countryCode": "CN",
+  "coordinates": [39.9042, 116.4074],
+  "brackets": [
+    {"min": 0, "max": 36000, "rate": 3},
+    {"min": 36001, "max": 144000, "rate": 10},
+    {"min": 144001, "max": 300000, "rate": 20},
+    {"min": 300001, "max": 420000, "rate": 25},
+    {"min": 420001, "max": 660000, "rate": 30},
+    {"min": 660001, "max": 960000, "rate": 35},
+    {"min": 960001, "max": null, "rate": 45}
+  ]
+},
+"japan": {
+  "name": "Japan",
+  "currency": "JPY",
+  "system": "progressive",
+  "countryCode": "JP",
+  "coordinates": [35.6895, 139.6917],
+  "brackets": [
+    {"min": 0, "max": 1950000, "rate": 5},
+    {"min": 1950001, "max": 3300000, "rate": 10},
+    {"min": 3300001, "max": 6950000, "rate": 20},
+    {"min": 6950001, "max": 9000000, "rate": 23},
+    {"min": 9000001, "max": 18000000, "rate": 33},
+    {"min": 18000001, "max": 40000000, "rate": 40},
+    {"min": 40000001, "max": null, "rate": 45}
+  ]
+},
+"south_korea": {
+  "name": "South Korea",
+  "currency": "KRW",
+  "system": "progressive",
+  "countryCode": "KR",
+  "coordinates": [37.5665, 126.978],
+  "brackets": [
+    {"min": 0, "max": 14000000, "rate": 6},
+    {"min": 14000001, "max": 50000000, "rate": 15},
+    {"min": 50000001, "max": 88000000, "rate": 24},
+    {"min": 88000001, "max": 150000000, "rate": 35},
+    {"min": 150000001, "max": 300000000, "rate": 38},
+    {"min": 300000001, "max": 500000000, "rate": 40},
+    {"min": 500000001, "max": 1000000000, "rate": 42},
+    {"min": 1000000001, "max": null, "rate": 45}
+  ]
+},
+"north_korea": {
+  "name": "North Korea",
+  "currency": "KPW",
+  "system": "flat (officially no PIT; state collects income directly)",
+  "countryCode": "KP",
+  "coordinates": [39.0392, 125.7625],
+  "brackets": [
+    {"min": 0, "max": null, "rate": 0}
+  ]
+},
+"mongolia": {
+  "name": "Mongolia",
+  "currency": "MNT",
+  "system": "flat",
+  "countryCode": "MN",
+  "coordinates": [47.8864, 106.9057],
+  "brackets": [
+    {"min": 0, "max": null, "rate": 10}
+  ]
+},
+"hong_kong": {
+  "name": "Hong Kong",
+  "currency": "HKD",
+  "system": "progressive (salaries tax, capped)",
+  "countryCode": "HK",
+  "coordinates": [22.3193, 114.1694],
+  "brackets": [
+    {"min": 0, "max": 50000, "rate": 2},
+    {"min": 50001, "max": 100000, "rate": 6},
+    {"min": 100001, "max": 150000, "rate": 10},
+    {"min": 150001, "max": 200000, "rate": 14},
+    {"min": 200001, "max": null, "rate": 17}
+  ]
+},
+"taiwan": {
+  "name": "Taiwan",
+  "currency": "TWD",
+  "system": "progressive",
+  "countryCode": "TW",
+  "coordinates": [25.033, 121.5654],
+  "brackets": [
+    {"min": 0, "max": 560000, "rate": 5},
+    {"min": 560001, "max": 1260000, "rate": 12},
+    {"min": 1260001, "max": 2520000, "rate": 20},
+    {"min": 2520001, "max": 4720000, "rate": 30},
+    {"min": 4720001, "max": null, "rate": 40}
+  ]
+},
+"macau": {
+  "name": "Macau",
+  "currency": "MOP",
+  "system": "progressive (complementary income tax)",
+  "countryCode": "MO",
+  "coordinates": [22.1987, 113.5439],
+  "brackets": [
+    {"min": 0, "max": 144000, "rate": 7},
+    {"min": 144001, "max": 164000, "rate": 8],
+    {"min": 164001, "max": 184000, "rate": 9},
+    {"min": 184001, "max": 224000, "rate": 10},
+    {"min": 224001, "max": 304000, "rate": 11},
+    {"min": 304001, "max": 424000, "rate": 12},
+    {"min": 424001, "max": 544000, "rate": 13},
+    {"min": 544001, "max": 704000, "rate": 14},
+    {"min": 704001, "max": null, "rate": 15}
+  ]
+}

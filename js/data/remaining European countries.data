@@ -1,0 +1,340 @@
+{
+  "ireland": {
+    "name": "Ireland",
+    "currency": "EUR",
+    "system": "progressive (including USC & PRSI separate charges)",
+    "countryCode": "IE",
+    "coordinates": [53.3498, -6.2603],
+    "brackets": [
+      {"min": 0, "max": 36800, "rate": 20},
+      {"min": 36801, "max": null, "rate": 40}
+    ],
+    "notes": "Universal Social Charge (USC) and PRSI are separate; thresholds updated in budgets."
+  },
+  "portugal": {
+    "name": "Portugal",
+    "currency": "EUR",
+    "system": "progressive (national + solidarity surtax thresholds)",
+    "countryCode": "PT",
+    "coordinates": [38.7223, -9.1393],
+    "brackets": [
+      {"min": 0, "max": 7151, "rate": 14.5},
+      {"min": 7152, "max": 10707, "rate": 23},
+      {"min": 10708, "max": 20322, "rate": 28.5},
+      {"min": 20323, "max": 25075, "rate": 35},
+      {"min": 25076, "max": 36856, "rate": 37},
+      {"min": 36857, "max": 80640, "rate": 45},
+      {"min": 80641, "max": null, "rate": 48}
+    ],
+    "notes": "Solidarity surtax applies above certain high incomes."
+  },
+  "greece": {
+    "name": "Greece",
+    "currency": "EUR",
+    "system": "progressive",
+    "countryCode": "GR",
+    "coordinates": [37.9838, 23.7275],
+    "brackets": [
+      {"min": 0, "max": 10000, "rate": 9},
+      {"min": 10001, "max": 20000, "rate": 22},
+      {"min": 20001, "max": 30000, "rate": 28},
+      {"min": 30001, "max": 40000, "rate": 36},
+      {"min": 40001, "max": null, "rate": 44}
+    ]
+  },
+  "cyprus": {
+    "name": "Cyprus",
+    "currency": "EUR",
+    "system": "progressive (special low flat pension option)",
+    "countryCode": "CY",
+    "coordinates": [35.1856, 33.3823],
+    "brackets": [
+      {"min": 0, "max": 19500, "rate": 0},
+      {"min": 19501, "max": 28000, "rate": 20},
+      {"min": 28001, "max": 36300, "rate": 25},
+      {"min": 36301, "max": 60000, "rate": 30},
+      {"min": 60001, "max": null, "rate": 35}
+    ],
+    "notes": "Pension income may opt for separate flat taxation in some cases."
+  },
+  "malta": {
+    "name": "Malta",
+    "currency": "EUR",
+    "system": "progressive (multiple tax scales depending on marital status)",
+    "countryCode": "MT",
+    "coordinates": [35.8997, 14.5147],
+    "brackets": [
+      {"min": 0, "max": 9100, "rate": 0},
+      {"min": 9101, "max": 15000, "rate": 15},
+      {"min": 15001, "max": 60000, "rate": 25},
+      {"min": 60001, "max": null, "rate": 35}
+    ],
+    "notes": "Malta uses different tax schedules for singles/married/parent; shown are typical ranges."
+  },
+  "san_marino": {
+    "name": "San Marino",
+    "currency": "EUR",
+    "system": "progressive",
+    "countryCode": "SM",
+    "coordinates": [44.1412, 12.4479],
+    "brackets": [
+      {"min": 0, "max": 10000, "rate": 9},
+      {"min": 10001, "max": 25000, "rate": 15},
+      {"min": 25001, "max": null, "rate": 35}
+    ],
+    "notes": "Small state; local allowances and deductions often apply."
+  },
+  "vatican_city": {
+    "name": "Vatican City",
+    "currency": "EUR",
+    "system": "no general PIT",
+    "countryCode": "VA",
+    "coordinates": [41.9029, 12.4534],
+    "brackets": [
+      {"min": 0, "max": null, "rate": 0}
+    ],
+    "notes": "Vatican has no generalised personal income tax system comparable to other states."
+  },
+  "andorra": {
+    "name": "Andorra",
+    "currency": "EUR",
+    "system": "progressive (recently introduced PIT)",
+    "countryCode": "AD",
+    "coordinates": [42.5063, 1.5218],
+    "brackets": [
+      {"min": 0, "max": 24000, "rate": 0},
+      {"min": 24001, "max": 40000, "rate": 5},
+      {"min": 40001, "max": 60000, "rate": 10},
+      {"min": 60001, "max": null, "rate": 15}
+    ],
+    "notes": "Andorra introduced personal income tax in recent years; small top rates relative to larger EU states."
+  },
+  "luxembourg": {
+    "name": "Luxembourg",
+    "currency": "EUR",
+    "system": "progressive",
+    "countryCode": "LU",
+    "coordinates": [49.6116, 6.1319],
+    "brackets": [
+      {"min": 0, "max": 11909, "rate": 0},
+      {"min": 11910, "max": 14785, "rate": 8},
+      {"min": 14786, "max": 18040, "rate": 9},
+      {"min": 18041, "max": 22070, "rate": 10},
+      {"min": 22071, "max": 24000, "rate": 11},
+      {"min": 24001, "max": 36000, "rate": 12},
+      {"min": 36001, "max": 60000, "rate": 14},
+      {"min": 60001, "max": null, "rate": 42}
+    ],
+    "notes": "Luxembourg provides many allowances and has progressive rate schedule by tax class."
+  },
+  "liechtenstein": {
+    "name": "Liechtenstein",
+    "currency": "CHF",
+    "system": "progressive (federal + municipal)",
+    "countryCode": "LI",
+    "coordinates": [47.1410, 9.5228],
+    "brackets": [
+      {"min": 0, "max": 16800, "rate": 0},
+      {"min": 16801, "max": 50000, "rate": 8},
+      {"min": 50001, "max": 100000, "rate": 12},
+      {"min": 100001, "max": null, "rate": 20}
+    ],
+    "notes": "Top effective burden depends on municipal tax multipliers."
+  },
+  "monaco": {
+    "name": "Monaco",
+    "currency": "EUR",
+    "system": "no general PIT for residents (exceptions for French nationals)",
+    "countryCode": "MC",
+    "coordinates": [43.7384, 7.4246],
+    "brackets": [
+      {"min": 0, "max": null, "rate": 0}
+    ],
+    "notes": "Monaco typically levies no personal income tax on residents (historic treaty exceptions apply to some French citizens)."
+  },
+  "czech_republic": {
+    "name": "Czech Republic",
+    "currency": "CZK",
+    "system": "progressive (flat PIT replaced by progressive innovation; recent changes)",
+    "countryCode": "CZ",
+    "coordinates": [50.0755, 14.4378],
+    "brackets": [
+      {"min": 0, "max": 180000, "rate": 15},
+      {"min": 180001, "max": null, "rate": 23}
+    ],
+    "notes": "Historic flat-rate regime replaced by a higher top rate for high incomes."
+  },
+  "slovakia": {
+    "name": "Slovakia",
+    "currency": "EUR",
+    "system": "progressive",
+    "countryCode": "SK",
+    "coordinates": [48.1486, 17.1077],
+    "brackets": [
+      {"min": 0, "max": 40955, "rate": 19},
+      {"min": 40956, "max": null, "rate": 25}
+    ]
+  },
+  "slovenia": {
+    "name": "Slovenia",
+    "currency": "EUR",
+    "system": "progressive",
+    "countryCode": "SI",
+    "coordinates": [46.0569, 14.5058],
+    "brackets": [
+      {"min": 0, "max": 8576, "rate": 16},
+      {"min": 8577, "max": 25000, "rate": 26},
+      {"min": 25001, "max": 50000, "rate": 33},
+      {"min": 50001, "max": null, "rate": 39}
+    ]
+  },
+  "croatia": {
+    "name": "Croatia",
+    "currency": "EUR",
+    "system": "progressive",
+    "countryCode": "HR",
+    "coordinates": [45.8150, 15.9819],
+    "brackets": [
+      {"min": 0, "max": 5000, "rate": 20},
+      {"min": 5001, "max": 30000, "rate": 30},
+      {"min": 30001, "max": null, "rate": 36}
+    ],
+    "notes": "Municipal surtaxes apply in some municipalities."
+  },
+  "hungary": {
+    "name": "Hungary",
+    "currency": "HUF",
+    "system": "flat",
+    "countryCode": "HU",
+    "coordinates": [47.4979, 19.0402],
+    "brackets": [
+      {"min": 0, "max": null, "rate": 15}
+    ],
+    "notes": "Flat PIT at 15% (headline) with social contributions separate."
+  },
+  "romania": {
+    "name": "Romania",
+    "currency": "RON",
+    "system": "flat",
+    "countryCode": "RO",
+    "coordinates": [44.4268, 26.1025],
+    "brackets": [
+      {"min": 0, "max": null, "rate": 10}
+    ],
+    "notes": "Flat PIT of 10%; special rules for certain income types."
+  },
+  "bulgaria": {
+    "name": "Bulgaria",
+    "currency": "BGN",
+    "system": "flat",
+    "countryCode": "BG",
+    "coordinates": [42.6977, 23.3219],
+    "brackets": [
+      {"min": 0, "max": null, "rate": 10}
+    ],
+    "notes": "Flat PIT of 10%."
+  },
+  "serbia": {
+    "name": "Serbia",
+    "currency": "RSD",
+    "system": "flat",
+    "countryCode": "RS",
+    "coordinates": [44.7866, 20.4489],
+    "brackets": [
+      {"min": 0, "max": null, "rate": 10}
+    ],
+    "notes": "Flat PIT for employment income; capital incomes may be taxed differently."
+  },
+  "montenegro": {
+    "name": "Montenegro",
+    "currency": "EUR",
+    "system": "flat",
+    "countryCode": "ME",
+    "coordinates": [42.4304, 19.2594],
+    "brackets": [
+      {"min": 0, "max": null, "rate": 9}
+    ],
+    "notes": "Low headline flat PIT at 9% for many income types."
+  },
+  "bosnia_and_herzegovina": {
+    "name": "Bosnia and Herzegovina",
+    "currency": "BAM",
+    "system": "flat (entity-specific rules)",
+    "countryCode": "BA",
+    "coordinates": [43.8563, 18.4131],
+    "brackets": [
+      {"min": 0, "max": null, "rate": 10}
+    ],
+    "notes": "Entity-level differences (Federation of BiH vs Republika Srpska) in allowances and rates."
+  },
+  "north_macedonia": {
+    "name": "North Macedonia",
+    "currency": "MKD",
+    "system": "flat",
+    "countryCode": "MK",
+    "coordinates": [41.9973, 21.4280],
+    "brackets": [
+      {"min": 0, "max": null, "rate": 10}
+    ]
+  },
+  "kosovo": {
+    "name": "Kosovo",
+    "currency": "EUR",
+    "system": "progressive",
+    "countryCode": "XK",
+    "coordinates": [42.6026, 20.9020],
+    "brackets": [
+      {"min": 0, "max": 9600, "rate": 0},
+      {"min": 9601, "max": 60,000, "rate": 4},
+      {"min": 60001, "max": null, "rate": 10}
+    ],
+    "notes": "Kosovo tax structure includes low initial allowances and modest top rates."
+  },
+  "albania": {
+    "name": "Albania",
+    "currency": "ALL",
+    "system": "progressive",
+    "countryCode": "AL",
+    "coordinates": [41.3275, 19.8187],
+    "brackets": [
+      {"min": 0, "max": 360, "rate": 0},
+      {"min": 361, "max": 42000, "rate": 13},
+      {"min": 42001, "max": null, "rate": 23}
+    ],
+    "notes": "Monthly thresholds; converted here to annualized simplicity."
+  },
+  "moldova": {
+    "name": "Moldova",
+    "currency": "MDL",
+    "system": "progressive",
+    "countryCode": "MD",
+    "coordinates": [47.0105, 28.8638],
+    "brackets": [
+      {"min": 0, "max": 36000, "rate": 12},
+      {"min": 36001, "max": null, "rate": 18}
+    ]
+  },
+  "belarus": {
+    "name": "Belarus",
+    "currency": "BYN",
+    "system": "flat (with recent changes possible)",
+    "countryCode": "BY",
+    "coordinates": [53.9045, 27.5615],
+    "brackets": [
+      {"min": 0, "max": null, "rate": 13}
+    ],
+    "notes": "Rates and exemptions can be adjusted frequently by decree."
+  },
+  "russia": {
+    "name": "Russia",
+    "currency": "RUB",
+    "system": "mixed (flat for residents with higher top for very high incomes)",
+    "countryCode": "RU",
+    "coordinates": [55.7558, 37.6173],
+    "brackets": [
+      {"min": 0, "max": 5_000_000, "rate": 13},
+      {"min": 5000001, "max": null, "rate": 15}
+    ],
+    "notes": "Historically 13% flat for residents; higher rates have applied to very high incomes and non-residents."
+  }
+}

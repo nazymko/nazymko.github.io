@@ -1,0 +1,156 @@
+{
+  "germany": {
+    "name": "Germany",
+    "currency": "EUR",
+    "system": "progressive",
+    "countryCode": "DE",
+    "coordinates": [52.52, 13.405],
+    "brackets": [
+      {"min": 0, "max": 12096, "rate": 0},
+      {"min": 12096, "max": 68429, "rate": "14-42 (geometrically progressive)"},
+      {"min": 68430, "max": 277825, "rate": 42},
+      {"min": 277826, "max": null, "rate": 45}
+    ]
+  },
+  "france": {
+    "name": "France",
+    "currency": "EUR",
+    "system": "progressive",
+    "countryCode": "FR",
+    "coordinates": [48.8566, 2.3522],
+    "brackets": [
+      {"min": 0, "max": 11294, "rate": 0},
+      {"min": 11295, "max": 28797, "rate": 11},
+      {"min": 28798, "max": 82341, "rate": 30},
+      {"min": 82342, "max": 177106, "rate": 41},
+      {"min": 177107, "max": null, "rate": 45}
+    ]
+  },
+  "united_kingdom": {
+    "name": "United Kingdom",
+    "currency": "GBP",
+    "system": "progressive",
+    "countryCode": "GB",
+    "coordinates": [51.5074, -0.1278],
+    "brackets": [
+      {"min": 0, "max": 12570, "rate": 0},
+      {"min": 12571, "max": 50270, "rate": 20},
+      {"min": 50271, "max": 125140, "rate": 40},
+      {"min": 125141, "max": null, "rate": 45}
+    ]
+  },
+  "spain": {
+    "name": "Spain",
+    "currency": "EUR",
+    "system": "progressive (national + regional combined)",
+    "countryCode": "ES",
+    "coordinates": [40.4168, -3.7038],
+    "brackets": [
+      {"min": 0, "max": 6000, "rate": 19},
+      {"min": 6001, "max": 50000, "rate": 21},
+      {"min": 50001, "max": 200000, "rate": 47},
+      {"min": 200001, "max": null, "rate": "up to ~54 (combined national+regional)"}
+    ]
+  },
+  "italy": {
+    "name": "Italy",
+    "currency": "EUR",
+    "system": "progressive",
+    "countryCode": "IT",
+    "coordinates": [41.9028, 12.4964],
+    "brackets": [
+      {"min": 0, "max": 28000, "rate": 23},
+      {"min": 28001, "max": 50000, "rate": 35},
+      {"min": 50001, "max": null, "rate": 43}
+    ]
+  },
+  "netherlands": {
+    "name": "Netherlands",
+    "currency": "EUR",
+    "system": "progressive (Box 1 for employment/home income; different boxes for capital/companies)",
+    "countryCode": "NL",
+    "coordinates": [52.3676, 4.9041],
+    "brackets": [
+      {"min": 0, "max": 38441, "rate": 8.17},
+      {"min": 38442, "max": 76817, "rate": 37.48},
+      {"min": 76818, "max": null, "rate": 49.50}
+    ]
+  },
+  "sweden": {
+    "name": "Sweden",
+    "currency": "SEK",
+    "system": "progressive (municipal + national layers)",
+    "countryCode": "SE",
+    "coordinates": [59.3293, 18.0686],
+    "brackets": [
+      {"min": 0, "max": 625800, "rate": 32},
+      {"min": 625801, "max": null, "rate": 52}
+    ]
+  },
+  "norway": {
+    "name": "Norway",
+    "currency": "NOK",
+    "system": "progressive (including bracket tax steps)",
+    "countryCode": "NO",
+    "coordinates": [59.9139, 10.7522],
+    "brackets": [
+      {"min": 0, "max": 217400, "rate": 0},
+      {"min": 217401, "max": 306050, "rate": 1.7},
+      {"min": 306051, "max": 697400, "rate": 4.0},
+      {"min": 697401, "max": 942400, "rate": 13.7},
+      {"min": 942401, "max": 1410750, "rate": 16.7},
+      {"min": 1410751, "max": null, "rate": 17.7}
+    ]
+  },
+  "poland": {
+    "name": "Poland",
+    "currency": "PLN",
+    "system": "progressive (new two-rate structure)",
+    "countryCode": "PL",
+    "coordinates": [52.2297, 21.0122],
+    "brackets": [
+      {"min": 0, "max": 120000, "rate": 12},
+      {"min": 120001, "max": null, "rate": 32}
+    ]
+  },
+  "belgium": {
+    "name": "Belgium",
+    "currency": "EUR",
+    "system": "progressive (plus communal surcharge)",
+    "countryCode": "BE",
+    "coordinates": [50.8503, 4.3517],
+    "brackets": [
+      {"min": 0, "max": 13770, "rate": 25},
+      {"min": 13771, "max": 24120, "rate": 40},
+      {"min": 24121, "max": 42070, "rate": 45},
+      {"min": 42071, "max": null, "rate": 50}
+    ]
+  },
+  "austria": {
+    "name": "Austria",
+    "currency": "EUR",
+    "system": "progressive",
+    "countryCode": "AT",
+    "coordinates": [48.2082, 16.3738],
+    "brackets": [
+      {"min": 0, "max": 13308, "rate": 0},
+      {"min": 13309, "max": 21617, "rate": 20},
+      {"min": 21618, "max": 35836, "rate": 30},
+      {"min": 35837, "max": 69166, "rate": 40},
+      {"min": 69167, "max": 103072, "rate": 48},
+      {"min": 103073, "max": 1000000, "rate": 50},
+      {"min": 1000001, "max": null, "rate": 55}
+    ]
+  },
+  "switzerland": {
+    "name": "Switzerland",
+    "currency": "CHF",
+    "system": "progressive (federal + cantonal/communal; overall rates vary by canton)",
+    "countryCode": "CH",
+    "coordinates": [46.948, 7.4474],
+    "brackets": [
+      {"min": 0, "max": 940800, "rate": "federal+cantonal progressive (overall varies)"},
+      {"min": 940801, "max": null, "rate": "top overall approx ~11.5% federal portion; total overall varies by canton (can be ~22-45%)"}
+    ]
+  }
+}

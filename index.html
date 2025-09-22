@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Tax Calculator Map</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 Global Tax Calculator Map</h1>
+
+        <div class="calculator-section">
+            <h2>💰 Global Tax Comparison Calculator</h2>
+            <p>Enter your monthly salary to see how much tax you would pay in different countries around the world.</p>
+
+            <div class="input-group">
+                <div class="input-field">
+                    <label for="salary">Monthly Salary</label>
+                    <input type="number" id="salary" placeholder="Enter your monthly salary" value="5000">
+                </div>
+
+                <div class="input-field">
+                    <label for="inputCurrency">Input Currency</label>
+                    <select id="inputCurrency">
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="GBP">GBP - British Pound</option>
+                        <option value="JPY">JPY - Japanese Yen</option>
+                        <option value="CAD">CAD - Canadian Dollar</option>
+                        <option value="AUD">AUD - Australian Dollar</option>
+                    </select>
+                </div>
+
+                <div class="input-field">
+                    <label for="displayCurrency">Display Results In</label>
+                    <select id="displayCurrency">
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="GBP">GBP - British Pound</option>
+                        <option value="JPY">JPY - Japanese Yen</option>
+                        <option value="CAD">CAD - Canadian Dollar</option>
+                        <option value="AUD">AUD - Australian Dollar</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="loading-info" id="loadingInfo" style="display: none;">
+                <p>🔄 Fetching exchange rates and calculating taxes for all countries...</p>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <h2>🗺️ Interactive Tax Visualization Map</h2>
+            <p>Map colors represent actual tax burden in <span class="currency-display">USD</span>. Click markers for detailed information.</p>
+
+            <div class="world-map" id="worldMap">
+                <div class="map-loading" id="mapLoading">
+                    <div class="loading-spinner"></div>
+                    <p>Calculating taxes...</p>
+                </div>
+            </div>
+
+            <div class="tax-legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #45b7d1;"></div>
+                    <span>Lowest Tax</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #4ecdc4;"></div>
+                    <span>Low Tax</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #95e1d3;"></div>
+                    <span>Medium-Low Tax</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #ff8e53;"></div>
+                    <span>Medium Tax</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #ff6b6b;"></div>
+                    <span>High Tax</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #cc2a41;"></div>
+                    <span>Highest Tax</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Table Section -->
+        <div class="results-section" id="resultsTableContainer" style="display: none;">
+            <div class="results-header">
+                <h2>📊 Tax Comparison Results</h2>
+                <div class="results-controls">
+                    <input type="text" id="countrySearch" class="search-box" placeholder="Search countries...">
+                    <button id="exportBtn" class="export-btn">📥 Export CSV</button>
+                </div>
+            </div>
+
+            <div class="summary-stats">
+                <div class="stat-item">
+                    <h4>Countries Analyzed</h4>
+                    <div class="stat-value" id="totalCountries">0</div>
+                </div>
+                <div class="stat-item">
+                    <h4>Average Tax (<span class="currency-display">USD</span>)</h4>
+                    <div class="stat-value" id="avgTax">$0</div>
+                </div>
+                <div class="stat-item">
+                    <h4>Highest Tax</h4>
+                    <div class="stat-value" id="maxTax">$0</div>
+                </div>
+                <div class="stat-item">
+                    <h4>Lowest Tax</h4>
+                    <div class="stat-value" id="minTax">$0</div>
+                </div>
+            </div>
+
+            <div class="results-table-container">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="sort-header" data-column="countryName" onclick="window.sortTable('countryName')">
+                                Country <span class="sort-indicator">↕</span>
+                            </th>
+                            <th class="sort-header" data-column="taxAmountInDisplayCurrency" onclick="window.sortTable('taxAmountInDisplayCurrency')">
+                                Annual Tax (<span class="currency-display">USD</span>) <span class="sort-indicator">↓</span>
+                            </th>
+                            <th class="sort-header" data-column="effectiveRate" onclick="window.sortTable('effectiveRate')">
+                                Tax Rate <span class="sort-indicator">↕</span>
+                            </th>
+                            <th class="sort-header" data-column="netIncomeInDisplayCurrency" onclick="window.sortTable('netIncomeInDisplayCurrency')">
+                                Net Income (<span class="currency-display">USD</span>) <span class="sort-indicator">↕</span>
+                            </th>
+                            <th>Local Currency</th>
+                            <th>Exchange Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+                        <!-- Results will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="disclaimer">
+            <strong>📌 Disclaimer:</strong> This calculator provides estimates based on basic income tax brackets for 2024-2025.
+            Actual taxes may vary due to deductions, credits, social security contributions, municipal taxes, and other factors.
+            Consult a tax professional for accurate calculations. Data covers 146+ countries with progressive, flat, and zero-tax systems.
+        </div>
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
+    <!-- Custom JavaScript modules -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

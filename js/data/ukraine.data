@@ -1,0 +1,24 @@
+"ukraine": {
+  "name": "Ukraine",
+  "currency": "UAH",
+  "system": "flat",
+  "countryCode": "UA",
+  "coordinates": [50.4501, 30.5234],
+  "brackets": [
+    {
+      "min": 0,
+      "max": null,
+      "rate": 18
+    }
+  ],
+  "militaryTax": {
+    "rate": 5,
+    "base": "all taxable income (same base as PIT)",
+    "notes": "raised from 1.5% to 5% effective from 1 December 2024 law for residents and most income categories"
+  },
+  "dividends": {
+    "resident": 5,
+    "nonResident": 9,
+    "notes": "ordinary dividends; special cases may apply under law"
+  }
+}
