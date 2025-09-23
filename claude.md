@@ -84,14 +84,25 @@ Each country in the dataset follows this structure:
 
 **Key Features**:
 - Interactive world map with country markers
-- Color-coded tax burden visualization
-- Country-specific popups with detailed tax information
+- Green-to-red color-coded tax burden visualization
+- Enhanced country-specific popups with detailed tax breakdowns
 - Map bounds and navigation controls
+- Professional popup styling with modern UI elements
 
 **Key Methods**:
 - `updateWithTaxResults()`: Update map colors and popups with calculation results
+- `updateMarkerPopup()`: Create enhanced popup with detailed tax breakdown
+- `getTaxBurdenColor()`: Calculate color based on tax rate (green to red scale)
 - `highlightCountry()`: Highlight specific country marker
 - `resetToDefault()`: Reset map to default state
+
+**Enhanced Popup Features**:
+- Dynamic color-coded headers based on tax burden
+- Comprehensive tax breakdown with income tax and VAT separation
+- Visual tax cards with emoji indicators
+- Currency and exchange rate information
+- Tax bracket details for progressive systems
+- Professional styling with gradients and animations
 
 ### 3. CalculatorComponent Class (`components/CalculatorComponent.js`)
 
@@ -210,19 +221,94 @@ The application processes tax data from multiple sources:
 
 ### Map Visualization
 
-Countries are color-coded based on tax burden:
-- **Blue (#45b7d1)**: Tax havens (0% tax)
-- **Teal (#4ecdc4)**: Low tax (≤20%)
-- **Light Green (#95e1d3)**: Medium-low tax (≤40%)
-- **Orange (#ff8e53)**: Medium tax (≤60%)
-- **Red (#ff6b6b)**: High tax (≤80%)
-- **Dark Red (#cc2a41)**: Highest tax (>80%)
+Countries are color-coded using a green-to-red scale based on effective tax rate:
+- **Green (#28a745)**: Tax havens (0% tax)
+- **Light Green (#40c057)**: Very low tax (≤10%)
+- **Green-Yellow (#69db7c)**: Low tax (≤20%)
+- **Yellow (#ffeb3b)**: Moderate tax (≤30%)
+- **Orange (#ff9800)**: Medium tax (≤40%)
+- **Red (#f44336)**: High tax (≤50%)
+- **Dark Red (#d32f2f)**: Very high tax (≤60%)
+- **Deep Red (#b71c1c)**: Highest tax (>60%)
+- **Neutral Gray (#9e9e9e)**: No calculation performed yet
+
+#### Color Consistency Features:
+- **Initial Load**: All markers start with neutral gray until calculations are performed
+- **Persistent Colors**: Colors remain consistent during interactions (highlighting, selection)
+- **Reset Behavior**: Returns to neutral gray when calculations are cleared
+- **Dynamic Updates**: Colors update immediately when salary amounts change
+- **Highlight Preservation**: Selected countries maintain their tax-burden colors while being highlighted
+
+### Enhanced Unified Interactive Popups
+
+The application features a completely standardized popup system with consistent UX design across all states:
+
+#### Unified Design System:
+- **Consistent Structure**: All popups follow the same modular layout pattern
+- **Adaptive Coloring**: Headers and elements use the same green-to-red tax burden colors
+- **Standardized Typography**: Uniform font sizes, weights, and spacing throughout
+- **Modular Components**: Reusable sections for different types of information
+
+#### Popup Architecture:
+```
+🏆/🌍 [Country Name]
+[Tax System] • [Status: Calculated/Ready]
+
+┌─ Country Information Grid ─┐
+│ Currency: [CUR] │ VAT: [%] │
+└─────────────────────────────┘
+
+┌─ Tax Calculation Section ─┐ (if calculated)
+│ 📊 Annual Gross Income     │
+│ 💸 Tax Breakdown          │
+│ 💰 Total Tax Burden       │
+│ 💚 Net Annual Income      │
+└───────────────────────────┘
+
+┌─ Additional Information ─┐ (if available)
+│ 📈 Tax Bracket Details   │
+│ 💱 Exchange Rate Info    │
+└─────────────────────────┘
+```
+
+#### Enhanced UX Features:
+
+**Visual Consistency:**
+- **Unified Color Scheme**: Same green-to-red coloring across calculated and pre-calculation states
+- **Consistent Card Design**: All information displayed in standardized rounded cards
+- **Proper Visual Hierarchy**: Clear distinction between sections and information types
+- **Responsive Layout**: Identical structure on mobile and desktop
+
+**Interactive Elements:**
+- **Subtle Hover Effects**: Gentle animations on all interactive components
+- **Shimmer Animation**: Pre-calculation cards feature elegant shimmer effect
+- **Scale Transitions**: Tax breakdown rows scale slightly on hover
+- **Shadow Elevation**: Cards lift with shadow on interaction
+
+**Information Architecture:**
+- **Structured Data Display**: Each piece of information has its designated space
+- **Clear Status Indicators**: Visual cues show calculation vs. ready states
+- **Contextual Information**: Additional details appear only when relevant
+- **Progressive Disclosure**: Complex information organized in digestible sections
+
+**Typography & Spacing:**
+- **Consistent Font Sizing**: Hierarchical text sizes across all popup elements
+- **Proper Information Density**: Balanced white space and content
+- **Uppercase Headers**: Clear section identification with proper letter spacing
+- **Readable Content**: Optimal contrast ratios and font weights
+
+#### Accessibility Features:
+- **High Contrast**: All text meets WCAG contrast requirements
+- **Clear Visual Indicators**: Icons and colors provide meaning redundancy
+- **Readable Typography**: System fonts optimized for readability
+- **Responsive Scaling**: Font sizes adapt appropriately on smaller screens
 
 ### Interactive Elements
 
-- **Hover Effects**: Markers increase in size on hover
+- **Hover Effects**: Markers increase in size on hover with smooth transitions
 - **Click Interactions**: Country selection highlights markers and syncs with table
-- **Popup Overlays**: Detailed tax information on marker click
+- **Enhanced Popup Overlays**: Comprehensive tax information with visual breakdown
+- **Color-Coded Markers**: Dynamic marker colors based on tax burden
 - **Loading States**: Visual feedback during calculations
 
 ## 🔄 Event System

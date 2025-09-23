@@ -1,0 +1,163 @@
+Territory	Standard VAT rate (%)
+Albania (Last reviewed 30 June 2025)	20
+Algeria (Last reviewed 14 July 2025)	19
+Angola (Last reviewed 01 July 2025)	14;
+See Angola's Corporate summary for a description of reduced VAT rates.
+Argentina (Last reviewed 05 February 2025)	21
+Armenia (Last reviewed 12 September 2025)	20
+Australia (Last reviewed 27 June 2025)	Goods and services tax: 10
+Austria (Last reviewed 15 July 2025)	20
+Azerbaijan (Last reviewed 30 June 2025)	18
+Bahamas, The (Last reviewed 16 September 2025)	10
+Bahrain (Last reviewed 14 February 2025)	10
+Bangladesh (Last reviewed 14 July 2025)	15
+Barbados (Last reviewed 22 September 2025)	17.5
+Belgium (Last reviewed 17 July 2025)	0, 6, 12 and 21
+Bermuda (Last reviewed 31 January 2025)	NA
+Bolivia (Last reviewed 17 July 2025)	13
+Bosnia and Herzegovina (Last reviewed 19 August 2025)	17
+Botswana (Last reviewed 17 April 2025)	14
+Brazil (Last reviewed 02 May 2025)	Excise federal tax (IPI): Normally between 5% and 30%;
+Federal VATs (PIS/COFINS): Generally a combined rate of 3.65% (cumulative) or 9.25% (non-cumulative);
+State VAT (ICMS): Normally between 17% and 20% (lower rates apply to inter-state transactions, varying between 4%, 7%, and 12%);
+Municipal Service Tax (ISS): 2% to 5% (cumulative).
+Brunei Darussalam (Last reviewed 09 June 2025)	NA
+Bulgaria (Last reviewed 09 September 2025)	20
+Cabo Verde (Last reviewed 15 July 2025)	15
+Cambodia (Last reviewed 08 September 2025)	10
+Cameroon, Republic of (Last reviewed 04 March 2025)	19.25
+Canada (Last reviewed 13 June 2025)	Combined federal and provincial/territorial sales taxes range from 5% to 15%.
+Cayman Islands (Last reviewed 15 July 2025)	NA
+Chad (Last reviewed 12 August 2024)	18
+Chile (Last reviewed 13 August 2025)	19
+China, People's Republic of (Last reviewed 02 July 2025)	13, 9, or 6 depending on the types of goods and services
+Colombia (Last reviewed 14 July 2025)	19
+Congo, Democratic Republic of the (Last reviewed 15 October 2024)	16
+Congo, Republic of (Last reviewed 22 January 2025)	18.90 (18% VAT + 5% surtax)
+Costa Rica (Last reviewed 30 June 2025)	13
+Croatia (Last reviewed 30 June 2025)	25
+Cyprus (Last reviewed 01 July 2025)	19
+Czech Republic (Last reviewed 24 July 2025)	21
+Denmark (Last reviewed 05 September 2025)	25
+Dominican Republic (Last reviewed 30 May 2025)	18
+Ecuador (Last reviewed 13 March 2025)	15
+Egypt (Last reviewed 13 August 2025)	14
+El Salvador (Last reviewed 05 September 2025)	13
+Equatorial Guinea (Last reviewed 07 May 2024)	15
+Estonia (Last reviewed 29 May 2025)	22
+Eswatini (Last reviewed 13 August 2025)	15
+Ethiopia (Last reviewed 22 July 2025)	15
+Finland (Last reviewed 26 August 2025)	25.5
+France (Last reviewed 05 June 2025)	Turnover tax: 20
+Gabon (Last reviewed 04 March 2024)	18
+Georgia (Last reviewed 14 July 2025)	18
+Germany (Last reviewed 30 June 2025)	19
+Ghana (Last reviewed 28 August 2025)	Standard rate scheme: 15;
+Flat rate scheme: 3
+Immovable property: 5
+
+Additional levies are charged on taxable supplies. Under the standard rate scheme these are NHIL: 2.5, GETFL: 2.5, and CHRL:1. While under the flat rate scheme, this is the CHRL: 1
+Gibraltar (Last reviewed 09 September 2025)	NA
+Greece (Last reviewed 21 July 2025)	24
+Greenland (Last reviewed 15 August 2025)	NA
+Guatemala (Last reviewed 15 July 2025)	12
+Guernsey, Channel Islands (Last reviewed 27 June 2025)	NA;
+Proposals to implement GST in 2027 were included in the 2025 Budget.
+Guyana (Last reviewed 15 July 2025)	14
+Honduras (Last reviewed 17 September 2025)	Sales tax: 15
+Hong Kong SAR (Last reviewed 02 July 2025)	NA
+Hungary (Last reviewed 07 August 2025)	27
+Iceland (Last reviewed 20 August 2025)	24
+India (Last reviewed 06 May 2025)	The rate of GST varies from 5% to 28% depending upon the category of goods and services being supplied, the general rate of tax being 18% on majority of goods and services. Additionally, for certain goods, a compensation cess is levied at different rates as prescribed by the government.
+Indonesia (Last reviewed 24 June 2025)	12
+Iraq (Last reviewed 01 June 2025)	Sales tax: Varies by good/service (see Iraq's corporate tax summary).
+Ireland (Last reviewed 11 July 2025)	23
+Isle of Man (Last reviewed 31 July 2025)	20
+Israel (Last reviewed 02 August 2025)	18
+Italy (Last reviewed 05 September 2025)	22
+Ivory Coast (Côte d'Ivoire) (Last reviewed 20 November 2024)	18
+Jamaica (Last reviewed 12 August 2025)	General Consumption Tax (GCT): 15
+Japan (Last reviewed 02 July 2025)	Consumption tax: 10
+Jersey, Channel Islands (Last reviewed 30 June 2025)	Goods and Services Tax (GST): 5
+Jordan (Last reviewed 13 August 2025)	Sales tax: 16
+Kazakhstan (Last reviewed 30 May 2025)	12
+Kenya (Last reviewed 05 August 2025)	16
+Korea, Republic of (Last reviewed 25 July 2025)	10
+Kosovo (Last reviewed 11 September 2025)	18
+Kuwait (Last reviewed 30 June 2025)	NA
+Lao PDR (Last reviewed 14 August 2025)	10
+Latvia (Last reviewed 03 July 2025)	21
+Lebanon (Last reviewed 30 June 2025)	11
+Liberia, Republic of (Last reviewed 02 September 2025)	Goods and services tax (GST): 12
+Libya (Last reviewed 01 June 2025)	NA
+Liechtenstein (Last reviewed 17 June 2025)	8.1
+Lithuania (Last reviewed 05 March 2025)	21
+Luxembourg (Last reviewed 29 July 2025)	17
+Macau SAR (Last reviewed 09 June 2025)	NA
+Madagascar (Last reviewed 26 March 2025)	20
+Malaysia (Last reviewed 07 July 2025)	Sales tax: 10;
+Service tax: 8
+Malta (Last reviewed 27 August 2025)	18
+Mauritania (Last reviewed 18 July 2024)	16
+Mauritius (Last reviewed 30 June 2025)	15
+Mexico (Last reviewed 31 July 2025)	16
+Moldova (Last reviewed 02 July 2025)	20
+Mongolia (Last reviewed 02 July 2025)	10
+Montenegro (Last reviewed 15 July 2025)	21
+Morocco (Last reviewed 13 March 2025)	20
+Mozambique (Last reviewed 17 July 2025)	16
+Myanmar (Last reviewed 03 June 2025)	There is no VAT in Myanmar. The indirect tax in Myanmar is commercial tax, with the general rate of 5%.
+Namibia, Republic of (Last reviewed 06 July 2025)	15
+Netherlands (Last reviewed 07 July 2025)	21
+New Caledonia (Last reviewed 25 July 2025)	General consumption tax (TGC): 11
+New Zealand (Last reviewed 09 July 2025)	Goods and services tax (GST): 15
+Nicaragua (Last reviewed 16 July 2025)	15
+Nigeria (Last reviewed 14 April 2025)	7.5
+North Macedonia (Last reviewed 24 August 2025)	18
+Norway (Last reviewed 09 September 2025)	25
+Oman (Last reviewed 31 August 2025)	5 (subject to specific exemptions and zero ratings prescribed under the Oman VAT Law)
+Pakistan (Last reviewed 04 August 2025)	For goods:18
+For services: Ranges from 15% to 16% depending on the province.
+Palestinian territories (Last reviewed 21 July 2025)	16
+Panama (Last reviewed 19 August 2025)	Movable goods and services transfer tax: 7
+Papua New Guinea (Last reviewed 16 June 2025)	Goods and services tax: 10
+Paraguay (Last reviewed 16 July 2025)	10 (5% for sale and rent of immovables, some medicines, and agricultural, horticultural, and fruit products)
+Peru (Last reviewed 15 July 2025)	18
+Philippines (Last reviewed 13 September 2025)	12
+Poland (Last reviewed 20 July 2025)	23
+Portugal (Last reviewed 09 July 2025)	23
+Puerto Rico (Last reviewed 30 June 2025)	Sales and use tax: 11.5% for tangible personal property and certain services; 4% for business-to-business services and designated services.
+Qatar (Last reviewed 06 March 2025)	NA
+Romania (Last reviewed 14 May 2025)	19
+Rwanda (Last reviewed 28 July 2025)	18
+Saint Lucia (Last reviewed 17 February 2025)	12.5
+Saudi Arabia (Last reviewed 20 August 2025)	15 (5% prior to 1 July 2020)
+Senegal (Last reviewed 19 July 2024)	18
+Serbia (Last reviewed 15 July 2025)	20
+Singapore (Last reviewed 29 July 2025)	Goods and services tax: 9
+Slovak Republic (Last reviewed 06 February 2025)	23
+Slovenia (Last reviewed 27 June 2025)	22
+South Africa (Last reviewed 30 May 2025)	15
+Spain (Last reviewed 30 June 2025)	21
+Sweden (Last reviewed 15 August 2025)	25
+Switzerland (Last reviewed 15 July 2025)	8.1
+Taiwan (Last reviewed 03 July 2025)	5% to general industries
+Tanzania (Last reviewed 20 January 2025)	Tanzania Mainland: 18%; 16% (for B2C purchases where payments are made via bank or an approved electronic payment system from 1 September 2025)
+
+Tanzania Zanzibar: 18% for banking, postal and telecommunication services; 15% for all other supplies
+Thailand (Last reviewed 30 June 2025)	7
+Timor-Leste (Last reviewed 29 July 2025)	Sales tax on imported goods: 2.5;
+Sales tax on other goods: 0
+Trinidad and Tobago (Last reviewed 31 January 2025)	12.5
+Tunisia (Last reviewed 15 August 2025)	19
+Turkey (Last reviewed 11 September 2025)	20
+Uganda (Last reviewed 10 February 2025)	18
+Ukraine (Last reviewed 18 July 2025)	20
+United Arab Emirates (Last reviewed 26 August 2025)	5
+United Kingdom (Last reviewed 01 July 2025)	20
+United States (Last reviewed 15 August 2025)	NA
+Uruguay (Last reviewed 21 August 2025)	22 (reduced 10% VAT rate applicable to certain goods and services).
+Uzbekistan, Republic of (Last reviewed 06 September 2025)	12
+Venezuela (Last reviewed 20 August 2025)	16
+Vietnam (Last reviewed 26 March 2025)	10
+Zambia (Last reviewed 02 June 2025)	16

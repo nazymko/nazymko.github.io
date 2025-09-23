@@ -58,8 +58,16 @@
         </div>
 
         <div class="map-container">
-            <h2>🗺️ Interactive Tax Visualization Map</h2>
-            <p>Map colors represent actual tax burden in <span class="currency-display">USD</span>. Click markers for detailed information.</p>
+            <div class="map-header">
+                <div class="map-title">
+                    <h2>🗺️ Interactive Tax Visualization Map</h2>
+                    <p>Map colors represent actual tax burden in <span class="currency-display">USD</span>. Click markers for detailed information.</p>
+                </div>
+                <button id="fullscreenToggle" class="fullscreen-btn" title="Toggle fullscreen map">
+                    <span class="expand-icon">⤢</span>
+                    <span class="contract-icon" style="display: none;">⤡</span>
+                </button>
+            </div>
 
             <div class="world-map" id="worldMap">
                 <div class="map-loading" id="mapLoading">
@@ -70,28 +78,36 @@
 
             <div class="tax-legend">
                 <div class="legend-item">
-                    <div class="legend-color" style="background-color: #45b7d1;"></div>
-                    <span>Lowest Tax</span>
+                    <div class="legend-color" style="background-color: #28a745;"></div>
+                    <span>Tax Havens (0%)</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background-color: #4ecdc4;"></div>
-                    <span>Low Tax</span>
+                    <div class="legend-color" style="background-color: #40c057;"></div>
+                    <span>Very Low (≤10%)</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background-color: #95e1d3;"></div>
-                    <span>Medium-Low Tax</span>
+                    <div class="legend-color" style="background-color: #69db7c;"></div>
+                    <span>Low (≤20%)</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background-color: #ff8e53;"></div>
-                    <span>Medium Tax</span>
+                    <div class="legend-color" style="background-color: #ffeb3b;"></div>
+                    <span>Moderate (≤30%)</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background-color: #ff6b6b;"></div>
-                    <span>High Tax</span>
+                    <div class="legend-color" style="background-color: #ff9800;"></div>
+                    <span>Medium (≤40%)</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background-color: #cc2a41;"></div>
-                    <span>Highest Tax</span>
+                    <div class="legend-color" style="background-color: #f44336;"></div>
+                    <span>High (≤50%)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #b71c1c;"></div>
+                    <span>Highest (>50%)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #9e9e9e;"></div>
+                    <span>No Calculation</span>
                 </div>
             </div>
         </div>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAT Integration Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 4px; }
+        .pass { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .fail { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        .tax-breakdown { background: #f8f9fa; padding: 8px; margin: 8px 0; border-radius: 4px; }
+        .small { font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>VAT Integration Test</h1>
+    <div id="test-results"></div>
+
+    <script type="module">
+        import { calculateTax, calculateVAT, calculateTaxesForAllCountries } from './js/taxCalculator.js';
+        import { getCountryVAT } from './js/taxData.js';
+
+        const resultsContainer = document.getElementById('test-results');
+
+        function addResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            resultsContainer.appendChild(div);
+        }
+
+        async function runTests() {
+            addResult('<h3>Testing VAT Integration</h3>');
+
+            // Test 1: VAT function for country with VAT
+            try {
+                const germanyVAT = getCountryVAT('germany');
+                if (germanyVAT && germanyVAT.hasVAT) {
+                    addResult(`✅ Germany VAT data found: ${germanyVAT.standard}% standard rate`, 'pass');
+                } else {
+                    addResult('❌ Germany VAT data not found', 'fail');
+                }
+            } catch (error) {
+                addResult(`❌ Error getting Germany VAT: ${error.message}`, 'fail');
+            }
+
+            // Test 2: VAT calculation
+            try {
+                const vatCalc = calculateVAT(50000, 'germany');
+                addResult(`✅ VAT calculation for Germany: €${vatCalc.vatAmount.toFixed(2)} at ${vatCalc.vatRate}%`, 'pass');
+            } catch (error) {
+                addResult(`❌ Error calculating VAT: ${error.message}`, 'fail');
+            }
+
+            // Test 3: Tax calculation with VAT
+            try {
+                const taxResult = calculateTax(5000, 'germany');
+                addResult(`
+                    <strong>✅ Germany Tax Calculation (€5,000/month salary):</strong><br>
+                    <div class="tax-breakdown">
+                        • Gross Income: €${taxResult.grossIncome.toLocaleString()}<br>
+                        • Income Tax: €${taxResult.incomeTax.toLocaleString()}<br>
+                        • VAT: €${taxResult.vatAmount.toLocaleString()} (${taxResult.vatRate}%)<br>
+                        • <strong>Total Tax: €${taxResult.taxAmount.toLocaleString()}</strong><br>
+                        • Net Income: €${taxResult.netIncome.toLocaleString()}<br>
+                        • Effective Rate: ${taxResult.effectiveRate.toFixed(2)}%
+                    </div>
+                `, 'pass');
+            } catch (error) {
+                addResult(`❌ Error calculating tax with VAT: ${error.message}`, 'fail');
+            }
+
+            // Test 4: Country without VAT
+            try {
+                const usResult = calculateTax(5000, 'united_states');
+                addResult(`
+                    <strong>✅ USA Tax Calculation (no federal VAT):</strong><br>
+                    <div class="tax-breakdown">
+                        • Has VAT: ${usResult.hasVAT ? 'Yes' : 'No'}<br>
+                        • Income Tax: $${usResult.incomeTax.toLocaleString()}<br>
+                        • VAT: $${usResult.vatAmount.toLocaleString()}<br>
+                        • Total Tax: $${usResult.taxAmount.toLocaleString()}
+                    </div>
+                `, 'pass');
+            } catch (error) {
+                addResult(`❌ Error calculating USA tax: ${error.message}`, 'fail');
+            }
+
+            // Test 5: Special Taxes Test (Ukraine)
+            addResult('<h3>Special Taxes Test - Ukraine</h3>');
+            try {
+                const ukraineResult = calculateTax(5000, 'ukraine');
+                let specialTaxInfo = 'None';
+                if (ukraineResult.specialTaxes && ukraineResult.specialTaxes.length > 0) {
+                    specialTaxInfo = ukraineResult.specialTaxes.map(tax =>
+                        `${tax.description}: ${tax.rate}% = ${ukraineResult.currency} ${tax.taxAmount.toLocaleString()}`
+                    ).join('<br>&nbsp;&nbsp;&nbsp;&nbsp;');
+                }
+
+                addResult(`
+                    <strong>✅ Ukraine Special Taxes Test (5,000 UAH/month):</strong><br>
+                    <div class="tax-breakdown">
+                        • Gross Income: ${ukraineResult.currency} ${ukraineResult.grossIncome.toLocaleString()}<br>
+                        • Income Tax (18%): ${ukraineResult.currency} ${ukraineResult.incomeTax.toLocaleString()}<br>
+                        • Special Taxes: ${ukraineResult.currency} ${ukraineResult.specialTaxAmount.toLocaleString()}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;${specialTaxInfo}<br>
+                        • VAT: ${ukraineResult.currency} ${ukraineResult.vatAmount.toLocaleString()} (${ukraineResult.vatRate}%)<br>
+                        • <strong>Total Tax: ${ukraineResult.currency} ${ukraineResult.taxAmount.toLocaleString()}</strong><br>
+                        • Effective Rate: ${ukraineResult.effectiveRate.toFixed(2)}%<br>
+                        • Net Income: ${ukraineResult.currency} ${ukraineResult.netIncome.toLocaleString()}
+                    </div>
+                `, 'pass');
+            } catch (error) {
+                addResult(`❌ Error testing Ukraine special taxes: ${error.message}`, 'fail');
+            }
+
+            // Test 6: Compare countries with and without VAT/Special Taxes
+            addResult('<h3>2025 Tax Comparison (VAT + Special Taxes)</h3>');
+
+            const testCountries = ['germany', 'france', 'sweden', 'poland', 'ukraine', 'united_states', 'switzerland'];
+            const salary = 4000;
+
+            testCountries.forEach(country => {
+                try {
+                    const result = calculateTax(salary, country);
+                    const vatInfo = getCountryVAT(country);
+                    let specialTaxInfo = '';
+                    if (result.specialTaxes && result.specialTaxes.length > 0) {
+                        specialTaxInfo = `Special Taxes: ${result.currency} ${result.specialTaxAmount.toLocaleString()}<br>`;
+                    }
+
+                    addResult(`
+                        <strong>${result.countryName}:</strong><br>
+                        <div class="tax-breakdown">
+                            Monthly Salary: ${result.currency} ${salary.toLocaleString()}<br>
+                            Income Tax: ${result.currency} ${result.incomeTax.toLocaleString()}<br>
+                            ${specialTaxInfo}VAT: ${result.currency} ${result.vatAmount.toLocaleString()} ${result.hasVAT ? `(${result.vatRate}%)` : '(No VAT)'}<br>
+                            <strong>Total Tax: ${result.currency} ${result.taxAmount.toLocaleString()}</strong><br>
+                            Effective Rate: ${result.effectiveRate.toFixed(2)}%<br>
+                            Net Income: ${result.currency} ${result.netIncome.toLocaleString()}
+                        </div>
+                    `, 'info');
+                } catch (error) {
+                    addResult(`❌ Error testing ${country}: ${error.message}`, 'fail');
+                }
+            });
+
+            addResult('<h3>✅ VAT Integration Tests Complete!</h3>', 'pass');
+        }
+
+        // Run tests when page loads
+        runTests();
+    </script>
+</body>
+</html>

@@ -28,6 +28,7 @@ export class CalculatorComponent {
             displayCurrency: document.getElementById('displayCurrency'),
             loadingInfo: document.getElementById('loadingInfo')
         };
+
     }
 
     // Setup event listeners
@@ -102,4 +103,129 @@ export class CalculatorComponent {
         try {
             const results = await calculateTaxesForAllCountries(
                 this.salary,
-                this.inputCurrency,\n                this.displayCurrency\n            );\n\n            this.emit('calculationComplete', {\n                results,\n                displayCurrency: this.displayCurrency,\n                inputCurrency: this.inputCurrency,\n                salary: this.salary\n            });\n\n        } catch (error) {\n            console.error('Calculation error:', error);\n            this.emit('calculationError', { error });\n        } finally {\n            this.hideLoading();\n        }\n    }\n\n    // Update currency displays throughout the page\n    updateCurrencyDisplays() {\n        document.querySelectorAll('.currency-display').forEach(element => {\n            element.textContent = this.displayCurrency;\n        });\n    }\n\n    // Show loading state\n    showLoading() {\n        if (this.elements.loadingInfo) {\n            this.elements.loadingInfo.style.display = 'block';\n        }\n    }\n\n    // Hide loading state\n    hideLoading() {\n        if (this.elements.loadingInfo) {\n            this.elements.loadingInfo.style.display = 'none';\n        }\n    }\n\n    // Set salary value programmatically\n    setSalary(amount) {\n        this.salary = amount;\n        if (this.elements.salary) {\n            this.elements.salary.value = amount;\n        }\n        this.triggerCalculation();\n    }\n\n    // Set input currency programmatically\n    setInputCurrency(currency) {\n        this.inputCurrency = currency;\n        if (this.elements.inputCurrency) {\n            this.elements.inputCurrency.value = currency;\n        }\n        this.triggerCalculation();\n    }\n\n    // Set display currency programmatically\n    setDisplayCurrency(currency) {\n        this.displayCurrency = currency;\n        if (this.elements.displayCurrency) {\n            this.elements.displayCurrency.value = currency;\n        }\n        this.updateCurrencyDisplays();\n        this.triggerCalculation();\n    }\n\n    // Get current calculator state\n    getState() {\n        return {\n            salary: this.salary,\n            inputCurrency: this.inputCurrency,\n            displayCurrency: this.displayCurrency\n        };\n    }\n\n    // Event emitter functionality\n    on(event, callback) {\n        if (!this.listeners.has(event)) {\n            this.listeners.set(event, []);\n        }\n        this.listeners.get(event).push(callback);\n    }\n\n    off(event, callback) {\n        if (!this.listeners.has(event)) return;\n        \n        const callbacks = this.listeners.get(event);\n        const index = callbacks.indexOf(callback);\n        if (index > -1) {\n            callbacks.splice(index, 1);\n        }\n    }\n\n    emit(event, data) {\n        if (!this.listeners.has(event)) return;\n        \n        this.listeners.get(event).forEach(callback => {\n            try {\n                callback(data);\n            } catch (error) {\n                console.error(`Error in ${event} listener:`, error);\n            }\n        });\n    }\n\n    // Perform initial calculation if salary is set\n    async performInitialCalculation() {\n        // Load exchange rates first\n        await currencyService.fetchExchangeRates();\n        \n        if (this.salary > 0) {\n            await this.triggerCalculation();\n        }\n    }\n\n    // Destroy the component\n    destroy() {\n        clearTimeout(this.debounceTimer);\n        this.listeners.clear();\n    }\n}
+                this.inputCurrency,
+                this.displayCurrency
+            );
+
+            this.emit('calculationComplete', {
+                results,
+                displayCurrency: this.displayCurrency,
+                inputCurrency: this.inputCurrency,
+                salary: this.salary
+            });
+
+        } catch (error) {
+            console.error('Calculation error:', error);
+            this.emit('calculationError', { error });
+        } finally {
+            this.hideLoading();
+        }
+    }
+
+    // Update currency displays throughout the page
+    updateCurrencyDisplays() {
+        document.querySelectorAll('.currency-display').forEach(element => {
+            element.textContent = this.displayCurrency;
+        });
+    }
+
+    // Show loading state
+    showLoading() {
+        if (this.elements.loadingInfo) {
+            this.elements.loadingInfo.style.display = 'block';
+        }
+    }
+
+    // Hide loading state
+    hideLoading() {
+        if (this.elements.loadingInfo) {
+            this.elements.loadingInfo.style.display = 'none';
+        }
+    }
+
+    // Set salary value programmatically
+    setSalary(amount) {
+        this.salary = amount;
+        if (this.elements.salary) {
+            this.elements.salary.value = amount;
+        }
+        this.triggerCalculation();
+    }
+
+    // Set input currency programmatically
+    setInputCurrency(currency) {
+        this.inputCurrency = currency;
+        if (this.elements.inputCurrency) {
+            this.elements.inputCurrency.value = currency;
+        }
+        this.triggerCalculation();
+    }
+
+    // Set display currency programmatically
+    setDisplayCurrency(currency) {
+        this.displayCurrency = currency;
+        if (this.elements.displayCurrency) {
+            this.elements.displayCurrency.value = currency;
+        }
+        this.updateCurrencyDisplays();
+        this.triggerCalculation();
+    }
+
+    // Get current calculator state
+    getState() {
+        return {
+            salary: this.salary,
+            inputCurrency: this.inputCurrency,
+            displayCurrency: this.displayCurrency
+        };
+    }
+
+    // Event emitter functionality
+    on(event, callback) {
+        if (!this.listeners.has(event)) {
+            this.listeners.set(event, []);
+        }
+        this.listeners.get(event).push(callback);
+    }
+
+    off(event, callback) {
+        if (!this.listeners.has(event)) return;
+
+        const callbacks = this.listeners.get(event);
+        const index = callbacks.indexOf(callback);
+        if (index > -1) {
+            callbacks.splice(index, 1);
+        }
+    }
+
+    emit(event, data) {
+        if (!this.listeners.has(event)) return;
+
+        this.listeners.get(event).forEach(callback => {
+            try {
+                callback(data);
+            } catch (error) {
+                console.error(`Error in ${event} listener:`, error);
+            }
+        });
+    }
+
+    // Perform initial calculation if salary is set
+    async performInitialCalculation() {
+        // Load exchange rates first
+        await currencyService.fetchExchangeRates();
+
+        // Reload values from form to ensure we have the latest data
+        this.loadInitialValues();
+
+        if (this.salary > 0) {
+            await this.triggerCalculation();
+        }
+    }
+
+    // Destroy the component
+    destroy() {
+        clearTimeout(this.debounceTimer);
+        this.listeners.clear();
+    }
+}

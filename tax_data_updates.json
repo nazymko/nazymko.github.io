@@ -1,0 +1,1059 @@
+{
+  "albania": {
+    "headline_pit_rate": 23.0,
+    "country_name": "Albania",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "algeria": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Algeria",
+    "vat_info": {
+      "standard": 19.0
+    }
+  },
+  "angola": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Angola",
+    "vat_info": {
+      "standard": 14.0
+    }
+  },
+  "argentina": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Argentina",
+    "vat_info": {
+      "standard": 21.0
+    }
+  },
+  "armenia": {
+    "headline_pit_rate": 20.0,
+    "country_name": "Armenia",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "australia": {
+    "headline_pit_rate": 45.0,
+    "country_name": "Australia",
+    "vat_info": {
+      "standard": 10.0,
+      "type": "GST"
+    }
+  },
+  "austria": {
+    "headline_pit_rate": 55.0,
+    "country_name": "Austria",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "azerbaijan": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Azerbaijan",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "bangladesh": {
+    "headline_pit_rate": 30.0,
+    "country_name": "Bangladesh",
+    "vat_info": {
+      "standard": 15.0
+    }
+  },
+  "barbados": {
+    "headline_pit_rate": 28.5,
+    "country_name": "Barbados",
+    "vat_info": {
+      "standard": 17.5
+    }
+  },
+  "belgium": {
+    "headline_pit_rate": 50.0,
+    "country_name": "Belgium",
+    "vat_info": {
+      "standard": 21.0,
+      "reduced": [
+        12.0,
+        6.0,
+        0.0
+      ]
+    }
+  },
+  "bolivia": {
+    "headline_pit_rate": 13.0,
+    "country_name": "Bolivia",
+    "vat_info": {
+      "standard": 13.0
+    }
+  },
+  "bosnia_and_herzegovina": {
+    "headline_pit_rate": 10.0,
+    "country_name": "Bosnia and Herzegovina",
+    "vat_info": {
+      "standard": 17.0
+    }
+  },
+  "botswana": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Botswana",
+    "vat_info": {
+      "standard": 14.0
+    }
+  },
+  "brazil": {
+    "headline_pit_rate": 27.5,
+    "country_name": "Brazil",
+    "vat_info": {
+      "standard": 30.0,
+      "reduced": [
+        20.0,
+        17.0,
+        12.0,
+        9.25,
+        7.0,
+        5.0,
+        5.0,
+        4.0,
+        3.65,
+        2.0
+      ]
+    }
+  },
+  "bulgaria": {
+    "headline_pit_rate": 10.0,
+    "country_name": "Bulgaria",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "cabo_verde": {
+    "headline_pit_rate": 27.5,
+    "country_name": "Cabo Verde",
+    "vat_info": {
+      "standard": 15.0
+    }
+  },
+  "cambodia": {
+    "headline_pit_rate": 20.0,
+    "country_name": "Cambodia",
+    "vat_info": {
+      "standard": 10.0
+    }
+  },
+  "cameroon_republic_of": {
+    "headline_pit_rate": 38.5,
+    "country_name": "Cameroon, Republic of",
+    "vat_info": {
+      "standard": 19.25
+    }
+  },
+  "canada": {
+    "headline_pit_rate": 33.0,
+    "country_name": "Canada",
+    "vat_info": {
+      "standard": 15.0,
+      "reduced": [
+        5.0
+      ]
+    }
+  },
+  "chad": {
+    "headline_pit_rate": 30.0,
+    "country_name": "Chad",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "chile": {
+    "headline_pit_rate": 40.0,
+    "country_name": "Chile",
+    "vat_info": {
+      "standard": 19.0
+    }
+  },
+  "china_people_s_republic_of": {
+    "headline_pit_rate": 45.0,
+    "country_name": "China, People's Republic of",
+    "vat_info": {
+      "standard": 13.0,
+      "reduced": [
+        9.0,
+        6.0
+      ]
+    }
+  },
+  "colombia": {
+    "headline_pit_rate": 39.0,
+    "country_name": "Colombia",
+    "vat_info": {
+      "standard": 19.0
+    }
+  },
+  "congo_dr": {
+    "headline_pit_rate": 40.0,
+    "country_name": "Congo, Democratic Republic of the",
+    "vat_info": {
+      "standard": 16.0
+    }
+  },
+  "congo_republic_of": {
+    "headline_pit_rate": 40.0,
+    "country_name": "Congo, Republic of",
+    "vat_info": {
+      "standard": 18.9,
+      "reduced": [
+        18.0,
+        5.0
+      ]
+    }
+  },
+  "costa_rica": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Costa Rica",
+    "vat_info": {
+      "standard": 13.0
+    }
+  },
+  "croatia": {
+    "headline_pit_rate": 10.0,
+    "country_name": "Croatia",
+    "vat_info": {
+      "standard": 25.0
+    }
+  },
+  "cyprus": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Cyprus",
+    "vat_info": {
+      "standard": 19.0
+    }
+  },
+  "czech_republic": {
+    "headline_pit_rate": 23.0,
+    "country_name": "Czech Republic",
+    "vat_info": {
+      "standard": 21.0
+    }
+  },
+  "denmark": {
+    "headline_pit_rate": 52.07,
+    "country_name": "Denmark",
+    "vat_info": {
+      "standard": 25.0
+    }
+  },
+  "dominican_republic": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Dominican Republic",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "ecuador": {
+    "headline_pit_rate": 37.0,
+    "country_name": "Ecuador",
+    "vat_info": {
+      "standard": 15.0
+    }
+  },
+  "egypt": {
+    "headline_pit_rate": 27.5,
+    "country_name": "Egypt",
+    "vat_info": {
+      "standard": 14.0
+    }
+  },
+  "el_salvador": {
+    "headline_pit_rate": 30.0,
+    "country_name": "El Salvador",
+    "vat_info": {
+      "standard": 13.0
+    }
+  },
+  "equatorial_guinea": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Equatorial Guinea",
+    "vat_info": {
+      "standard": 15.0
+    }
+  },
+  "estonia": {
+    "headline_pit_rate": 22.0,
+    "country_name": "Estonia",
+    "vat_info": {
+      "standard": 22.0
+    }
+  },
+  "eswatini": {
+    "headline_pit_rate": 33.0,
+    "country_name": "Eswatini",
+    "vat_info": {
+      "standard": 15.0
+    }
+  },
+  "ethiopia": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Ethiopia",
+    "vat_info": {
+      "standard": 15.0
+    }
+  },
+  "finland": {
+    "headline_pit_rate": 55.0,
+    "country_name": "Finland",
+    "vat_info": {
+      "standard": 25.5
+    }
+  },
+  "france": {
+    "headline_pit_rate": 45.0,
+    "country_name": "France",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "gabon": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Gabon",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "georgia": {
+    "headline_pit_rate": 20.0,
+    "country_name": "Georgia",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "germany": {
+    "headline_pit_rate": 45.0,
+    "country_name": "Germany",
+    "vat_info": {
+      "standard": 19.0
+    }
+  },
+  "ghana": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Ghana",
+    "vat_info": {
+      "standard": 15.0,
+      "reduced": [
+        5.0,
+        3.0,
+        2.5,
+        2.5,
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "gibraltar": {
+    "headline_pit_rate": 14.0,
+    "country_name": "Gibraltar"
+  },
+  "greece": {
+    "headline_pit_rate": 44.0,
+    "country_name": "Greece",
+    "vat_info": {
+      "standard": 24.0
+    }
+  },
+  "greenland": {
+    "headline_pit_rate": 10.0,
+    "country_name": "Greenland"
+  },
+  "guatemala": {
+    "headline_pit_rate": 7.0,
+    "country_name": "Guatemala",
+    "vat_info": {
+      "standard": 12.0
+    }
+  },
+  "guernsey_channel_islands": {
+    "headline_pit_rate": 20.0,
+    "country_name": "Guernsey, Channel Islands",
+    "vat_info": {
+      "standard": 2027.0,
+      "reduced": [
+        2025.0
+      ]
+    }
+  },
+  "guyana": {
+    "headline_pit_rate": 40.0,
+    "country_name": "Guyana",
+    "vat_info": {
+      "standard": 14.0
+    }
+  },
+  "honduras": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Honduras",
+    "vat_info": {
+      "standard": 15.0
+    }
+  },
+  "hong_kong_sar": {
+    "headline_pit_rate": 16.0,
+    "country_name": "Hong Kong SAR"
+  },
+  "hungary": {
+    "headline_pit_rate": 15.0,
+    "country_name": "Hungary",
+    "vat_info": {
+      "standard": 27.0
+    }
+  },
+  "iceland": {
+    "headline_pit_rate": 31.35,
+    "country_name": "Iceland",
+    "vat_info": {
+      "standard": 24.0
+    }
+  },
+  "india": {
+    "headline_pit_rate": 39.0,
+    "country_name": "India",
+    "vat_info": {
+      "standard": 28.0,
+      "reduced": [
+        18.0,
+        5.0
+      ]
+    }
+  },
+  "indonesia": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Indonesia",
+    "vat_info": {
+      "standard": 12.0
+    }
+  },
+  "iraq": {
+    "headline_pit_rate": 15.0,
+    "country_name": "Iraq"
+  },
+  "ireland": {
+    "headline_pit_rate": 40.0,
+    "country_name": "Ireland",
+    "vat_info": {
+      "standard": 23.0
+    }
+  },
+  "isle_of_man": {
+    "headline_pit_rate": 21.0,
+    "country_name": "Isle of Man",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "israel": {
+    "headline_pit_rate": 50.0,
+    "country_name": "Israel",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "italy": {
+    "headline_pit_rate": 43.0,
+    "country_name": "Italy",
+    "vat_info": {
+      "standard": 22.0
+    }
+  },
+  "ivory_coast_c_te_d_ivoire": {
+    "headline_pit_rate": 32.0,
+    "country_name": "Ivory Coast (C\u00f4te d'Ivoire)",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "jamaica": {
+    "headline_pit_rate": 0.0,
+    "country_name": "Jamaica",
+    "vat_info": {
+      "standard": 15.0
+    }
+  },
+  "japan": {
+    "headline_pit_rate": 45.0,
+    "country_name": "Japan",
+    "vat_info": {
+      "standard": 10.0
+    }
+  },
+  "jersey_channel_islands": {
+    "headline_pit_rate": 20.0,
+    "country_name": "Jersey, Channel Islands",
+    "vat_info": {
+      "standard": 5.0,
+      "type": "GST"
+    }
+  },
+  "jordan": {
+    "headline_pit_rate": 30.0,
+    "country_name": "Jordan",
+    "vat_info": {
+      "standard": 16.0
+    }
+  },
+  "kazakhstan": {
+    "headline_pit_rate": 10.0,
+    "country_name": "Kazakhstan",
+    "vat_info": {
+      "standard": 12.0
+    }
+  },
+  "kenya": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Kenya",
+    "vat_info": {
+      "standard": 16.0
+    }
+  },
+  "south_korea": {
+    "headline_pit_rate": 45.0,
+    "country_name": "Korea, Republic of",
+    "vat_info": {
+      "standard": 10.0
+    }
+  },
+  "kosovo": {
+    "headline_pit_rate": 10.0,
+    "country_name": "Kosovo",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "lao_pdr": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Lao PDR",
+    "vat_info": {
+      "standard": 10.0
+    }
+  },
+  "latvia": {
+    "headline_pit_rate": 36.0,
+    "country_name": "Latvia",
+    "vat_info": {
+      "standard": 21.0
+    }
+  },
+  "lebanon": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Lebanon",
+    "vat_info": {
+      "standard": 11.0
+    }
+  },
+  "liberia_republic_of": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Liberia, Republic of",
+    "vat_info": {
+      "standard": 12.0,
+      "type": "GST"
+    }
+  },
+  "libya": {
+    "headline_pit_rate": 13.0,
+    "country_name": "Libya"
+  },
+  "liechtenstein": {
+    "headline_pit_rate": 22.4,
+    "country_name": "Liechtenstein",
+    "vat_info": {
+      "standard": 8.1
+    }
+  },
+  "lithuania": {
+    "headline_pit_rate": 32.0,
+    "country_name": "Lithuania",
+    "vat_info": {
+      "standard": 21.0
+    }
+  },
+  "luxembourg": {
+    "headline_pit_rate": 42.0,
+    "country_name": "Luxembourg",
+    "vat_info": {
+      "standard": 17.0
+    }
+  },
+  "macau_sar": {
+    "headline_pit_rate": 12.0,
+    "country_name": "Macau SAR"
+  },
+  "madagascar": {
+    "headline_pit_rate": 20.0,
+    "country_name": "Madagascar",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "malaysia": {
+    "headline_pit_rate": 30.0,
+    "country_name": "Malaysia",
+    "vat_info": {
+      "standard": 10.0,
+      "reduced": [
+        8.0
+      ]
+    }
+  },
+  "malta": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Malta",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "mauritania": {
+    "headline_pit_rate": 40.0,
+    "country_name": "Mauritania",
+    "vat_info": {
+      "standard": 16.0
+    }
+  },
+  "mauritius": {
+    "headline_pit_rate": 20.0,
+    "country_name": "Mauritius",
+    "vat_info": {
+      "standard": 15.0
+    }
+  },
+  "mexico": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Mexico",
+    "vat_info": {
+      "standard": 16.0
+    }
+  },
+  "moldova": {
+    "headline_pit_rate": 12.0,
+    "country_name": "Moldova",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "mongolia": {
+    "headline_pit_rate": 20.0,
+    "country_name": "Mongolia",
+    "vat_info": {
+      "standard": 10.0
+    }
+  },
+  "montenegro": {
+    "headline_pit_rate": 15.0,
+    "country_name": "Montenegro",
+    "vat_info": {
+      "standard": 21.0
+    }
+  },
+  "morocco": {
+    "headline_pit_rate": 37.0,
+    "country_name": "Morocco",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "mozambique": {
+    "headline_pit_rate": 32.0,
+    "country_name": "Mozambique",
+    "vat_info": {
+      "standard": 16.0
+    }
+  },
+  "myanmar": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Myanmar",
+    "vat_info": {
+      "standard": 5.0
+    }
+  },
+  "namibia_republic_of": {
+    "headline_pit_rate": 37.0,
+    "country_name": "Namibia, Republic of",
+    "vat_info": {
+      "standard": 15.0
+    }
+  },
+  "netherlands": {
+    "headline_pit_rate": 49.5,
+    "country_name": "Netherlands",
+    "vat_info": {
+      "standard": 21.0
+    }
+  },
+  "new_caledonia": {
+    "headline_pit_rate": 40.0,
+    "country_name": "New Caledonia",
+    "vat_info": {
+      "standard": 11.0
+    }
+  },
+  "new_zealand": {
+    "headline_pit_rate": 39.0,
+    "country_name": "New Zealand",
+    "vat_info": {
+      "standard": 15.0,
+      "type": "GST"
+    }
+  },
+  "nicaragua": {
+    "headline_pit_rate": 30.0,
+    "country_name": "Nicaragua",
+    "vat_info": {
+      "standard": 15.0
+    }
+  },
+  "nigeria": {
+    "headline_pit_rate": 24.0,
+    "country_name": "Nigeria",
+    "vat_info": {
+      "standard": 7.5
+    }
+  },
+  "north_macedonia": {
+    "headline_pit_rate": 10.0,
+    "country_name": "North Macedonia",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "norway": {
+    "headline_pit_rate": 47.4,
+    "country_name": "Norway",
+    "vat_info": {
+      "standard": 25.0
+    }
+  },
+  "oman": {
+    "headline_pit_rate": 5.0,
+    "country_name": "Oman",
+    "vat_info": {
+      "standard": 5.0
+    }
+  },
+  "pakistan": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Pakistan",
+    "vat_info": {
+      "standard": 18.0,
+      "reduced": [
+        16.0,
+        15.0
+      ]
+    }
+  },
+  "palestinian_territories": {
+    "headline_pit_rate": 15.0,
+    "country_name": "Palestinian territories",
+    "vat_info": {
+      "standard": 16.0
+    }
+  },
+  "panama": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Panama",
+    "vat_info": {
+      "standard": 7.0
+    }
+  },
+  "papua_new_guinea": {
+    "headline_pit_rate": 42.0,
+    "country_name": "Papua New Guinea",
+    "vat_info": {
+      "standard": 10.0,
+      "type": "GST"
+    }
+  },
+  "paraguay": {
+    "headline_pit_rate": 10.0,
+    "country_name": "Paraguay",
+    "vat_info": {
+      "standard": 10.0,
+      "reduced": [
+        5.0
+      ]
+    }
+  },
+  "peru": {
+    "headline_pit_rate": 30.0,
+    "country_name": "Peru",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "philippines": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Philippines",
+    "vat_info": {
+      "standard": 12.0
+    }
+  },
+  "poland": {
+    "headline_pit_rate": 32.0,
+    "country_name": "Poland",
+    "vat_info": {
+      "standard": 23.0
+    }
+  },
+  "portugal": {
+    "headline_pit_rate": 13.0,
+    "country_name": "Portugal",
+    "vat_info": {
+      "standard": 23.0
+    }
+  },
+  "puerto_rico": {
+    "headline_pit_rate": 33.0,
+    "country_name": "Puerto Rico",
+    "vat_info": {
+      "standard": 11.5,
+      "reduced": [
+        4.0
+      ]
+    }
+  },
+  "romania": {
+    "headline_pit_rate": 10.0,
+    "country_name": "Romania",
+    "vat_info": {
+      "standard": 19.0
+    }
+  },
+  "rwanda": {
+    "headline_pit_rate": 30.0,
+    "country_name": "Rwanda",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "saint_lucia": {
+    "headline_pit_rate": 30.0,
+    "country_name": "Saint Lucia",
+    "vat_info": {
+      "standard": 12.5
+    }
+  },
+  "senegal": {
+    "headline_pit_rate": 43.0,
+    "country_name": "Senegal",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "serbia": {
+    "headline_pit_rate": 10.0,
+    "country_name": "Serbia",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "singapore": {
+    "headline_pit_rate": 24.0,
+    "country_name": "Singapore",
+    "vat_info": {
+      "standard": 9.0,
+      "type": "GST"
+    }
+  },
+  "slovak_republic": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Slovak Republic",
+    "vat_info": {
+      "standard": 23.0
+    }
+  },
+  "slovenia": {
+    "headline_pit_rate": 50.0,
+    "country_name": "Slovenia",
+    "vat_info": {
+      "standard": 22.0
+    }
+  },
+  "south_africa": {
+    "headline_pit_rate": 45.0,
+    "country_name": "South Africa",
+    "vat_info": {
+      "standard": 15.0
+    }
+  },
+  "spain": {
+    "headline_pit_rate": 47.0,
+    "country_name": "Spain",
+    "vat_info": {
+      "standard": 21.0
+    }
+  },
+  "sweden": {
+    "headline_pit_rate": 20.0,
+    "country_name": "Sweden",
+    "vat_info": {
+      "standard": 25.0
+    }
+  },
+  "switzerland": {
+    "headline_pit_rate": 11.5,
+    "country_name": "Switzerland",
+    "vat_info": {
+      "standard": 8.1
+    }
+  },
+  "taiwan": {
+    "headline_pit_rate": 40.0,
+    "country_name": "Taiwan",
+    "vat_info": {
+      "standard": 5.0
+    }
+  },
+  "tanzania": {
+    "headline_pit_rate": 30.0,
+    "country_name": "Tanzania",
+    "vat_info": {
+      "standard": 2025.0,
+      "reduced": [
+        18.0,
+        18.0,
+        16.0,
+        15.0,
+        2.0,
+        1.0
+      ]
+    }
+  },
+  "thailand": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Thailand",
+    "vat_info": {
+      "standard": 7.0
+    }
+  },
+  "timor_leste": {
+    "headline_pit_rate": 10.0,
+    "country_name": "Timor-Leste",
+    "vat_info": {
+      "standard": 2.5,
+      "reduced": [
+        0.0
+      ]
+    }
+  },
+  "trinidad_and_tobago": {
+    "headline_pit_rate": 25.0,
+    "country_name": "Trinidad and Tobago",
+    "vat_info": {
+      "standard": 12.5
+    }
+  },
+  "tunisia": {
+    "headline_pit_rate": 40.0,
+    "country_name": "Tunisia",
+    "vat_info": {
+      "standard": 19.0
+    }
+  },
+  "turkey": {
+    "headline_pit_rate": 40.0,
+    "country_name": "Turkey",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "uganda": {
+    "headline_pit_rate": 40.0,
+    "country_name": "Uganda",
+    "vat_info": {
+      "standard": 18.0
+    }
+  },
+  "ukraine": {
+    "headline_pit_rate": 18.0,
+    "country_name": "Ukraine",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "united_kingdom": {
+    "headline_pit_rate": 45.0,
+    "country_name": "United Kingdom",
+    "vat_info": {
+      "standard": 20.0
+    }
+  },
+  "united_states": {
+    "headline_pit_rate": 37.0,
+    "country_name": "United States"
+  },
+  "uruguay": {
+    "headline_pit_rate": 36.0,
+    "country_name": "Uruguay",
+    "vat_info": {
+      "standard": 22.0,
+      "reduced": [
+        10.0
+      ]
+    }
+  },
+  "uzbekistan_republic_of": {
+    "headline_pit_rate": 12.0,
+    "country_name": "Uzbekistan, Republic of",
+    "vat_info": {
+      "standard": 12.0
+    }
+  },
+  "venezuela": {
+    "headline_pit_rate": 34.0,
+    "country_name": "Venezuela",
+    "vat_info": {
+      "standard": 16.0
+    }
+  },
+  "vietnam": {
+    "headline_pit_rate": 35.0,
+    "country_name": "Vietnam",
+    "vat_info": {
+      "standard": 10.0
+    }
+  },
+  "zambia": {
+    "headline_pit_rate": 37.0,
+    "country_name": "Zambia",
+    "vat_info": {
+      "standard": 16.0
+    }
+  },
+  "bahamas": {
+    "vat_info": {
+      "standard": 10.0
+    },
+    "country_name": "Bahamas, The"
+  },
+  "bahrain": {
+    "vat_info": {
+      "standard": 10.0
+    },
+    "country_name": "Bahrain"
+  },
+  "saudi_arabia": {
+    "vat_info": {
+      "standard": 2020.0,
+      "reduced": [
+        15.0,
+        5.0,
+        1.0
+      ]
+    },
+    "country_name": "Saudi Arabia"
+  },
+  "united_arab_emirates": {
+    "vat_info": {
+      "standard": 5.0
+    },
+    "country_name": "United Arab Emirates"
+  }
+}

@@ -1,4 +1,4 @@
-import { taxData } from './taxData.js';
+import { taxData, getCountryVAT } from './taxData.js';
 import { currencyService } from './currencyService.js';
 
 // Calculate progressive tax
@@ -25,6 +25,79 @@ export function calculateProgressiveTax(annualIncome, brackets) {
     return totalTax;
 }
 
+// Calculate VAT on spending (net income)
+export function calculateVAT(netIncome, countryKey) {
+    const vatInfo = getCountryVAT(countryKey);
+
+    if (!vatInfo || !vatInfo.hasVAT) {
+        return {
+            vatAmount: 0,
+            vatRate: 0,
+            hasVAT: false
+        };
+    }
+
+    // Assume standard VAT rate applies to most spending
+    const vatRate = vatInfo.standard;
+    // VAT is calculated on spending, which we assume to be the net income
+    // VAT = (net income * VAT rate) / (100 + VAT rate) - this is the VAT component of spending
+    const vatAmount = (netIncome * vatRate) / (100 + vatRate);
+
+    return {
+        vatAmount,
+        vatRate,
+        hasVAT: true,
+        vatInfo
+    };
+}
+
+// Calculate special taxes (military levy, social taxes, etc.)
+export function calculateSpecialTaxes(grossIncome, specialTaxes) {
+    if (!specialTaxes || !Array.isArray(specialTaxes)) {
+        return {
+            specialTaxAmount: 0,
+            specialTaxes: []
+        };
+    }
+
+    let totalSpecialTax = 0;
+    const specialTaxBreakdown = [];
+
+    for (const tax of specialTaxes) {
+        let taxBase = 0;
+
+        // Determine tax base based on target
+        switch (tax.target) {
+            case 'gross':
+                taxBase = grossIncome;
+                break;
+            case 'net':
+                // For now, use gross income - could be enhanced to use actual net income
+                taxBase = grossIncome;
+                break;
+            default:
+                taxBase = grossIncome;
+        }
+
+        const taxAmount = taxBase * (tax.rate / 100);
+        totalSpecialTax += taxAmount;
+
+        specialTaxBreakdown.push({
+            type: tax.type,
+            rate: tax.rate,
+            target: tax.target,
+            description: tax.description,
+            taxBase: taxBase,
+            taxAmount: taxAmount
+        });
+    }
+
+    return {
+        specialTaxAmount: totalSpecialTax,
+        specialTaxes: specialTaxBreakdown
+    };
+}
+
 // Single country calculation function
 export function calculateTax(salary, countryKey) {
     if (!salary || !countryKey) {
@@ -37,26 +110,43 @@ export function calculateTax(salary, countryKey) {
     }
 
     const annualIncome = salary * 12;
-    let totalTax = 0;
+    let incomeTax = 0;
 
     if (countryData.system === 'zero_personal') {
-        totalTax = 0;
+        incomeTax = 0;
     } else if (countryData.system === 'flat') {
         const rate = countryData.brackets[0].rate;
-        totalTax = annualIncome * (rate / 100);
+        incomeTax = annualIncome * (rate / 100);
     } else {
-        totalTax = calculateProgressiveTax(annualIncome, countryData.brackets);
+        incomeTax = calculateProgressiveTax(annualIncome, countryData.brackets);
     }
 
+    // Calculate special taxes (military levy, social taxes, etc.)
+    const specialTaxCalculation = calculateSpecialTaxes(annualIncome, countryData.special_taxes);
+
+    const netIncomeAfterIncomeTax = annualIncome - incomeTax - specialTaxCalculation.specialTaxAmount;
+
+    // Calculate VAT on spending (net income after all taxes except VAT)
+    const vatCalculation = calculateVAT(netIncomeAfterIncomeTax, countryKey);
+
+    // Total tax burden = income tax + special taxes + VAT
+    const totalTax = incomeTax + specialTaxCalculation.specialTaxAmount + vatCalculation.vatAmount;
     const effectiveRate = annualIncome > 0 ? (totalTax / annualIncome) * 100 : 0;
-    const netIncome = annualIncome - totalTax;
+    const netIncomeAfterAllTaxes = annualIncome - totalTax;
 
     return {
         countryKey,
         grossIncome: annualIncome,
-        taxAmount: totalTax,
+        incomeTax,
+        specialTaxAmount: specialTaxCalculation.specialTaxAmount,
+        specialTaxes: specialTaxCalculation.specialTaxes,
+        vatAmount: vatCalculation.vatAmount,
+        vatRate: vatCalculation.vatRate,
+        hasVAT: vatCalculation.hasVAT,
+        taxAmount: totalTax, // Combined income tax + special taxes + VAT
         effectiveRate: effectiveRate,
-        netIncome: netIncome,
+        netIncome: netIncomeAfterAllTaxes,
+        netIncomeAfterIncomeTax: netIncomeAfterIncomeTax,
         currency: countryData.currency,
         countryName: countryData.name,
         coordinates: countryData.coordinates
@@ -95,6 +185,24 @@ export async function calculateTaxesForAllCountries(monthlyAmount, inputCurrency
                 displayCurrency
             );
 
+            const incomeTaxInDisplayCurrency = await currencyService.convertCurrency(
+                result.incomeTax,
+                countryData.currency,
+                displayCurrency
+            );
+
+            const vatAmountInDisplayCurrency = await currencyService.convertCurrency(
+                result.vatAmount,
+                countryData.currency,
+                displayCurrency
+            );
+
+            const specialTaxAmountInDisplayCurrency = await currencyService.convertCurrency(
+                result.specialTaxAmount,
+                countryData.currency,
+                displayCurrency
+            );
+
             const grossIncomeInDisplayCurrency = await currencyService.convertCurrency(
                 result.grossIncome,
                 countryData.currency,
@@ -107,9 +215,25 @@ export async function calculateTaxesForAllCountries(monthlyAmount, inputCurrency
                 displayCurrency
             );
 
+            // Convert individual special tax amounts to display currency
+            const specialTaxesInDisplayCurrency = await Promise.all(
+                result.specialTaxes.map(async (tax) => ({
+                    ...tax,
+                    taxAmountInDisplayCurrency: await currencyService.convertCurrency(
+                        tax.taxAmount,
+                        countryData.currency,
+                        displayCurrency
+                    )
+                }))
+            );
+
             results.push({
                 ...result,
                 taxAmountInDisplayCurrency,
+                incomeTaxInDisplayCurrency,
+                vatAmountInDisplayCurrency,
+                specialTaxAmountInDisplayCurrency,
+                specialTaxesInDisplayCurrency,
                 grossIncomeInDisplayCurrency,
                 netIncomeInDisplayCurrency,
                 displayCurrency,
@@ -127,10 +251,20 @@ export async function calculateTaxesForAllCountries(monthlyAmount, inputCurrency
                 currency: countryData.currency,
                 coordinates: countryData.coordinates,
                 grossIncome: 0,
+                incomeTax: 0,
+                specialTaxAmount: 0,
+                specialTaxes: [],
+                vatAmount: 0,
+                vatRate: 0,
+                hasVAT: false,
                 taxAmount: 0,
                 effectiveRate: 0,
                 netIncome: 0,
                 taxAmountInDisplayCurrency: 0,
+                incomeTaxInDisplayCurrency: 0,
+                vatAmountInDisplayCurrency: 0,
+                specialTaxAmountInDisplayCurrency: 0,
+                specialTaxesInDisplayCurrency: [],
                 grossIncomeInDisplayCurrency: 0,
                 netIncomeInDisplayCurrency: 0,
                 displayCurrency,
