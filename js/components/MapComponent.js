@@ -90,10 +90,10 @@ export class MapComponent {
             })
         });
 
-        // Add click handler for expansion
+        // Add click handler to open popup like marker click
         label.on('click', (e) => {
             e.originalEvent.stopPropagation();
-            this.toggleLabelExpansion(countryKey);
+            this.openCountryPopup(countryKey);
         });
 
         this.countryLabels[countryKey] = label;
@@ -217,12 +217,13 @@ export class MapComponent {
 
                 <!-- Total Tax -->
                 <div class="total-tax" style="background: ${color}; color: ${textColor}; border-radius: 6px; padding: 10px; margin-bottom: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <div style="font-weight: bold; font-size: 12px;">💰 Total Tax Burden</div>
-                            <div style="font-size: 10px; opacity: 0.9;">${taxResult.effectiveRate.toFixed(1)}% effective rate</div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; font-size: 12px; margin-bottom: 4px;">💰 Total Tax Burden</div>
+                            <div style="font-size: 10px; opacity: 0.9; margin-bottom: 6px;">${taxResult.effectiveRate.toFixed(1)}% effective rate</div>
+                            ${this.buildTotalTaxDescription(taxResult, incomeTaxRate)}
                         </div>
-                        <div style="text-align: right;">
+                        <div style="text-align: right; margin-left: 10px;">
                             <div style="font-weight: bold; font-size: 14px;">${taxResult.displayCurrency} ${totalTax}</div>
                             ${taxResult.currency !== taxResult.displayCurrency ? `<div style="font-size: 11px; opacity: 0.8;">${taxResult.currency} ${taxResult.taxAmount.toLocaleString()}</div>` : ''}
                         </div>
@@ -281,12 +282,11 @@ export class MapComponent {
         }
 
         if (taxResult.hasVAT && taxResult.vatAmountInDisplayCurrency > 0) {
-            const vatRate = ((taxResult.vatAmountInDisplayCurrency / taxResult.grossIncomeInDisplayCurrency) * 100);
             const nativeVatAmount = this.formatNumber(taxResult.vatAmount);
 
             rows += `
                 <div class="breakdown-row" style="display: flex; justify-content: space-between; padding: 6px; background: rgba(255,255,255,0.7); border-radius: 4px;">
-                    <span style="color: #555; font-size: 11px;">🛍️ VAT on Spending (${vatRate.toFixed(1)}%)</span>
+                    <span style="color: #555; font-size: 11px;">🛍️ VAT on Spending (${taxResult.vatRate}%)</span>
                     <div style="text-align: right;">
                         <div style="font-weight: bold; color: ${color}; font-size: 11px;">${taxResult.displayCurrency} ${vatAmount}</div>
                         ${showNativeCurrency ? `<div style="font-size: 10px; color: #888; opacity: 0.8;">${taxResult.currency} ${nativeVatAmount}</div>` : ''}
@@ -296,6 +296,36 @@ export class MapComponent {
         }
 
         return rows;
+    }
+
+    // Build total tax description with breakdown in brackets
+    buildTotalTaxDescription(taxResult, incomeTaxRate) {
+        const taxComponents = [];
+
+        // Income tax component
+        const incomeTaxDisplay = this.formatNumber(taxResult.incomeTaxInDisplayCurrency);
+        taxComponents.push(`Income Tax ${incomeTaxRate.toFixed(1)}%: ${taxResult.displayCurrency} ${incomeTaxDisplay}`);
+
+        // Special taxes components
+        if (taxResult.specialTaxesInDisplayCurrency && taxResult.specialTaxesInDisplayCurrency.length > 0) {
+            for (const specialTax of taxResult.specialTaxesInDisplayCurrency) {
+                const displayAmount = this.formatNumber(specialTax.taxAmountInDisplayCurrency);
+                const taxName = this.formatSpecialTaxName(specialTax.type);
+                taxComponents.push(`${taxName} ${specialTax.rate}%: ${taxResult.displayCurrency} ${displayAmount}`);
+            }
+        }
+
+        // VAT component
+        if (taxResult.hasVAT && taxResult.vatAmountInDisplayCurrency > 0) {
+            const vatDisplay = this.formatNumber(taxResult.vatAmountInDisplayCurrency);
+            taxComponents.push(`VAT on Spending ${taxResult.vatRate}%: ${taxResult.displayCurrency} ${vatDisplay}`);
+        }
+
+        if (taxComponents.length === 0) {
+            return '<div style="font-size: 9px; opacity: 0.8; line-height: 1.3;">No tax breakdown available</div>';
+        }
+
+        return `<div style="font-size: 9px; opacity: 0.8; line-height: 1.3;">(${taxComponents.join(' + ')})</div>`;
     }
 
     // Get icon for special tax type
@@ -648,6 +678,19 @@ export class MapComponent {
             // Pan to country and open popup
             this.map.panTo(marker.getLatLng());
             marker.openPopup();
+        }
+    }
+
+    // Open country popup (called by label clicks)
+    openCountryPopup(countryKey) {
+        const marker = this.countryMarkers[countryKey];
+        if (marker) {
+            // Pan to the country and open its popup
+            this.map.panTo(marker.getLatLng());
+            marker.openPopup();
+
+            // Also highlight the country (optional - for visual feedback)
+            this.highlightCountry(countryKey);
         }
     }
 

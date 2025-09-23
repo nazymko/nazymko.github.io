@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(python:*)",
-      "Bash(npm i:*)"
+      "Bash(npm i:*)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []
