@@ -3,7 +3,8 @@
     "allow": [
       "Bash(python:*)",
       "Bash(npm i:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(start \"C:\\Users\\User\\IdeaProjects\\map\\index.html\")"
     ],
     "deny": [],
     "ask": []

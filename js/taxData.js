@@ -175,8 +175,9 @@ export const taxData = {
     countryCode: "DK",
     coordinates: [56.2639, 9.5018],
     brackets: [
-      {min: 0, max: 67500, rate: 27.00},
-      {min: 67500, max: null, rate: 42.00}
+      {min: 0, max: 50500, rate: 22, description: "0% national + 22-27% municipal (using minimum municipal rate)"},
+      {min: 50501, max: 588900, rate: 34, description: "12% national + 22-27% municipal (using minimum municipal rate)"},
+      {min: 588901, max: null, rate: 37, description: "15% national + 22-27% municipal (using minimum municipal rate)"}
     ],
     vat: {
       hasVAT: true,

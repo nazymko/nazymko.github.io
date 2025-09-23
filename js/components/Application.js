@@ -2,10 +2,12 @@
 import { MapComponent } from './MapComponent.js';
 import { CalculatorComponent } from './CalculatorComponent.js';
 import { ResultsTableComponent } from './ResultsTableComponent.js';
+import { SearchableCurrencyDropdown } from '../currencyDropdown.js';
 
 export class Application {
     constructor() {
         this.components = {};
+        this.currencyDropdowns = {};
         this.isInitialized = false;
     }
 
@@ -29,7 +31,29 @@ export class Application {
         this.components.calculator = new CalculatorComponent();
         this.components.resultsTable = new ResultsTableComponent('resultsTableContainer');
 
+        // Initialize searchable currency dropdowns
+        this.initializeCurrencyDropdowns();
+
         console.log('📦 Application components created');
+    }
+
+    // Initialize searchable currency dropdowns
+    initializeCurrencyDropdowns() {
+        // Get all currency select elements
+        const currencySelects = {
+            inputCurrency: document.getElementById('inputCurrency'),
+            displayCurrency: document.getElementById('displayCurrency'),
+            fullscreenInputCurrency: document.getElementById('fullscreenInputCurrency'),
+            fullscreenDisplayCurrency: document.getElementById('fullscreenDisplayCurrency')
+        };
+
+        // Initialize searchable dropdowns for each select element
+        Object.entries(currencySelects).forEach(([key, selectElement]) => {
+            if (selectElement) {
+                this.currencyDropdowns[key] = new SearchableCurrencyDropdown(selectElement);
+                console.log(`💱 Initialized searchable dropdown for ${key}`);
+            }
+        });
     }
 
     // Setup interactions between components
@@ -181,11 +205,19 @@ export class Application {
             }
         });
 
+        // Cleanup currency dropdowns
+        Object.values(this.currencyDropdowns).forEach(dropdown => {
+            if (dropdown.destroy) {
+                dropdown.destroy();
+            }
+        });
+
         // Clear global functions
         if (window.sortTable) delete window.sortTable;
         if (window.exportResults) delete window.exportResults;
 
         this.components = {};
+        this.currencyDropdowns = {};
         this.isInitialized = false;
 
         console.log('🗑️ Application destroyed');

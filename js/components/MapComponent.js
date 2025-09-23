@@ -1051,12 +1051,18 @@ export class MapComponent {
             return;
         }
 
+        // Find the corresponding tax result for currency conversion
+        let taxResult = null;
+        if (this.currentTaxResults) {
+            taxResult = this.currentTaxResults.find(result => result.countryKey === countryKey);
+        }
+
         // Create the bracket details panel
-        this.createBracketPanel(countryKey, countryInfo, parsedIncome, event);
+        this.createBracketPanel(countryKey, countryInfo, parsedIncome, event, taxResult);
     }
 
     // Create bracket details panel to the right of popup
-    createBracketPanel(countryKey, countryInfo, annualIncome, event) {
+    createBracketPanel(countryKey, countryInfo, annualIncome, event, taxResult = null) {
         // Find the popup element
         const popup = document.querySelector('.leaflet-popup-content');
         if (!popup) return;
@@ -1099,7 +1105,7 @@ export class MapComponent {
         `;
 
         // Generate content
-        const content = this.generateDetailedBracketContent(countryInfo, annualIncome);
+        const content = this.generateDetailedBracketContent(countryInfo, annualIncome, taxResult);
         bracketPanel.innerHTML = content;
 
         // Add close button functionality
@@ -1171,8 +1177,22 @@ export class MapComponent {
     }
 
     // Generate detailed bracket content with individual calculations
-    generateDetailedBracketContent(countryInfo, annualIncome) {
+    generateDetailedBracketContent(countryInfo, annualIncome, taxResult = null) {
         const { system, brackets, currency, name } = countryInfo;
+
+        // Helper function to format amounts in both local and input currency
+        const formatAmountWithInputCurrency = (localAmount) => {
+            const localFormatted = `${currency} ${Math.round(localAmount).toLocaleString()}`;
+            if (taxResult && taxResult.inputCurrency && taxResult.exchangeRate && taxResult.inputCurrency !== currency) {
+                const inputAmount = localAmount / taxResult.exchangeRate;
+                const inputFormatted = `${taxResult.inputCurrency} ${Math.round(inputAmount).toLocaleString()}`;
+                return `
+                    <div style="font-weight: bold;">${localFormatted}</div>
+                    <div style="font-size: 10px; color: #666; opacity: 0.8;">(${inputFormatted})</div>
+                `;
+            }
+            return `<div style="font-weight: bold;">${localFormatted}</div>`;
+        };
 
         // Validate annual income
         if (isNaN(annualIncome) || annualIncome <= 0) {
@@ -1218,11 +1238,11 @@ export class MapComponent {
                         <div style="font-size: 12px; color: #666; margin-bottom: 8px;">
                             ${currency} ${annualIncome.toLocaleString()} × ${rate}% =
                         </div>
-                        <div style="font-size: 20px; font-weight: bold; color: #d63384; margin-bottom: 8px;">
-                            ${currency} ${Math.round(totalTax).toLocaleString()}
+                        <div style="font-size: 20px; color: #d63384; margin-bottom: 8px;">
+                            ${formatAmountWithInputCurrency(totalTax)}
                         </div>
-                        <div style="font-size: 12px; color: #28a745; font-weight: bold;">
-                            Net Income: ${currency} ${Math.round(annualIncome - totalTax).toLocaleString()}
+                        <div style="font-size: 12px; color: #28a745;">
+                            Net Income: ${formatAmountWithInputCurrency(annualIncome - totalTax)}
                         </div>
                     </div>
 
@@ -1314,8 +1334,8 @@ export class MapComponent {
                             <div style="font-size: 11px; color: ${textColor}; margin-bottom: 4px;">
                                 Taxable amount: ${currency} ${Math.round(taxableInThisBracket).toLocaleString()}
                             </div>
-                            <div style="font-size: 12px; font-weight: bold; color: #d63384;">
-                                Tax from this bracket: ${currency} ${Math.round(taxFromThisBracket).toLocaleString()}
+                            <div style="font-size: 12px; color: #d63384;">
+                                Tax from this bracket: ${formatAmountWithInputCurrency(taxFromThisBracket)}
                             </div>
                         ` : `
                             <div style="font-size: 11px; color: ${textColor}; font-style: italic;">
@@ -1336,12 +1356,12 @@ export class MapComponent {
                 <div style="margin-top: 15px; padding: 15px; background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-radius: 8px; border: 2px solid #2196f3;">
                     <div style="text-align: center;">
                         <div style="font-size: 12px; color: #1976d2; margin-bottom: 4px;">TOTAL INCOME TAX</div>
-                        <div style="font-size: 20px; font-weight: bold; color: #0d47a1;">${currency} ${Math.round(totalTax).toLocaleString()}</div>
+                        <div style="font-size: 20px; color: #0d47a1;">${formatAmountWithInputCurrency(totalTax)}</div>
                         <div style="font-size: 11px; color: #1976d2; margin-top: 4px;">
                             Effective Rate: ${((totalTax / annualIncome) * 100).toFixed(1)}%
                         </div>
                         <div style="font-size: 10px; color: #1976d2; margin-top: 2px; opacity: 0.8;">
-                            Net Income: ${currency} ${Math.round(annualIncome - totalTax).toLocaleString()}
+                            Net Income: ${formatAmountWithInputCurrency(annualIncome - totalTax)}
                         </div>
                     </div>
                 </div>
