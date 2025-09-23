@@ -183,8 +183,79 @@ input:focus, select:focus {
     box-shadow: none;
 }
 
+/* Fullscreen input section */
+.fullscreen-inputs {
+    margin-bottom: 15px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.compact-input-group {
+    display: flex;
+    gap: 20px;
+    align-items: end;
+    flex-wrap: wrap;
+}
+
+.compact-input-field {
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+}
+
+.compact-input-field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 5px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.compact-input-field input,
+.compact-input-field select {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+}
+
+.compact-input-field input:focus,
+.compact-input-field select:focus {
+    outline: none;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+}
+
+.view-toggle-btn {
+    padding: 10px 15px;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.view-toggle-btn:hover {
+    background: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.5);
+    transform: translateY(-1px);
+}
+
+.map-container.fullscreen .fullscreen-inputs {
+    display: block !important;
+}
+
 .map-container.fullscreen .world-map {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 200px);
 }
 
 .map-container.fullscreen .map-header {
@@ -945,6 +1016,231 @@ body.map-fullscreen {
     font-weight: 500;
     text-align: center;
     letter-spacing: 0.3px;
+}
+
+/* Grid view for labels */
+.map-container.grid-view .leaflet-marker-pane {
+    display: none !important;
+}
+
+.map-container.grid-view .world-map::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.labels-grid {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1001;
+    display: none;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-gap: 15px;
+    padding: 20px;
+    overflow-y: auto;
+    background: rgba(255,255,255,0.95);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.map-container.grid-view .labels-grid {
+    display: grid !important;
+}
+
+.grid-label-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 20px;
+    color: white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.grid-label-card:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+}
+
+.grid-label-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.grid-label-card:hover::before {
+    left: 100%;
+}
+
+.grid-card-header {
+    margin-bottom: 15px;
+}
+
+.grid-country-name {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.grid-tax-amount {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.grid-tax-rate {
+    font-size: 16px;
+    font-weight: 600;
+    opacity: 0.9;
+    margin-bottom: 10px;
+}
+
+.grid-tax-source {
+    font-size: 12px;
+    opacity: 0.8;
+    background: rgba(0,0,0,0.2);
+    padding: 4px 8px;
+    border-radius: 6px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.grid-card-body {
+    flex-grow: 1;
+}
+
+.grid-breakdown {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.grid-breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 12px;
+}
+
+.grid-breakdown-label {
+    opacity: 0.8;
+}
+
+.grid-breakdown-value {
+    font-weight: 600;
+}
+
+.grid-net-income {
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.grid-currency-info {
+    text-align: center;
+    font-size: 11px;
+    opacity: 0.7;
+    margin-top: 8px;
+}
+
+/* Tax bracket panel styles */
+.tax-bracket-panel {
+    font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', sans-serif;
+    scroll-behavior: smooth;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+
+/* Add subtle scroll indicator */
+.tax-bracket-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,123,255,0.1), transparent 20%, transparent 80%, rgba(0,123,255,0.1));
+    pointer-events: none;
+    z-index: 1;
+    border-radius: 0 12px 12px 0;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* Custom scrollbar for bracket panel */
+.tax-bracket-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.tax-bracket-panel::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    border-radius: 4px;
+    margin: 4px 0;
+}
+
+.tax-bracket-panel::-webkit-scrollbar-thumb {
+    background: #007bff;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.tax-bracket-panel::-webkit-scrollbar-thumb:hover {
+    background: #0056b3;
+    transform: scaleX(1.2);
+}
+
+.tax-bracket-panel::-webkit-scrollbar-thumb:active {
+    background: #004085;
+}
+
+/* For Firefox */
+.tax-bracket-panel {
+    scrollbar-width: thin;
+    scrollbar-color: #007bff #f8f9fa;
+}
+
+.income-tax-row:hover {
+    background: rgba(255,255,255,0.9) !important;
+    transform: translateX(3px) !important;
 }
 
 /* Responsive label adjustments */

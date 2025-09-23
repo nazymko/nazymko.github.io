@@ -12,6 +12,8 @@ export class MapComponent {
         this.loadingElement = null;
         this.expandedLabel = null; // Track which label is expanded
         this.isFullscreen = false;
+        this.isGridView = false;
+        this.fullscreenInputs = null;
 
         this.init();
     }
@@ -23,6 +25,8 @@ export class MapComponent {
         this.setupMapBounds();
         this.setupLoadingElement();
         this.setupFullscreenToggle();
+        this.setupFullscreenInputs();
+        this.setupGridView();
     }
 
     // Create the Leaflet map
@@ -253,8 +257,11 @@ export class MapComponent {
         const showNativeCurrency = taxResult.currency !== taxResult.displayCurrency;
 
         let rows = `
-            <div class="breakdown-row" style="display: flex; justify-content: space-between; margin-bottom: 6px; padding: 6px; background: rgba(255,255,255,0.7); border-radius: 4px;">
-                <span style="color: #555; font-size: 11px;">🏛️ Income Tax (${incomeTaxRate.toFixed(1)}%)</span>
+            <div class="breakdown-row income-tax-row" style="display: flex; justify-content: space-between; margin-bottom: 6px; padding: 6px; background: rgba(255,255,255,0.7); border-radius: 4px; cursor: pointer; transition: all 0.2s ease;"
+                 onmouseover="this.style.background='rgba(255,255,255,0.9)'; this.style.transform='translateX(3px)'"
+                 onmouseout="this.style.background='rgba(255,255,255,0.7)'; this.style.transform='translateX(0px)'"
+                 onclick="window.taxCalculatorApp.components.map.showIncomeTaxDetails('${taxResult.countryKey}', '${taxResult.grossIncome}', event)">
+                <span style="color: #555; font-size: 11px;">🏛️ Income Tax (${incomeTaxRate.toFixed(1)}%) <span style="color: #007bff; font-size: 10px;">ℹ️ Click for details</span></span>
                 <div style="text-align: right;">
                     <div style="font-weight: bold; color: ${color}; font-size: 11px;">${taxResult.displayCurrency} ${incomeTax}</div>
                     ${showNativeCurrency ? `<div style="font-size: 10px; color: #888; opacity: 0.8;">${taxResult.currency} ${nativeIncomeTax}</div>` : ''}
@@ -503,6 +510,11 @@ export class MapComponent {
         this.updateMarkerColors(results);
         this.updateMarkerPopups(results, displayCurrency);
         this.updateCountryLabels(results, displayCurrency);
+
+        // Update grid view if active
+        if (this.isGridView) {
+            this.populateGridView();
+        }
     }
 
     // Update marker colors based on tax rates (green to red)
@@ -800,6 +812,9 @@ export class MapComponent {
 
             this.isFullscreen = true;
 
+            // Sync fullscreen inputs with main inputs
+            this.syncFullscreenInputs();
+
             // Trigger map resize after transition
             setTimeout(() => {
                 if (this.map) {
@@ -835,12 +850,684 @@ export class MapComponent {
         }
     }
 
+    // Setup fullscreen input functionality
+    setupFullscreenInputs() {
+        this.fullscreenInputs = {
+            salary: document.getElementById('fullscreenSalary'),
+            inputCurrency: document.getElementById('fullscreenInputCurrency'),
+            displayCurrency: document.getElementById('fullscreenDisplayCurrency')
+        };
+
+        // Sync with main inputs when entering fullscreen
+        if (this.fullscreenInputs.salary && this.fullscreenInputs.inputCurrency && this.fullscreenInputs.displayCurrency) {
+            const mainSalary = document.getElementById('salary');
+            const mainInputCurrency = document.getElementById('inputCurrency');
+            const mainDisplayCurrency = document.getElementById('displayCurrency');
+
+            if (mainSalary && mainInputCurrency && mainDisplayCurrency) {
+                // Sync values on input change
+                [this.fullscreenInputs.salary, mainSalary].forEach(input => {
+                    input.addEventListener('input', (e) => {
+                        const value = e.target.value;
+                        [this.fullscreenInputs.salary, mainSalary].forEach(syncInput => {
+                            if (syncInput !== e.target) {
+                                syncInput.value = value;
+                            }
+                        });
+                        // Trigger calculation
+                        mainSalary.dispatchEvent(new Event('input', { bubbles: true }));
+                    });
+                });
+
+                [this.fullscreenInputs.inputCurrency, mainInputCurrency].forEach(select => {
+                    select.addEventListener('change', (e) => {
+                        const value = e.target.value;
+                        [this.fullscreenInputs.inputCurrency, mainInputCurrency].forEach(syncSelect => {
+                            if (syncSelect !== e.target) {
+                                syncSelect.value = value;
+                            }
+                        });
+                        // Trigger calculation
+                        mainInputCurrency.dispatchEvent(new Event('change', { bubbles: true }));
+                    });
+                });
+
+                [this.fullscreenInputs.displayCurrency, mainDisplayCurrency].forEach(select => {
+                    select.addEventListener('change', (e) => {
+                        const value = e.target.value;
+                        [this.fullscreenInputs.displayCurrency, mainDisplayCurrency].forEach(syncSelect => {
+                            if (syncSelect !== e.target) {
+                                syncSelect.value = value;
+                            }
+                        });
+                        // Trigger calculation
+                        mainDisplayCurrency.dispatchEvent(new Event('change', { bubbles: true }));
+                    });
+                });
+            }
+        }
+    }
+
+    // Sync fullscreen inputs with main inputs
+    syncFullscreenInputs() {
+        const mainSalary = document.getElementById('salary');
+        const mainInputCurrency = document.getElementById('inputCurrency');
+        const mainDisplayCurrency = document.getElementById('displayCurrency');
+
+        if (this.fullscreenInputs.salary && mainSalary) {
+            this.fullscreenInputs.salary.value = mainSalary.value;
+        }
+
+        if (this.fullscreenInputs.inputCurrency && mainInputCurrency) {
+            this.fullscreenInputs.inputCurrency.value = mainInputCurrency.value;
+        }
+
+        if (this.fullscreenInputs.displayCurrency && mainDisplayCurrency) {
+            this.fullscreenInputs.displayCurrency.value = mainDisplayCurrency.value;
+        }
+    }
+
+    // Setup grid view functionality
+    setupGridView() {
+        const viewToggleBtn = document.getElementById('fullscreenViewToggle');
+        if (!viewToggleBtn) return;
+
+        viewToggleBtn.addEventListener('click', () => {
+            this.toggleGridView();
+        });
+    }
+
+    // Toggle between map and grid view
+    toggleGridView() {
+        const mapContainer = document.querySelector('.map-container');
+        const gridIcon = document.querySelector('.grid-icon');
+        const mapIcon = document.querySelector('.map-icon');
+
+        if (!mapContainer || !gridIcon || !mapIcon) return;
+
+        this.isGridView = !this.isGridView;
+
+        if (this.isGridView) {
+            mapContainer.classList.add('grid-view');
+            gridIcon.style.display = 'none';
+            mapIcon.style.display = 'block';
+            this.populateGridView();
+        } else {
+            mapContainer.classList.remove('grid-view');
+            gridIcon.style.display = 'block';
+            mapIcon.style.display = 'none';
+        }
+    }
+
+    // Populate grid view with country cards
+    populateGridView() {
+        const labelsGrid = document.getElementById('labelsGrid');
+        if (!labelsGrid || !this.currentTaxResults || this.currentTaxResults.length === 0) return;
+
+        labelsGrid.innerHTML = '';
+
+        // Sort results by tax amount
+        const sortedResults = [...this.currentTaxResults].sort((a, b) =>
+            a.taxAmountInDisplayCurrency - b.taxAmountInDisplayCurrency
+        );
+
+        sortedResults.forEach(result => {
+            const card = this.createGridCard(result);
+            labelsGrid.appendChild(card);
+        });
+    }
+
+    // Create individual grid card
+    createGridCard(result) {
+        const card = document.createElement('div');
+        const taxBurdenColor = this.getTaxBurdenColor(result.effectiveRate);
+        const taxSourceInfo = this.getTaxSourceInfo(result);
+
+        // Format amounts
+        const taxAmount = result.taxAmountInDisplayCurrency.toLocaleString();
+        const effectiveRate = result.effectiveRate.toFixed(1);
+        const netIncome = result.netIncomeInDisplayCurrency.toLocaleString();
+
+        // Create breakdown if VAT is present
+        let vatBreakdown = '';
+        if (result.hasVAT && result.vatAmountInDisplayCurrency > 0) {
+            const incomeTax = result.incomeTaxInDisplayCurrency.toLocaleString();
+            const vatAmount = result.vatAmountInDisplayCurrency.toLocaleString();
+
+            vatBreakdown = `
+                <div class="grid-breakdown">
+                    <div class="grid-breakdown-row">
+                        <span class="grid-breakdown-label">Income Tax:</span>
+                        <span class="grid-breakdown-value">${result.displayCurrency} ${incomeTax}</span>
+                    </div>
+                    <div class="grid-breakdown-row">
+                        <span class="grid-breakdown-label">VAT (${result.vatRate}%):</span>
+                        <span class="grid-breakdown-value">${result.displayCurrency} ${vatAmount}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        card.className = 'grid-label-card';
+        card.style.background = `linear-gradient(135deg, ${taxBurdenColor} 0%, ${this.darkenColor(taxBurdenColor, 20)} 100%)`;
+        card.dataset.country = result.countryKey;
+
+        card.innerHTML = `
+            <div class="grid-card-header">
+                <div class="grid-country-name">${result.countryName}</div>
+                <div class="grid-tax-amount">${result.displayCurrency} ${taxAmount}</div>
+                <div class="grid-tax-rate">${effectiveRate}% total rate</div>
+                <div class="grid-tax-source">${taxSourceInfo}</div>
+            </div>
+            <div class="grid-card-body">
+                ${vatBreakdown}
+                <div class="grid-net-income">Net: ${result.displayCurrency} ${netIncome}</div>
+                <div class="grid-currency-info">${result.currency} → ${result.displayCurrency}</div>
+            </div>
+        `;
+
+        // Add click handler to open country popup
+        card.addEventListener('click', () => {
+            this.openCountryPopup(result.countryKey);
+        });
+
+        return card;
+    }
+
+    // Show detailed income tax bracket information
+    showIncomeTaxDetails(countryKey, annualIncome, event) {
+        event.stopPropagation(); // Prevent popup from closing
+
+        // Remove any existing bracket panel
+        this.removeBracketPanel();
+
+        const countryInfo = taxData[countryKey];
+        if (!countryInfo) return;
+
+        // Validate and parse annual income
+        const parsedIncome = parseFloat(annualIncome);
+        if (isNaN(parsedIncome) || parsedIncome <= 0) {
+            console.warn('Invalid annual income for tax bracket calculation:', annualIncome);
+            return;
+        }
+
+        // Create the bracket details panel
+        this.createBracketPanel(countryKey, countryInfo, parsedIncome, event);
+    }
+
+    // Create bracket details panel to the right of popup
+    createBracketPanel(countryKey, countryInfo, annualIncome, event) {
+        // Find the popup element
+        const popup = document.querySelector('.leaflet-popup-content');
+        if (!popup) return;
+
+        const popupContainer = popup.closest('.leaflet-popup');
+        if (!popupContainer) return;
+
+        // Get popup position and dimensions
+        const popupRect = popupContainer.getBoundingClientRect();
+        const mapContainer = document.getElementById(this.containerId);
+        const mapRect = mapContainer.getBoundingClientRect();
+
+        // Create bracket panel
+        const bracketPanel = document.createElement('div');
+        bracketPanel.id = 'tax-bracket-panel';
+        bracketPanel.className = 'tax-bracket-panel';
+        bracketPanel.tabIndex = -1; // Make it focusable but not tabbable
+
+        // Position panel to the right of popup
+        const panelLeft = popupRect.right - mapRect.left + 10;
+        const panelTop = popupRect.top - mapRect.top;
+
+        bracketPanel.style.cssText = `
+            position: absolute;
+            left: ${panelLeft}px;
+            top: ${panelTop}px;
+            width: 320px;
+            max-height: 400px;
+            background: white;
+            border: 2px solid #007bff;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            z-index: 10000;
+            overflow-y: auto;
+            overflow-x: hidden;
+            backdrop-filter: blur(10px);
+            animation: slideInRight 0.3s ease-out;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        `;
+
+        // Generate content
+        const content = this.generateDetailedBracketContent(countryInfo, annualIncome);
+        bracketPanel.innerHTML = content;
+
+        // Add close button functionality
+        bracketPanel.addEventListener('click', (e) => {
+            if (e.target.classList.contains('bracket-close-btn')) {
+                this.removeBracketPanel();
+            }
+        });
+
+        // Ensure mouse wheel scrolling works properly
+        bracketPanel.addEventListener('wheel', (e) => {
+            // Allow the panel to scroll with mouse wheel
+            e.stopPropagation();
+        }, { passive: true });
+
+        // Focus the panel to ensure it can receive scroll events
+        setTimeout(() => {
+            if (bracketPanel.scrollHeight > bracketPanel.clientHeight) {
+                bracketPanel.focus();
+                // Add a subtle visual indicator that it's scrollable
+                bracketPanel.style.cursor = 'default';
+            }
+        }, 100);
+
+        // Add to map container
+        mapContainer.appendChild(bracketPanel);
+
+        // Auto-remove when popup closes or on escape key
+        document.addEventListener('keydown', this.handleBracketPanelEscape.bind(this));
+
+        // Auto-remove when clicking outside the panel or popup
+        document.addEventListener('click', this.handleBracketPanelOutsideClick.bind(this), true);
+
+        // Store reference for cleanup
+        this.currentBracketPanel = bracketPanel;
+    }
+
+    // Remove bracket panel
+    removeBracketPanel() {
+        const existingPanel = document.getElementById('tax-bracket-panel');
+        if (existingPanel) {
+            existingPanel.remove();
+        }
+        document.removeEventListener('keydown', this.handleBracketPanelEscape);
+        document.removeEventListener('click', this.handleBracketPanelOutsideClick, true);
+        this.currentBracketPanel = null;
+    }
+
+    // Handle escape key for bracket panel
+    handleBracketPanelEscape(event) {
+        if (event.key === 'Escape') {
+            this.removeBracketPanel();
+        }
+    }
+
+    // Handle clicking outside bracket panel
+    handleBracketPanelOutsideClick(event) {
+        const bracketPanel = document.getElementById('tax-bracket-panel');
+        const popup = document.querySelector('.leaflet-popup');
+
+        if (bracketPanel && popup) {
+            const clickedInsidePanel = bracketPanel.contains(event.target);
+            const clickedInsidePopup = popup.contains(event.target);
+
+            if (!clickedInsidePanel && !clickedInsidePopup) {
+                this.removeBracketPanel();
+            }
+        }
+    }
+
+    // Generate detailed bracket content with individual calculations
+    generateDetailedBracketContent(countryInfo, annualIncome) {
+        const { system, brackets, currency, name } = countryInfo;
+
+        // Validate annual income
+        if (isNaN(annualIncome) || annualIncome <= 0) {
+            return `
+                <div style="padding: 20px; text-align: center; color: #dc3545;">
+                    <div style="font-size: 16px; margin-bottom: 10px;">⚠️ Invalid Income Data</div>
+                    <div style="font-size: 12px;">Unable to calculate tax brackets. Please ensure a valid salary is entered.</div>
+                </div>
+            `;
+        }
+
+        let content = `
+            <div class="bracket-panel-header" style="padding: 15px; border-bottom: 2px solid #e9ecef; background: linear-gradient(135deg, #007bff, #0056b3); color: white; border-radius: 10px 10px 0 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 16px; font-weight: bold;">${name}</h3>
+                        <p style="margin: 2px 0 0 0; font-size: 12px; opacity: 0.9;">Tax Bracket Breakdown</p>
+                    </div>
+                    <button class="bracket-close-btn" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 16px;">×</button>
+                </div>
+                <div style="margin-top: 8px; font-size: 12px; background: rgba(255,255,255,0.1); padding: 6px 10px; border-radius: 6px;">
+                    Annual Income: ${currency} ${annualIncome.toLocaleString()}
+                </div>
+            </div>
+            <div class="bracket-panel-body" style="padding: 15px;">
+        `;
+
+        if (system === 'flat') {
+            const rate = brackets[0].rate;
+            const totalTax = annualIncome * (rate / 100);
+
+            content += `
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 18px; font-weight: bold; color: #007bff; margin-bottom: 10px;">📊 Flat Tax System</div>
+
+                    <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 2px solid #2196f3;">
+                        <div style="font-size: 24px; font-weight: bold; color: #1976d2;">${rate}%</div>
+                        <div style="font-size: 12px; color: #666;">flat rate on all income from ${currency} 0</div>
+                    </div>
+
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007bff; margin-bottom: 15px;">
+                        <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">Tax Calculation:</div>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">
+                            ${currency} ${annualIncome.toLocaleString()} × ${rate}% =
+                        </div>
+                        <div style="font-size: 20px; font-weight: bold; color: #d63384; margin-bottom: 8px;">
+                            ${currency} ${Math.round(totalTax).toLocaleString()}
+                        </div>
+                        <div style="font-size: 12px; color: #28a745; font-weight: bold;">
+                            Net Income: ${currency} ${Math.round(annualIncome - totalTax).toLocaleString()}
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(0, 123, 255, 0.1); padding: 12px; border-radius: 6px; border: 1px solid #007bff;">
+                        <div style="font-size: 11px; color: #007bff; font-weight: bold; margin-bottom: 4px;">ℹ️ How Flat Tax Works</div>
+                        <div style="font-size: 10px; color: #666; line-height: 1.4;">
+                            Every ${currency} you earn is taxed at exactly ${rate}%, regardless of income level. No brackets, no complexity.
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else if (system === 'progressive') {
+            content += `
+                <div style="font-size: 14px; font-weight: bold; color: #007bff; margin-bottom: 12px; text-align: center;">📊 Progressive Tax Brackets</div>
+            `;
+
+            let totalTax = 0;
+            let highestActiveBracket = -1;
+
+            // Calculate which brackets are active and tax amounts
+            brackets.forEach((bracket, index) => {
+                const min = bracket.min;
+                const max = bracket.max;
+
+                // A bracket is active if income exceeds its minimum
+                if (annualIncome > min) {
+                    highestActiveBracket = index;
+                }
+            });
+
+            // Second pass: display all brackets with calculations
+            brackets.forEach((bracket, index) => {
+                const min = bracket.min;
+                const max = bracket.max;
+                const rate = bracket.rate;
+
+                // Calculate tax for this bracket using progressive logic
+                let taxableInThisBracket = 0;
+                let taxFromThisBracket = 0;
+
+                // Check if this bracket applies to the income
+                if (annualIncome > min) {
+                    // Calculate the upper bound for this bracket
+                    const upperBound = max === null ? annualIncome : Math.min(max, annualIncome);
+
+                    // Taxable amount in this bracket is the difference
+                    taxableInThisBracket = upperBound - min;
+
+                    // Only count if the taxable amount is positive
+                    if (taxableInThisBracket > 0) {
+                        taxFromThisBracket = taxableInThisBracket * (rate / 100);
+                        totalTax += taxFromThisBracket;
+                    }
+                }
+
+                const isActive = taxableInThisBracket > 0;
+                const isHighestActive = index === highestActiveBracket && isActive;
+
+                // Styling based on bracket status
+                let backgroundColor, borderColor, textColor;
+                if (isHighestActive) {
+                    backgroundColor = '#e8f5e8';
+                    borderColor = '#28a745';
+                    textColor = '#155724';
+                } else if (isActive) {
+                    backgroundColor = '#fff3cd';
+                    borderColor = '#ffc107';
+                    textColor = '#856404';
+                } else {
+                    backgroundColor = '#f8f9fa';
+                    borderColor = '#dee2e6';
+                    textColor = '#6c757d';
+                }
+
+                const maxDisplay = max === null ? '∞' : max.toLocaleString();
+                const statusIcon = isHighestActive ? '🎯' : isActive ? '✅' : '⚪';
+
+                content += `
+                    <div style="margin-bottom: 8px; padding: 12px; background: ${backgroundColor}; border: 2px solid ${borderColor}; border-radius: 8px; transition: all 0.2s ease;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: bold; color: ${textColor}; font-size: 12px;">
+                                ${statusIcon} ${currency} ${min.toLocaleString()} - ${maxDisplay}
+                            </span>
+                            <span style="background: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: bold; border: 1px solid ${borderColor};">
+                                ${rate}%
+                            </span>
+                        </div>
+                        ${isActive ? `
+                            <div style="font-size: 11px; color: ${textColor}; margin-bottom: 4px;">
+                                Taxable amount: ${currency} ${Math.round(taxableInThisBracket).toLocaleString()}
+                            </div>
+                            <div style="font-size: 12px; font-weight: bold; color: #d63384;">
+                                Tax from this bracket: ${currency} ${Math.round(taxFromThisBracket).toLocaleString()}
+                            </div>
+                        ` : `
+                            <div style="font-size: 11px; color: ${textColor}; font-style: italic;">
+                                ${annualIncome <= min ? 'Income below this bracket' : 'No tax in this bracket'}
+                            </div>
+                        `}
+                        ${isHighestActive ? `
+                            <div style="margin-top: 6px; padding: 4px 8px; background: rgba(40, 167, 69, 0.1); border-radius: 4px; border-left: 3px solid #28a745;">
+                                <div style="font-size: 10px; color: #28a745; font-weight: bold;">🎯 YOUR CURRENT BRACKET</div>
+                            </div>
+                            ${this.generateNextBracketInfo(brackets, index, annualIncome, currency)}
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            content += `
+                <div style="margin-top: 15px; padding: 15px; background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-radius: 8px; border: 2px solid #2196f3;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 12px; color: #1976d2; margin-bottom: 4px;">TOTAL INCOME TAX</div>
+                        <div style="font-size: 20px; font-weight: bold; color: #0d47a1;">${currency} ${Math.round(totalTax).toLocaleString()}</div>
+                        <div style="font-size: 11px; color: #1976d2; margin-top: 4px;">
+                            Effective Rate: ${((totalTax / annualIncome) * 100).toFixed(1)}%
+                        </div>
+                        <div style="font-size: 10px; color: #1976d2; margin-top: 2px; opacity: 0.8;">
+                            Net Income: ${currency} ${Math.round(annualIncome - totalTax).toLocaleString()}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        content += `
+            </div>
+            <div style="padding: 10px 15px; background: #f8f9fa; border-radius: 0 0 10px 10px; border-top: 1px solid #dee2e6;">
+                <div style="font-size: 10px; color: #6c757d; text-align: center;">
+                    💡 Click outside or press ESC to close
+                </div>
+            </div>
+        `;
+
+        return content;
+    }
+
+    // Generate detailed tax bracket information
+    generateTaxBracketDetails(countryInfo, annualIncome) {
+        const { system, brackets, currency } = countryInfo;
+
+        if (system === 'flat') {
+            const rate = brackets[0].rate;
+            return `
+                <div style="font-size: 11px; color: #333;">
+                    <div style="font-weight: bold; margin-bottom: 6px; color: #007bff;">📊 Flat Tax System</div>
+                    <div style="margin-bottom: 4px;">
+                        <span style="background: #e3f2fd; padding: 2px 6px; border-radius: 3px; font-weight: bold;">
+                            ${rate}% flat rate on all income from ${currency} 0
+                        </span>
+                    </div>
+                    <div style="font-size: 10px; color: #666; margin-top: 6px;">
+                        💡 This country applies a single tax rate to all income levels starting from the first ${currency} earned.
+                    </div>
+                </div>
+            `;
+        } else if (system === 'progressive') {
+            let bracketDetails = `
+                <div style="font-size: 11px; color: #333;">
+                    <div style="font-weight: bold; margin-bottom: 6px; color: #007bff;">📊 Progressive Tax Brackets</div>
+                    <div style="font-size: 10px; color: #666; margin-bottom: 8px;">Your annual income: ${currency} ${annualIncome.toLocaleString()}</div>
+            `;
+
+            let totalTax = 0;
+            let remainingIncome = annualIncome;
+
+            brackets.forEach((bracket, index) => {
+                const min = bracket.min;
+                const max = bracket.max;
+                const rate = bracket.rate;
+
+                // Calculate how much income falls in this bracket
+                const bracketStart = min;
+                const bracketEnd = max === null ? Infinity : max;
+
+                let taxableInThisBracket = 0;
+                if (annualIncome > bracketStart) {
+                    const incomeUpToBracketEnd = Math.min(annualIncome, bracketEnd);
+                    taxableInThisBracket = incomeUpToBracketEnd - bracketStart;
+                }
+
+                const taxFromThisBracket = taxableInThisBracket * (rate / 100);
+                totalTax += taxFromThisBracket;
+
+                const isCurrentBracket = taxableInThisBracket > 0;
+                const backgroundColor = isCurrentBracket ? '#e8f5e8' : '#f8f9fa';
+                const borderColor = isCurrentBracket ? '#28a745' : '#dee2e6';
+                const textWeight = isCurrentBracket ? 'bold' : 'normal';
+
+                const maxDisplay = max === null ? '∞' : max.toLocaleString();
+
+                bracketDetails += `
+                    <div style="margin-bottom: 4px; padding: 6px; background: ${backgroundColor}; border: 1px solid ${borderColor}; border-radius: 4px; font-weight: ${textWeight};">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>${currency} ${min.toLocaleString()} - ${maxDisplay}</span>
+                            <span style="background: #fff; padding: 2px 6px; border-radius: 3px; font-size: 10px; border: 1px solid ${borderColor};">${rate}%</span>
+                        </div>
+                        ${isCurrentBracket ? `<div style="font-size: 10px; color: #28a745; margin-top: 2px;">✓ Your tax: ${currency} ${taxFromThisBracket.toFixed(2)}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            bracketDetails += `
+                    <div style="margin-top: 8px; padding: 6px; background: #e3f2fd; border-radius: 4px; font-weight: bold;">
+                        Total Income Tax: ${currency} ${totalTax.toFixed(2)}
+                    </div>
+                </div>
+            `;
+
+            return bracketDetails;
+        } else {
+            return `
+                <div style="font-size: 11px; color: #333;">
+                    <div style="font-weight: bold; margin-bottom: 6px; color: #007bff;">📊 Tax System Information</div>
+                    <div style="margin-bottom: 4px;">
+                        Tax system: ${system}
+                    </div>
+                    <div style="font-size: 10px; color: #666;">
+                        Detailed bracket information not available for this tax system.
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // Generate information about the next tax bracket
+    generateNextBracketInfo(brackets, currentBracketIndex, currentIncome, currency) {
+        // Check if there's a next bracket
+        const nextBracketIndex = currentBracketIndex + 1;
+        if (nextBracketIndex >= brackets.length) {
+            // This is the highest bracket
+            return `
+                <div style="margin-top: 8px; padding: 6px 8px; background: rgba(108, 117, 125, 0.1); border-radius: 4px; border-left: 3px solid #6c757d;">
+                    <div style="font-size: 10px; color: #6c757d; font-weight: bold;">🏆 HIGHEST TAX BRACKET</div>
+                    <div style="font-size: 9px; color: #6c757d; margin-top: 2px;">
+                        You're in the top tax bracket. All additional income is taxed at ${brackets[currentBracketIndex].rate}%.
+                    </div>
+                </div>
+            `;
+        }
+
+        const nextBracket = brackets[nextBracketIndex];
+        const currentBracket = brackets[currentBracketIndex];
+
+        // Calculate how much more income is needed to reach the next bracket
+        const nextBracketStart = nextBracket.min;
+        const incomeNeededForNextBracket = nextBracketStart - currentIncome;
+
+        // Calculate additional tax that would be paid in the next bracket
+        // (This is just for the first dollar in the next bracket)
+        const currentTaxRate = currentBracket.rate;
+        const nextTaxRate = nextBracket.rate;
+        const rateDifference = nextTaxRate - currentTaxRate;
+
+        if (incomeNeededForNextBracket > 0) {
+            // Calculate examples of additional tax for common amounts
+            const example1Amount = Math.min(1000, incomeNeededForNextBracket);
+            const example2Amount = Math.min(10000, incomeNeededForNextBracket);
+
+            const example1Tax = example1Amount * (currentTaxRate / 100);
+            const example2Tax = example2Amount * (currentTaxRate / 100);
+
+            return `
+                <div style="margin-top: 8px; padding: 6px 8px; background: rgba(255, 193, 7, 0.1); border-radius: 4px; border-left: 3px solid #ffc107;">
+                    <div style="font-size: 10px; color: #856404; font-weight: bold;">📈 NEXT BRACKET INFO</div>
+                    <div style="font-size: 9px; color: #856404; margin-top: 3px; line-height: 1.3;">
+                        <div style="margin-bottom: 3px; font-weight: bold;">
+                            Need <strong>+${currency} ${Math.round(incomeNeededForNextBracket).toLocaleString()}</strong> to reach ${nextTaxRate}% bracket
+                        </div>
+                        <div style="margin-bottom: 3px; padding: 3px; background: rgba(255,255,255,0.3); border-radius: 3px;">
+                            <div style="font-size: 8px; margin-bottom: 1px;">💡 Tax on additional income:</div>
+                            <div style="font-size: 8px;">+${currency} ${example1Amount.toLocaleString()} → +${currency} ${Math.round(example1Tax).toLocaleString()} tax</div>
+                            ${example2Amount > example1Amount ? `<div style="font-size: 8px;">+${currency} ${example2Amount.toLocaleString()} → +${currency} ${Math.round(example2Tax).toLocaleString()} tax</div>` : ''}
+                        </div>
+                        <div style="font-size: 8px; opacity: 0.8;">
+                            Future income will be taxed at ${nextTaxRate}% (+${rateDifference}% more)
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Edge case: somehow already in or past the next bracket
+            return '';
+        }
+    }
+
+    // Helper function to darken a color
+    darkenColor(color, percent) {
+        // Simple color darkening - convert hex to rgb and reduce values
+        const hex = color.replace('#', '');
+        const r = Math.max(0, parseInt(hex.substr(0, 2), 16) - Math.floor(255 * percent / 100));
+        const g = Math.max(0, parseInt(hex.substr(2, 2), 16) - Math.floor(255 * percent / 100));
+        const b = Math.max(0, parseInt(hex.substr(4, 2), 16) - Math.floor(255 * percent / 100));
+        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    }
+
     // Destroy the map
     destroy() {
         // Exit fullscreen if active
         if (this.isFullscreen) {
             this.exitFullscreen();
         }
+
+        // Remove bracket panel if active
+        this.removeBracketPanel();
 
         if (this.map) {
             this.map.remove();
