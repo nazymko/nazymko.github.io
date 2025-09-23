@@ -794,14 +794,6 @@ export const taxData = {
       description: "Standard 10.0%"
     }
   },
-  "north_korea": {
-    name: "North Korea",
-    currency: "KPW",
-    system: "zero_personal",
-    countryCode: "KP",
-    coordinates: [39.0392, 125.7625],
-    brackets: [{min: 0, max: null, rate: 0}]
-  },
   "macau": {
     name: "Macau",
     currency: "MOP",

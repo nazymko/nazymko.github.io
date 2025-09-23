@@ -72,10 +72,10 @@ export class MapComponent {
 
     // Create label for country
     createCountryLabel(countryKey, countryInfo) {
-        // Calculate label position (slightly offset from marker)
+        // Calculate label position (right next to marker)
         const labelPosition = [
-            countryInfo.coordinates[0] + 2, // Offset latitude
-            countryInfo.coordinates[1] + 3  // Offset longitude
+            countryInfo.coordinates[0] + 0.5, // Small offset latitude (0.5 degrees ≈ 55km)
+            countryInfo.coordinates[1] + 1.0   // Small offset longitude (1 degree ≈ 60-110km depending on latitude)
         ];
 
         const label = L.marker(labelPosition, {
@@ -86,7 +86,7 @@ export class MapComponent {
                     <div class="tax-info">Enter salary to see taxes</div>
                 </div>`,
                 iconSize: [100, 30],
-                iconAnchor: [0, 15]
+                iconAnchor: [-10, 15]  // Offset left to position next to marker
             })
         });
 
@@ -422,6 +422,41 @@ export class MapComponent {
         return '#b71c1c'; // Very dark red for highest rates
     }
 
+    // Get best text color (white or black) for given background color
+    getLabelTextColor(backgroundColor) {
+        // For yellow and light colors, use dark text
+        if (backgroundColor === '#ffeb3b' || backgroundColor === '#69db7c' || backgroundColor === '#40c057' || backgroundColor === '#28a745') {
+            return '#333333';
+        }
+        // For darker colors, use white text
+        return '#ffffff';
+    }
+
+    // Generate short tax source description using actual tax rates
+    getTaxSourceInfo(taxResult) {
+        const sources = [];
+
+        // Check for income tax - calculate effective rate
+        if (taxResult.incomeTaxInDisplayCurrency > 0) {
+            const incomeRate = ((taxResult.incomeTaxInDisplayCurrency / taxResult.grossIncomeInDisplayCurrency) * 100).toFixed(0);
+            sources.push(`${incomeRate}% Income`);
+        }
+
+        // Check for special taxes - show combined rate
+        if (taxResult.specialTaxesInDisplayCurrency && taxResult.specialTaxesInDisplayCurrency.length > 0) {
+            const specialTaxTotal = taxResult.specialTaxesInDisplayCurrency.reduce((sum, tax) => sum + tax.taxAmountInDisplayCurrency, 0);
+            const specialRate = ((specialTaxTotal / taxResult.grossIncomeInDisplayCurrency) * 100).toFixed(0);
+            sources.push(`${specialRate}% Social`);
+        }
+
+        // Check for VAT - use the actual VAT rate from config
+        if (taxResult.hasVAT && taxResult.vatAmountInDisplayCurrency > 0) {
+            sources.push(`${taxResult.vatRate}% VAT`);
+        }
+
+        return sources.length > 0 ? sources.join(' + ') : 'Tax Components';
+    }
+
     // Add hover effects to markers
     addMarkerHoverEffects(marker) {
         marker.on('mouseover', function() {
@@ -519,6 +554,13 @@ export class MapComponent {
         const taxAmount = result.taxAmountInDisplayCurrency.toLocaleString();
         const effectiveRate = result.effectiveRate.toFixed(1);
 
+        // Get color based on tax burden level
+        const taxBurdenColor = this.getTaxBurdenColor(result.effectiveRate);
+        const textColor = this.getLabelTextColor(taxBurdenColor);
+
+        // Get tax source information
+        const taxSourceInfo = this.getTaxSourceInfo(result);
+
         // Determine if country has VAT for styling
         const hasVATClass = result.hasVAT && result.vatAmount > 0 ? 'has-vat' : 'no-vat';
 
@@ -546,31 +588,33 @@ export class MapComponent {
                 `;
             }
 
-            labelHtml = `<div class="tax-label-content expanded ${hasVATClass}" data-country="${countryKey}">
-                <div class="country-name">${result.countryName}
+            labelHtml = `<div class="tax-label-content expanded ${hasVATClass}" data-country="${countryKey}" style="background: ${taxBurdenColor}; color: ${textColor}; border: 2px solid ${taxBurdenColor};">
+                <div class="country-name" style="color: ${textColor}; font-weight: bold;">${result.countryName}
                     <span class="collapse-indicator">✕</span>
                 </div>
-                <div class="tax-amount-large">${displayCurrency} ${taxAmount}</div>
-                <div class="tax-rate-large">${effectiveRate}% total rate</div>
+                <div class="tax-amount-large" style="color: ${textColor};">${displayCurrency} ${taxAmount}</div>
+                <div class="tax-rate-large" style="color: ${textColor};">${effectiveRate}% total rate</div>
+                <div class="tax-source-expanded" style="color: ${textColor}; font-size: 10px; opacity: 0.9; margin: 2px 0;">${taxSourceInfo}</div>
                 ${vatBreakdown}
-                <div class="net-income">Net: ${displayCurrency} ${netIncome}</div>
-                <div class="currency-info">${result.currency} → ${displayCurrency}</div>
+                <div class="net-income" style="color: ${textColor}; opacity: 0.9;">Net: ${displayCurrency} ${netIncome}</div>
+                <div class="currency-info" style="color: ${textColor}; opacity: 0.8;">${result.currency} → ${displayCurrency}</div>
             </div>`;
 
             className = 'country-tax-label expanded';
             iconSize = [200, 120];
-            iconAnchor = [0, 60];
+            iconAnchor = [-20, 60];  // Offset left for expanded view
         } else {
             // Compact view
-            labelHtml = `<div class="tax-label-content compact ${hasVATClass}" data-country="${countryKey}">
-                <div class="country-name-compact">${result.countryName}</div>
-                <div class="tax-amount-compact">${displayCurrency} ${taxAmount}</div>
-                <div class="tax-rate-compact">${effectiveRate}%</div>
+            labelHtml = `<div class="tax-label-content compact ${hasVATClass}" data-country="${countryKey}" style="background: ${taxBurdenColor}; color: ${textColor}; border: 2px solid ${taxBurdenColor};">
+                <div class="country-name-compact" style="color: ${textColor}; font-weight: bold;">${result.countryName}</div>
+                <div class="tax-amount-compact" style="color: ${textColor};">${displayCurrency} ${taxAmount}</div>
+                <div class="tax-rate-compact" style="color: ${textColor}; font-weight: bold;">${effectiveRate}%</div>
+                <div class="tax-source-compact" style="color: ${textColor}; font-size: 8px; opacity: 0.9; margin-top: 1px;">${taxSourceInfo}</div>
             </div>`;
 
             className = 'country-tax-label compact';
             iconSize = [110, 35];
-            iconAnchor = [0, 17];
+            iconAnchor = [-10, 17];  // Offset left for compact view
         }
 
         label.setIcon(L.divIcon({
@@ -630,7 +674,7 @@ export class MapComponent {
                         <div class="tax-info">Enter salary to see taxes</div>
                     </div>`,
                     iconSize: [100, 30],
-                    iconAnchor: [0, 15]
+                    iconAnchor: [-10, 15]  // Offset left to position next to marker
                 }));
             }
         });
