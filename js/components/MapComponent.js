@@ -1539,6 +1539,24 @@ export class MapComponent {
         return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
     }
 
+    // Handle language change
+    handleLanguageChange() {
+        // Update map popups if there are current results
+        if (this.currentTaxResults && this.currentTaxResults.length > 0) {
+            // Get current display currency from the first result
+            const displayCurrency = this.currentTaxResults[0].displayCurrency;
+            this.updateMarkerPopups(this.currentTaxResults, displayCurrency);
+            this.updateCountryLabels(this.currentTaxResults, displayCurrency);
+        }
+
+        // Update grid view if it's currently active
+        if (document.querySelector('.labels-grid').style.display !== 'none') {
+            this.updateGridView();
+        }
+
+        console.log('🗺️ Map component language updated');
+    }
+
     // Destroy the map
     destroy() {
         // Exit fullscreen if active

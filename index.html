@@ -15,20 +15,23 @@
 </head>
 <body>
     <div class="container">
-        <h1>🌍 Global Tax Calculator Map</h1>
+        <div class="header-section">
+            <h1 data-i18n="appTitle">🌍 Global Tax Calculator Map</h1>
+            <div id="languageSelector" class="language-selector-container"></div>
+        </div>
 
         <div class="calculator-section">
-            <h2>💰 Global Tax Comparison Calculator</h2>
-            <p>Enter your monthly salary to see how much tax you would pay in different countries around the world.</p>
+            <h2 data-i18n="calculatorTitle">💰 Global Tax Comparison Calculator</h2>
+            <p data-i18n="calculatorSubtitle">Enter your monthly salary to see how much tax you would pay in different countries around the world.</p>
 
             <div class="input-group">
                 <div class="input-field">
-                    <label for="salary">Monthly Salary</label>
-                    <input type="number" id="salary" placeholder="Enter your monthly salary" value="700" min="0" step="50">
+                    <label for="salary" data-i18n="monthlySalary">Monthly Salary</label>
+                    <input type="number" id="salary" data-i18n-placeholder="salaryPlaceholder" placeholder="Enter your monthly salary" value="700" min="0" step="50">
                 </div>
 
                 <div class="input-field">
-                    <label for="inputCurrency">Input Currency</label>
+                    <label for="inputCurrency" data-i18n="inputCurrency">Input Currency</label>
                     <select id="inputCurrency">
                         <option value="USD">USD - US Dollar</option>
                         <option value="EUR">EUR - Euro</option>
@@ -101,7 +104,7 @@
                 </div>
 
                 <div class="input-field">
-                    <label for="displayCurrency">Display Results In</label>
+                    <label for="displayCurrency" data-i18n="displayCurrency">Display Results In</label>
                     <select id="displayCurrency">
                         <option value="USD">USD - US Dollar</option>
                         <option value="EUR">EUR - Euro</option>
@@ -182,10 +185,10 @@
         <div class="map-container">
             <div class="map-header">
                 <div class="map-title">
-                    <h2>🗺️ Interactive Tax Visualization Map</h2>
-                    <p>Map colors represent actual tax burden in <span class="currency-display">USD</span>. Click markers for detailed information.</p>
+                    <h2 data-i18n="mapTitle">🗺️ Interactive Tax Visualization Map</h2>
+                    <p data-i18n="mapSubtitle" data-i18n-params='{"currency":"USD"}'>Map colors represent actual tax burden in <span class="currency-display">USD</span>. Click markers for detailed information.</p>
                 </div>
-                <button id="fullscreenToggle" class="fullscreen-btn" title="Toggle fullscreen map">
+                <button id="fullscreenToggle" class="fullscreen-btn" data-i18n-title="toggleFullscreen" title="Toggle fullscreen map">
                     <span class="expand-icon">⤢</span>
                     <span class="contract-icon" style="display: none;">⤡</span>
                 </button>
@@ -195,11 +198,11 @@
             <div class="fullscreen-inputs" id="fullscreenInputs" style="display: none;">
                 <div class="compact-input-group">
                     <div class="compact-input-field">
-                        <label for="fullscreenSalary">Monthly Salary</label>
-                        <input type="number" id="fullscreenSalary" placeholder="Enter salary" min="0" step="50">
+                        <label for="fullscreenSalary" data-i18n="monthlySalary">Monthly Salary</label>
+                        <input type="number" id="fullscreenSalary" data-i18n-placeholder="salaryPlaceholder" placeholder="Enter salary" min="0" step="50">
                     </div>
                     <div class="compact-input-field">
-                        <label for="fullscreenInputCurrency">Input Currency</label>
+                        <label for="fullscreenInputCurrency" data-i18n="inputCurrency">Input Currency</label>
                         <select id="fullscreenInputCurrency">
                             <option value="USD">USD</option>
                             <option value="EUR">EUR</option>
@@ -271,7 +274,7 @@
                         </select>
                     </div>
                     <div class="compact-input-field">
-                        <label for="fullscreenDisplayCurrency">Display Currency</label>
+                        <label for="fullscreenDisplayCurrency" data-i18n="displayCurrency">Display Currency</label>
                         <select id="fullscreenDisplayCurrency">
                             <option value="USD">USD</option>
                             <option value="EUR">EUR</option>
@@ -365,35 +368,35 @@
             <div class="tax-legend">
                 <div class="legend-item">
                     <div class="legend-color" style="background-color: #28a745;"></div>
-                    <span>Tax Havens (0%)</span>
+                    <span data-i18n="taxHavens">Tax Havens (0%)</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background-color: #40c057;"></div>
-                    <span>Very Low (≤10%)</span>
+                    <span data-i18n="veryLow">Very Low (≤10%)</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background-color: #69db7c;"></div>
-                    <span>Low (≤20%)</span>
+                    <span data-i18n="low">Low (≤20%)</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background-color: #ffeb3b;"></div>
-                    <span>Moderate (≤30%)</span>
+                    <span data-i18n="moderate">Moderate (≤30%)</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background-color: #ff9800;"></div>
-                    <span>Medium (≤40%)</span>
+                    <span data-i18n="medium">Medium (≤40%)</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background-color: #f44336;"></div>
-                    <span>High (≤50%)</span>
+                    <span data-i18n="high">High (≤50%)</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background-color: #b71c1c;"></div>
-                    <span>Highest (>50%)</span>
+                    <span data-i18n="highest">Highest (>50%)</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background-color: #9e9e9e;"></div>
-                    <span>No Calculation</span>
+                    <span data-i18n="noCalculation">No Calculation</span>
                 </div>
             </div>
         </div>
@@ -401,28 +404,28 @@
         <!-- Results Table Section -->
         <div class="results-section" id="resultsTableContainer" style="display: none;">
             <div class="results-header">
-                <h2>📊 Tax Comparison Results</h2>
+                <h2 data-i18n="resultsTitle">📊 Tax Comparison Results</h2>
                 <div class="results-controls">
-                    <input type="text" id="countrySearch" class="search-box" placeholder="Search countries...">
-                    <button id="exportBtn" class="export-btn">📥 Export CSV</button>
+                    <input type="text" id="countrySearch" class="search-box" data-i18n-placeholder="searchCountries" placeholder="Search countries...">
+                    <button id="exportBtn" class="export-btn" data-i18n="exportCsv">📥 Export CSV</button>
                 </div>
             </div>
 
             <div class="summary-stats">
                 <div class="stat-item">
-                    <h4>Countries Analyzed</h4>
+                    <h4 data-i18n="totalCountries">Countries Analyzed</h4>
                     <div class="stat-value" id="totalCountries">0</div>
                 </div>
                 <div class="stat-item">
-                    <h4>Average Tax (<span class="currency-display">USD</span>)</h4>
+                    <h4 data-i18n="averageTax" data-i18n-params='{"currency":"USD"}'>Average Tax (<span class="currency-display">USD</span>)</h4>
                     <div class="stat-value" id="avgTax">$0</div>
                 </div>
                 <div class="stat-item">
-                    <h4>Highest Tax</h4>
+                    <h4 data-i18n="highestTax" data-i18n-params='{"currency":"USD"}'>Highest Tax</h4>
                     <div class="stat-value" id="maxTax">$0</div>
                 </div>
                 <div class="stat-item">
-                    <h4>Lowest Tax</h4>
+                    <h4 data-i18n="lowestTax" data-i18n-params='{"currency":"USD"}'>Lowest Tax</h4>
                     <div class="stat-value" id="minTax">$0</div>
                 </div>
             </div>
@@ -456,9 +459,9 @@
         </div>
 
         <div class="disclaimer">
-            <strong>📌 Disclaimer:</strong> This calculator provides estimates based on basic income tax brackets for 2024-2025.
+            <strong data-i18n="disclaimer">📌 Disclaimer:</strong> <span data-i18n="disclaimerText">This calculator provides estimates based on basic income tax brackets for 2024-2025.
             Actual taxes may vary due to deductions, credits, social security contributions, municipal taxes, and other factors.
-            Consult a tax professional for accurate calculations. Data covers 146+ countries with progressive, flat, and zero-tax systems.
+            Consult a tax professional for accurate calculations. Data covers 146+ countries with progressive, flat, and zero-tax systems.</span>
         </div>
     </div>
 
@@ -468,6 +471,8 @@
             crossorigin=""></script>
 
     <!-- Custom JavaScript modules -->
+    <script type="module" src="js/translations.js"></script>
+    <script type="module" src="js/i18nHelper.js"></script>
     <script type="module" src="js/currencyDropdown.js"></script>
     <script type="module" src="js/app.js"></script>
 </body>

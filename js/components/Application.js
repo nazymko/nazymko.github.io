@@ -3,17 +3,22 @@ import { MapComponent } from './MapComponent.js';
 import { CalculatorComponent } from './CalculatorComponent.js';
 import { ResultsTableComponent } from './ResultsTableComponent.js';
 import { SearchableCurrencyDropdown } from '../currencyDropdown.js';
+import { LanguageSelector } from './LanguageSelector.js';
+import { i18n } from '../translations.js';
+import { i18nHelper } from '../i18nHelper.js';
 
 export class Application {
     constructor() {
         this.components = {};
         this.currencyDropdowns = {};
+        this.languageSelector = null;
         this.isInitialized = false;
     }
 
     // Initialize the application
     async init() {
         try {
+            this.initializeInternationalization();
             this.createComponents();
             this.setupComponentInteractions();
             await this.performInitialSetup();
@@ -23,6 +28,20 @@ export class Application {
         } catch (error) {
             console.error('Failed to initialize application:', error);
         }
+    }
+
+    // Initialize internationalization system
+    initializeInternationalization() {
+        // Initialize language selector
+        this.languageSelector = new LanguageSelector('languageSelector');
+        this.languageSelector.initializeLanguage();
+
+        // Setup language change listener
+        document.addEventListener('languageChanged', () => {
+            this.handleLanguageChange();
+        });
+
+        console.log('🌐 Internationalization system initialized');
     }
 
     // Create all application components
@@ -135,6 +154,25 @@ export class Application {
         console.log(`🎯 Country selected: ${result.countryName}`);
     }
 
+    // Handle language change
+    handleLanguageChange() {
+        // Update all static translations in the DOM
+        i18nHelper.updateAllTranslations();
+
+        // Notify all components about language change
+        if (this.components.map) {
+            this.components.map.handleLanguageChange();
+        }
+        if (this.components.calculator) {
+            this.components.calculator.handleLanguageChange();
+        }
+        if (this.components.resultsTable) {
+            this.components.resultsTable.handleLanguageChange();
+        }
+
+        console.log(`🌐 Language changed to: ${i18n.getCurrentLanguage()}`);
+    }
+
     // Show error message to user
     showErrorMessage(message) {
         // You can customize this to use a modal, toast, or other UI element
@@ -215,6 +253,9 @@ export class Application {
         // Clear global functions
         if (window.sortTable) delete window.sortTable;
         if (window.exportResults) delete window.exportResults;
+
+        // Cleanup language selector
+        this.languageSelector = null;
 
         this.components = {};
         this.currencyDropdowns = {};

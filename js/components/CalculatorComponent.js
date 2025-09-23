@@ -223,6 +223,15 @@ export class CalculatorComponent {
         }
     }
 
+    // Handle language change
+    handleLanguageChange() {
+        // Re-trigger calculation if there are current results to update display with new language
+        if (this.lastCalculationResults) {
+            this.triggerCalculation();
+        }
+        console.log('💰 Calculator component language updated');
+    }
+
     // Destroy the component
     destroy() {
         clearTimeout(this.debounceTimer);

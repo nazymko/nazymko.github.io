@@ -402,6 +402,15 @@ export class ResultsTableComponent {
         return this.currentResults;
     }
 
+    // Handle language change
+    handleLanguageChange() {
+        // Re-render table with current results to show translated content
+        if (this.currentResults && this.currentResults.length > 0) {
+            this.updateResults(this.currentResults, this.currentDisplayCurrency);
+        }
+        console.log('📊 Results table component language updated');
+    }
+
     // Destroy the component
     destroy() {
         this.listeners.clear();
