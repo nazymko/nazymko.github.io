@@ -35,9 +35,9 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 5,
-      notes: "Federal GST 5% + provincial sales taxes (0%–10%)",
-      description: "Federal GST 5% + provincial sales taxes (0%–10%)"
+      standard: 15.0,
+      reduced: [5.0],
+      description: "Standard 15.0%"
     }
   },
   "united_kingdom": {
@@ -54,10 +54,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 20,
-      reduced: [5],
-      zeroRated: true,
-      description: "Standard 20%, reduced 5%, zero-rated items"
+      standard: 20.0,
+      description: "Standard 20.0%"
     }
   },
   "germany": {
@@ -75,9 +73,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 19,
-      reduced: [7],
-      description: "Standard 19%, reduced 7% for essentials"
+      standard: 19.0,
+      description: "Standard 19.0%"
     }
   },
   "france": {
@@ -95,9 +92,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 20,
-      reduced: [10, 5.5, 2.1],
-      description: "Standard 20%, reduced 10%/5.5%/2.1%"
+      standard: 20.0,
+      description: "Standard 20.0%"
     }
   },
   "italy": {
@@ -113,10 +109,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 22,
-      reduced: [10, 5],
-      superReduced: [4],
-      description: "Standard 22%, reduced 10%/5%, super-reduced 4%"
+      standard: 22.0,
+      description: "Standard 22.0%"
     }
   },
   "spain": {
@@ -135,10 +129,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 21,
-      reduced: [10],
-      superReduced: [4],
-      description: "Standard 21%, reduced 10%, super-reduced 4%"
+      standard: 21.0,
+      description: "Standard 21.0%"
     }
   },
   "sweden": {
@@ -153,9 +145,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 25,
-      reduced: [12, 6],
-      description: "Standard 25%, reduced 12%/6%"
+      standard: 25.0,
+      description: "Standard 25.0%"
     }
   },
   "norway": {
@@ -173,9 +164,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 25,
-      reduced: [15, 12],
-      description: "Standard 25%, reduced 15%/12%"
+      standard: 25.0,
+      description: "Standard 25.0%"
     }
   },
   "denmark": {
@@ -190,8 +180,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 25,
-      description: "Standard 25%, no reduced rates"
+      standard: 25.0,
+      description: "Standard 25.0%"
     }
   },
   "russia": {
@@ -238,6 +228,13 @@ export const taxData = {
       {min: 1200001, max: 1500000, rate: 20},
       {min: 1500001, max: null, rate: 30}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 28.0,
+      reduced: [18.0, 5.0],
+      description: "Standard 28.0%"
+    }
   },
   "japan": {
     name: "Japan",
@@ -254,6 +251,12 @@ export const taxData = {
       {min: 18000001, max: 40000000, rate: 40},
       {min: 40000001, max: null, rate: 45}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 10.0,
+      description: "Standard 10.0%"
+    }
   },
   "south_korea": {
     name: "South Korea",
@@ -271,6 +274,12 @@ export const taxData = {
       {min: 500000001, max: 1000000000, rate: 42},
       {min: 1000000001, max: null, rate: 45}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 10.0,
+      description: "Standard 10.0%"
+    }
   },
   "singapore": {
     name: "Singapore",
@@ -293,6 +302,13 @@ export const taxData = {
       {min: 500001, max: 1000000, rate: 23},
       {min: 1000001, max: null, rate: 24}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 9.0,
+      notes: "Goods and Services Tax (GST)",
+      description: "GST 9.0%"
+    }
   },
   "thailand": {
     name: "Thailand",
@@ -310,6 +326,12 @@ export const taxData = {
       {min: 2000001, max: 5000000, rate: 30},
       {min: 5000001, max: null, rate: 35}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 7.0,
+      description: "Standard 7.0%"
+    }
   },
   "indonesia": {
     name: "Indonesia",
@@ -324,6 +346,12 @@ export const taxData = {
       {min: 500000001, max: 5000000000, rate: 30},
       {min: 5000000001, max: null, rate: 35}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 12.0,
+      description: "Standard 12.0%"
+    }
   },
   "australia": {
     name: "Australia",
@@ -338,6 +366,13 @@ export const taxData = {
       {min: 135001, max: 190000, rate: 37},
       {min: 190001, max: null, rate: 45}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 10.0,
+      notes: "Goods and Services Tax (GST)",
+      description: "GST 10.0%"
+    }
   },
   "south_africa": {
     name: "South Africa",
@@ -355,6 +390,12 @@ export const taxData = {
       {min: 857901, max: 1817000, rate: 41},
       {min: 1817001, max: null, rate: 45}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 15.0,
+      description: "Standard 15.0%"
+    }
   },
   "nigeria": {
     name: "Nigeria",
@@ -370,6 +411,12 @@ export const taxData = {
       {min: 1600001, max: 3200000, rate: 21},
       {min: 3200001, max: null, rate: 24}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 7.5,
+      description: "Standard 7.5%"
+    }
   },
   "egypt": {
     name: "Egypt",
@@ -387,6 +434,12 @@ export const taxData = {
       {min: 600001, max: 700000, rate: 25},
       {min: 700001, max: null, rate: 27.5}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 14.0,
+      description: "Standard 14.0%"
+    }
   },
   "saudi_arabia": {
     name: "Saudi Arabia",
@@ -395,6 +448,13 @@ export const taxData = {
     countryCode: "SA",
     coordinates: [23.8859, 45.0792],
     brackets: [{min: 0, max: null, rate: 0}]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 15,
+      notes: "Standard 15% (increased from 5% in July 2020)",
+      description: "Standard 15%"
+    }
   },
   "united_arab_emirates": {
     name: "United Arab Emirates",
@@ -403,6 +463,12 @@ export const taxData = {
     countryCode: "AE",
     coordinates: [23.4241, 53.8478],
     brackets: [{min: 0, max: null, rate: 0}]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 5.0,
+      description: "Standard 5.0%"
+    }
   },
   "brazil": {
     name: "Brazil",
@@ -417,6 +483,13 @@ export const taxData = {
       {min: 3751.06, max: 4664.68, rate: 22.5},
       {min: 4664.69, max: null, rate: 27.5}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 30.0,
+      reduced: [20.0, 17.0, 12.0, 9.25, 7.0, 5.0, 5.0, 4.0, 3.65, 2.0],
+      description: "Standard 30.0%"
+    }
   },
   "argentina": {
     name: "Argentina",
@@ -436,6 +509,12 @@ export const taxData = {
       {min: 24120001, max: 32160000, rate: 31},
       {min: 32160001, max: null, rate: 35}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 21.0,
+      description: "Standard 21.0%"
+    }
   },
   "mexico": {
     name: "Mexico",
@@ -456,10 +535,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 16,
-      reduced: [0],
-      notes: "Standard 16%, reduced 0% in border regions",
-      description: "Standard 16%, reduced 0% in border regions"
+      standard: 16.0,
+      description: "Standard 16.0%"
     }
   },
   "netherlands": {
@@ -475,9 +552,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 21,
-      reduced: [9],
-      description: "Standard 21%, reduced 9%"
+      standard: 21.0,
+      description: "Standard 21.0%"
     }
   },
   "belgium": {
@@ -494,9 +570,9 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 21,
-      reduced: [12, 6],
-      description: "Standard 21%, reduced 12%/6%"
+      standard: 21.0,
+      reduced: [12.0, 6.0, 0.0],
+      description: "Standard 21.0%"
     }
   },
   "austria": {
@@ -516,10 +592,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 20,
-      reduced: [13, 10],
-      parking: 13,
-      description: "Standard 20%, reduced 13%/10%, parking 13%"
+      standard: 20.0,
+      description: "Standard 20.0%"
     }
   },
   "switzerland": {
@@ -544,8 +618,7 @@ export const taxData = {
     vat: {
       hasVAT: true,
       standard: 8.1,
-      reduced: [3.8, 2.6],
-      description: "Standard 8.1%, reduced 3.8%/2.6%"
+      description: "Standard 8.1%"
     }
   },
   "poland": {
@@ -560,9 +633,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 23,
-      reduced: [8, 5],
-      description: "Standard 23%, reduced 8%/5%"
+      standard: 23.0,
+      description: "Standard 23.0%"
     }
   },
   "finland": {
@@ -578,6 +650,12 @@ export const taxData = {
       {min: 49501, max: 85900, rate: 21.25},
       {min: 85901, max: null, rate: 31.25}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 25.5,
+      description: "Standard 25.5%"
+    }
   },
   "iceland": {
     name: "Iceland",
@@ -590,6 +668,12 @@ export const taxData = {
       {min: 451707, max: 1279000, rate: 37.95},
       {min: 1279001, max: null, rate: 46.25}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 24.0,
+      description: "Standard 24.0%"
+    }
   },
   "estonia": {
     name: "Estonia",
@@ -598,6 +682,12 @@ export const taxData = {
     countryCode: "EE",
     coordinates: [59.437, 24.7536],
     brackets: [{min: 0, max: null, rate: 20}]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 22.0,
+      description: "Standard 22.0%"
+    }
   },
   "latvia": {
     name: "Latvia",
@@ -610,6 +700,12 @@ export const taxData = {
       {min: 20005, max: 78764, rate: 23},
       {min: 78765, max: null, rate: 31}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 21.0,
+      description: "Standard 21.0%"
+    }
   },
   "lithuania": {
     name: "Lithuania",
@@ -621,6 +717,12 @@ export const taxData = {
       {min: 0, max: 104277, rate: 20},
       {min: 104278, max: null, rate: 32}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 21.0,
+      description: "Standard 21.0%"
+    }
   },
   "ukraine": {
     name: "Ukraine",
@@ -640,9 +742,8 @@ export const taxData = {
     ],
     vat: {
       hasVAT: true,
-      standard: 20,
-      reduced: [14, 7],
-      description: "Standard 20%, reduced 14%/7%"
+      standard: 20.0,
+      description: "Standard 20.0%"
     }
   },
   "hong_kong": {
@@ -672,6 +773,12 @@ export const taxData = {
       {min: 2520001, max: 4720000, rate: 30},
       {min: 4720001, max: null, rate: 40}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 5.0,
+      description: "Standard 5.0%"
+    }
   },
   "mongolia": {
     name: "Mongolia",
@@ -680,6 +787,12 @@ export const taxData = {
     countryCode: "MN",
     coordinates: [47.8864, 106.9057],
     brackets: [{min: 0, max: null, rate: 10}]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 10.0,
+      description: "Standard 10.0%"
+    }
   },
   "north_korea": {
     name: "North Korea",
@@ -717,6 +830,12 @@ export const taxData = {
       {min: 0, max: 36800, rate: 20},
       {min: 36801, max: null, rate: 40}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 23.0,
+      description: "Standard 23.0%"
+    }
   },
   "portugal": {
     name: "Portugal",
@@ -733,6 +852,12 @@ export const taxData = {
       {min: 36857, max: 80640, rate: 45},
       {min: 80641, max: null, rate: 48}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 23.0,
+      description: "Standard 23.0%"
+    }
   },
   "greece": {
     name: "Greece",
@@ -747,6 +872,12 @@ export const taxData = {
       {min: 30001, max: 40000, rate: 36},
       {min: 40001, max: null, rate: 44}
     ]
+  ,
+    vat: {
+      hasVAT: true,
+      standard: 24.0,
+      description: "Standard 24.0%"
+    }
   },
 
 };
