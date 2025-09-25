@@ -1,0 +1,41 @@
+## Taxation in Albania
+
+Albania's tax system has undergone several changes over the years, evolving from a flat tax system to a progressive personal income tax and fluctuating corporate tax rates. The system aims to balance revenue generation with encouraging economic activity. While the extracted information is primarily based on data from 2014, it provides a foundation for understanding the general structure.  *Please note that tax laws can change frequently and this summary is for informational purposes only and not legal or financial advice. Consult official Albanian government sources and tax professionals for the most current and accurate information.*
+
+**Personal Income Tax:**
+
+*   **Tax System Type:** Progressive
+*   **Current Tax Brackets (as of 2014, subject to change):**
+    *   0% on income between 0 and 30,000 Lek
+    *   13% on income between 30,000 and 150,000 Lek
+    *   23% on income exceeding 150,000 Lek
+*   **Tax-Free Allowances or Standard Deductions:** No specific allowances or deductions are mentioned in the provided data.  Further research is needed to confirm current practices.
+
+**Value Added Tax (VAT):**
+
+*   **Standard Rate:** 20%
+*   **Reduced Rates:** 10% on medicinal products.
+*   **Exemptions or Zero-Rated Items:** Further research is needed to determine the full scope of VAT exemptions and zero-rated items.  The provided text links to a PDF document for more detail which requires further investigation.
+
+**Social Security and Other Taxes:**
+
+*   **Social Security Contributions (as of 2014):**
+    *   **Employees:** 9.5% on monthly income (within a range of 22,000 to 95,130 Lek) + 1.7% Health Insurance
+    *   **Employers:** 15% on monthly income (within a range of 22,000 to 95,130 Lek) + 1.7% Health Insurance
+    *   **Self-Employed:** 23% for social security + 7% for health insurance
+*   **Payroll Taxes:**  Likely encompassed within the social security contributions outlined above.
+*   **Special Taxes:** No specific special taxes (e.g., military, solidarity) are mentioned in the provided data.  Further research is needed.
+
+**Additional Information:**
+
+*   **Tax Year Period:** Not specified in the provided data.
+*   **Important Notes About Calculation:**  The provided income ranges for social security contributions (22,000 to 95,130 Lek) appear to limit the taxable base for those contributions.  The specific rules around determining taxable income for personal income tax and applicable deductions are not fully detailed.
+*   **Recent Updates or Changes:** Albania implemented a flat tax rate of 10% in 2007, transitioning to the current progressive system over time.  There was a corporate tax increase in December 2013. Further research is needed to identify tax law changes enacted since 2014.
+
+**Currency:** Lek (Lek)
+
+
+
+**Source:** Wikipedia and information extracted from provided summaries (information primarily based on 2014 data).  [Accessed October 26, 2023 – Requires updating to reflect a more recent date].
+
+**Disclaimer:** *This summary is based on limited information and should not be considered a substitute for professional tax advice. Tax laws are subject to change, and it is crucial to consult official sources and qualified tax advisors for accurate and up-to-date information.*

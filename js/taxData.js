@@ -16,8 +16,14 @@ export const taxData = {
       {min: 622051, max: null, rate: 37}
     ],
     vat: {
-      hasVAT: false,
-      notes: "No federal VAT; state sales taxes range 0%–10%"
+      hasVAT: true,
+      standard: 5.0,
+      notes: "No federal VAT; state sales taxes range 0%–10%. Assume it is a 5% average.",
+    },
+    socialSecurity: {
+      employeeRate: 7.65,
+      employerRate: 7.65,
+      notes: "Social Security + Medicare (FICA taxes)"
     }
   },
   "canada": {
@@ -56,6 +62,11 @@ export const taxData = {
       hasVAT: true,
       standard: 20.0,
       description: "Standard 20.0%"
+    },
+    socialSecurity: {
+      employeeRate: 13.8,
+      employerRate: 15.3,
+      notes: "National Insurance - pensions, health, unemployment"
     }
   },
   "germany": {
@@ -75,6 +86,12 @@ export const taxData = {
       hasVAT: true,
       standard: 19.0,
       description: "Standard 19.0%"
+    },
+    socialSecurity: {
+      employeeRate: 11.2,
+      employeeRateTaxDeductible: true, // In Germany, employee social security contributions are tax-deductible
+      employerRate: 20.4,
+      notes: "Pensions, healthcare, unemployment"
     }
   },
   "france": {
@@ -94,6 +111,12 @@ export const taxData = {
       hasVAT: true,
       standard: 20.0,
       description: "Standard 20.0%"
+    },
+    socialSecurity: {
+      employeeRate: 7.25,
+      employeeRateTaxDeductible: true, // In France, employee social security contributions are tax-deductible
+      employerRate: 25.3,
+      notes: "Social security contributions"
     }
   },
   "italy": {
@@ -111,6 +134,11 @@ export const taxData = {
       hasVAT: true,
       standard: 22.0,
       description: "Standard 22.0%"
+    },
+    socialSecurity: {
+      employeeRate: 9.19,
+      employerRate: 30.0,
+      notes: "INPS contributions for pension, health, and unemployment"
     }
   },
   "spain": {
@@ -131,6 +159,11 @@ export const taxData = {
       hasVAT: true,
       standard: 21.0,
       description: "Standard 21.0%"
+    },
+    socialSecurity: {
+      employeeRate: 6.35,
+      employerRate: 29.9,
+      notes: "Social Security contributions for pension, health, and unemployment"
     }
   },
   "sweden": {
@@ -147,6 +180,11 @@ export const taxData = {
       hasVAT: true,
       standard: 25.0,
       description: "Standard 25.0%"
+    },
+    socialSecurity: {
+      employeeRate: 31.4,
+      employerRate: 31.4,
+      notes: "Pensions, healthcare, parental insurance"
     }
   },
   "norway": {
@@ -166,6 +204,11 @@ export const taxData = {
       hasVAT: true,
       standard: 25.0,
       description: "Standard 25.0%"
+    },
+    socialSecurity: {
+      employeeRate: 7.9,
+      employerRate: 14.1,
+      notes: "Pensions, healthcare, unemployment"
     }
   },
   "denmark": {
@@ -176,13 +219,24 @@ export const taxData = {
     coordinates: [56.2639, 9.5018],
     brackets: [
       {min: 0, max: 50500, rate: 22, description: "0% national + 22-27% municipal (using minimum municipal rate)"},
-      {min: 50501, max: 588900, rate: 34, description: "12% national + 22-27% municipal (using minimum municipal rate)"},
+      {
+        min: 50501,
+        max: 588900,
+        rate: 34,
+        description: "12% national + 22-27% municipal (using minimum municipal rate)"
+      },
       {min: 588901, max: null, rate: 37, description: "15% national + 22-27% municipal (using minimum municipal rate)"}
     ],
     vat: {
       hasVAT: true,
       standard: 25.0,
       description: "Standard 25.0%"
+    },
+    socialSecurity: {
+      employeeRate: 8.0,
+      employeeRateTaxDeductible: true, // In Denmark, employee social security contributions are tax-deductible
+      employerRate: 8.0,
+      notes: "Pensions, healthcare, unemployment"
     }
   },
   "russia": {
@@ -197,7 +251,12 @@ export const taxData = {
       {min: 5000001, max: 20000000, rate: 18},
       {min: 20000001, max: 50000000, rate: 20},
       {min: 50000001, max: null, rate: 22}
-    ]
+    ],
+    socialSecurity: {
+      employeeRate: 22.0,
+      employerRate: 33.0,
+      notes: "Pensions, healthcare, social insurance"
+    }
   },
   "china": {
     name: "China",
@@ -229,7 +288,7 @@ export const taxData = {
       {min: 1200001, max: 1500000, rate: 20},
       {min: 1500001, max: null, rate: 30}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 28.0,
@@ -252,7 +311,7 @@ export const taxData = {
       {min: 18000001, max: 40000000, rate: 40},
       {min: 40000001, max: null, rate: 45}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 10.0,
@@ -275,7 +334,7 @@ export const taxData = {
       {min: 500000001, max: 1000000000, rate: 42},
       {min: 1000000001, max: null, rate: 45}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 10.0,
@@ -303,7 +362,7 @@ export const taxData = {
       {min: 500001, max: 1000000, rate: 23},
       {min: 1000001, max: null, rate: 24}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 9.0,
@@ -327,7 +386,7 @@ export const taxData = {
       {min: 2000001, max: 5000000, rate: 30},
       {min: 5000001, max: null, rate: 35}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 7.0,
@@ -347,7 +406,7 @@ export const taxData = {
       {min: 500000001, max: 5000000000, rate: 30},
       {min: 5000000001, max: null, rate: 35}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 12.0,
@@ -367,7 +426,7 @@ export const taxData = {
       {min: 135001, max: 190000, rate: 37},
       {min: 190001, max: null, rate: 45}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 10.0,
@@ -391,7 +450,7 @@ export const taxData = {
       {min: 857901, max: 1817000, rate: 41},
       {min: 1817001, max: null, rate: 45}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 15.0,
@@ -412,7 +471,7 @@ export const taxData = {
       {min: 1600001, max: 3200000, rate: 21},
       {min: 3200001, max: null, rate: 24}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 7.5,
@@ -435,7 +494,7 @@ export const taxData = {
       {min: 600001, max: 700000, rate: 25},
       {min: 700001, max: null, rate: 27.5}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 14.0,
@@ -449,7 +508,7 @@ export const taxData = {
     countryCode: "SA",
     coordinates: [23.8859, 45.0792],
     brackets: [{min: 0, max: null, rate: 0}]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 15,
@@ -464,7 +523,7 @@ export const taxData = {
     countryCode: "AE",
     coordinates: [23.4241, 53.8478],
     brackets: [{min: 0, max: null, rate: 0}]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 5.0,
@@ -484,7 +543,7 @@ export const taxData = {
       {min: 3751.06, max: 4664.68, rate: 22.5},
       {min: 4664.69, max: null, rate: 27.5}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 30.0,
@@ -510,7 +569,7 @@ export const taxData = {
       {min: 24120001, max: 32160000, rate: 31},
       {min: 32160001, max: null, rate: 35}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 21.0,
@@ -555,25 +614,50 @@ export const taxData = {
       hasVAT: true,
       standard: 21.0,
       description: "Standard 21.0%"
+    },
+    socialSecurity: {
+      employeeRate: 19.1,
+      employerRate: 25.7,
+      notes: "Pensions, healthcare, unemployment"
     }
   },
   "belgium": {
     name: "Belgium",
     currency: "EUR",
-    system: "progressive",
     countryCode: "BE",
     coordinates: [50.8503, 4.3517],
+    system: "progressive",
     brackets: [
-      {min: 0, max: 13770, rate: 25},
-      {min: 13771, max: 24120, rate: 40},
-      {min: 24121, max: 42070, rate: 45},
-      {min: 42071, max: null, rate: 50}
+      {min: 0, max: 15820, rate: 25},
+      {min: 15821, max: 27920, rate: 40},
+      {min: 27921, max: 48320, rate: 45},
+      {min: 48321, max: null, rate: 50}
     ],
+    corporateIncomeTax: {
+      rates: {
+        standard: 25,
+        sme_rate: 20,
+        sme_threshold: 100000
+      },
+      incentives: [
+        {type: "investment_deduction", note: "Qualifying fixed assets & R&D"},
+        {type: "r_and_d_tax_credit", rate: 30},
+        {type: "patent_income_deduction", rate: 3.75},
+        {type: "innovation_income_deduction", rate: 85},
+        {type: "wht_exemption_rnd", rate: 80, note: "Payroll taxes for R&D staff"},
+        {type: "basket_limitation", rate: 15, note: "Profits > €1M (2024), 70% from 2025"}
+      ]
+    },
     vat: {
       hasVAT: true,
       standard: 21.0,
       reduced: [12.0, 6.0, 0.0],
-      description: "Standard 21.0%"
+      description: "Standard 21%, reduced for essentials"
+    },
+    socialSecurity: {
+      employeeRate: 13.07,
+      employerRate: 27.0,
+      notes: "Pensions, healthcare, unemployment"
     }
   },
   "austria": {
@@ -595,6 +679,11 @@ export const taxData = {
       hasVAT: true,
       standard: 20.0,
       description: "Standard 20.0%"
+    },
+    socialSecurity: {
+      employeeRate: 17.07,
+      employerRate: 20.48,
+      notes: "Pensions, healthcare, unemployment, accident"
     }
   },
   "switzerland": {
@@ -620,6 +709,11 @@ export const taxData = {
       hasVAT: true,
       standard: 8.1,
       description: "Standard 8.1%"
+    },
+    socialSecurity: {
+      employeeRate: 5.15,
+      employerRate: 5.15,
+      notes: "Pension, unemployment, and disability insurance"
     }
   },
   "poland": {
@@ -629,14 +723,23 @@ export const taxData = {
     countryCode: "PL",
     coordinates: [52.2297, 21.0122],
     brackets: [
-      {min: 0, max: 120000, rate: 12},
-      {min: 120001, max: null, rate: 32}
+      {min: 0, max: 30000, rate: 0, description: "Tax-free amount (30,000 PLN annual)"},
+      {min: 30001, max: 120000, rate: 12, description: "12% minus tax reducing amount (3,600 PLN annually)"},
+      {min: 120001, max: 1000000, rate: 32, description: "10,800 PLN + 32% of surplus over 120,000 PLN"},
+      {min: 1000001, max: null, rate: 36, description: "32% + 4% solidarity levy on income over 1,000,000 PLN"}
     ],
     vat: {
       hasVAT: true,
       standard: 23.0,
+      reduced: [8.0, 5.0],
       description: "Standard 23.0%"
-    }
+    },
+    socialSecurity: {
+      employeeRate: 9.0,
+      employerRate: 20.3,
+      notes: "Pension, disability, sickness, and accident insurance"
+    },
+    notes: "Tax calculation includes tax-reducing amount of 3,600 PLN (300 PLN monthly). Solidarity levy of 4% applies to income exceeding 1,000,000 PLN."
   },
   "finland": {
     name: "Finland",
@@ -650,12 +753,16 @@ export const taxData = {
       {min: 29701, max: 49500, rate: 17.25},
       {min: 49501, max: 85900, rate: 21.25},
       {min: 85901, max: null, rate: 31.25}
-    ]
-  ,
+    ],
     vat: {
       hasVAT: true,
       standard: 25.5,
       description: "Standard 25.5%"
+    },
+    socialSecurity: {
+      employeeRate: 7.15,
+      employerRate: 17.36,
+      notes: "Pension, unemployment, and earnings-related insurance"
     }
   },
   "iceland": {
@@ -668,8 +775,13 @@ export const taxData = {
       {min: 0, max: 451706, rate: 31.45},
       {min: 451707, max: 1279000, rate: 37.95},
       {min: 1279001, max: null, rate: 46.25}
-    ]
-  ,
+    ],
+    socialSecurity: {
+      employeeRate: 0,
+      employerRate: 6.45,
+      notes: "Pension, unemployment, and health insurance"
+    }
+    ,
     vat: {
       hasVAT: true,
       standard: 24.0,
@@ -682,12 +794,16 @@ export const taxData = {
     system: "flat",
     countryCode: "EE",
     coordinates: [59.437, 24.7536],
-    brackets: [{min: 0, max: null, rate: 20}]
-  ,
+    brackets: [{min: 0, max: null, rate: 20}],
     vat: {
       hasVAT: true,
       standard: 22.0,
       description: "Standard 22.0%"
+    },
+    socialSecurity: {
+      employeeRate: 1.6,
+      employerRate: 33.8,
+      notes: "Pension, unemployment, and health insurance"
     }
   },
   "latvia": {
@@ -700,12 +816,16 @@ export const taxData = {
       {min: 0, max: 20004, rate: 20},
       {min: 20005, max: 78764, rate: 23},
       {min: 78765, max: null, rate: 31}
-    ]
-  ,
+    ],
     vat: {
       hasVAT: true,
       standard: 21.0,
       description: "Standard 21.0%"
+    },
+    socialSecurity: {
+      employeeRate: 11.0,
+      employerRate: 23.5,
+      notes: "Pension, unemployment, and social insurance"
     }
   },
   "lithuania": {
@@ -717,12 +837,16 @@ export const taxData = {
     brackets: [
       {min: 0, max: 104277, rate: 20},
       {min: 104278, max: null, rate: 32}
-    ]
-  ,
+    ],
     vat: {
       hasVAT: true,
       standard: 21.0,
       description: "Standard 21.0%"
+    },
+    socialSecurity: {
+      employeeRate: 10.0,
+      employerRate: 29.0,
+      notes: "Pension, unemployment, and health insurance"
     }
   },
   "ukraine": {
@@ -731,20 +855,27 @@ export const taxData = {
     system: "flat",
     countryCode: "UA",
     coordinates: [50.4501, 30.5234],
-    brackets: [{min: 0, max: null, rate: 18}],
+    brackets: [
+      {min: 0, max: null, rate: 18.0}
+    ],
     special_taxes: [
-      {type: "military_levy", target: "gross", rate: 5, description: "Additional 5% military levy on all income"},
       {
-        type: "united_social_tax",
+        type: "military_tax",
         target: "gross",
-        rate: 22,
-        description: "22% united social tax on gross income for employees"
+        rate: 5,
+        description: "5% military contribution on income subject to PIT"
       }
     ],
     vat: {
       hasVAT: true,
       standard: 20.0,
-      description: "Standard 20.0%"
+      target: "net",
+      description: "Standard 20% (reduced 14% for agriculture, 7% for medicines, 0% exports)"
+    },
+    socialSecurity: {
+      employeeRate: 0.0,
+      employerRate: 22.0,
+      notes: "Unified Social Contribution (USC) paid by employer only"
     }
   },
   "hong_kong": {
@@ -774,7 +905,7 @@ export const taxData = {
       {min: 2520001, max: 4720000, rate: 30},
       {min: 4720001, max: null, rate: 40}
     ]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 5.0,
@@ -788,7 +919,7 @@ export const taxData = {
     countryCode: "MN",
     coordinates: [47.8864, 106.9057],
     brackets: [{min: 0, max: null, rate: 10}]
-  ,
+    ,
     vat: {
       hasVAT: true,
       standard: 10.0,
@@ -822,12 +953,16 @@ export const taxData = {
     brackets: [
       {min: 0, max: 36800, rate: 20},
       {min: 36801, max: null, rate: 40}
-    ]
-  ,
+    ],
     vat: {
       hasVAT: true,
       standard: 23.0,
       description: "Standard 23.0%"
+    },
+    socialSecurity: {
+      employeeRate: 4.0,
+      employerRate: 8.7,
+      notes: "PRSI - pension, unemployment, and health insurance"
     }
   },
   "portugal": {
@@ -844,12 +979,16 @@ export const taxData = {
       {min: 25076, max: 36856, rate: 37},
       {min: 36857, max: 80640, rate: 45},
       {min: 80641, max: null, rate: 48}
-    ]
-  ,
+    ],
     vat: {
       hasVAT: true,
       standard: 23.0,
       description: "Standard 23.0%"
+    },
+    socialSecurity: {
+      employeeRate: 11.0,
+      employerRate: 23.75,
+      notes: "Social security contributions for pension and unemployment"
     }
   },
   "greece": {
@@ -864,12 +1003,16 @@ export const taxData = {
       {min: 20001, max: 30000, rate: 28},
       {min: 30001, max: 40000, rate: 36},
       {min: 40001, max: null, rate: 44}
-    ]
-  ,
+    ],
     vat: {
       hasVAT: true,
       standard: 24.0,
       description: "Standard 24.0%"
+    },
+    socialSecurity: {
+      employeeRate: 14.5,
+      employerRate: 18.7,
+      notes: "Social security contributions for pension and health insurance"
     }
   },
 

@@ -4,19 +4,416 @@
     box-sizing: border-box;
 }
 
-/* Header Section with Language Selector */
-.header-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 15px;
+/* Compact Controls for Full Screen */
+.compact-controls {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 6px;
+    padding: 8px 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    max-width: 350px;
+    width: auto;
 }
 
-.header-section h1 {
+/* Fullscreen Toggle Button */
+.fullscreen-toggle-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin-left: 12px;
+}
+
+.fullscreen-toggle-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+}
+
+.fullscreen-toggle-btn:active {
+    transform: translateY(0);
+}
+
+/* Normal Mode Styles */
+body:not(.fullscreen-mode) {
+    padding: 20px;
+    overflow: auto;
+}
+
+body:not(.fullscreen-mode) .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    height: auto;
+}
+
+body:not(.fullscreen-mode) .compact-controls {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    background: white;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+body:not(.fullscreen-mode) .world-map {
+    height: 500px;
+    border-radius: 10px;
+}
+
+body:not(.fullscreen-mode) .tax-legend {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    margin-top: 20px;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    backdrop-filter: none;
+    max-width: none;
+}
+
+/* Fullscreen Mode Styles */
+body.fullscreen-mode {
+    padding: 0;
+    overflow: hidden;
+}
+
+body.fullscreen-mode .results-section,
+body.fullscreen-mode .disclaimer {
+    display: none !important;
+}
+
+/* Map Header Layout */
+.map-title-section {
     flex: 1;
-    min-width: 300px;
+}
+
+.map-title {
+    margin-bottom: 16px;
+}
+
+.map-title h2 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    color: #2c3e50;
+}
+
+.map-title p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* Map Calculator Controls */
+.map-calculator-controls {
+    margin-top: 16px;
+}
+
+.map-calculator-controls .input-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.map-calculator-controls .salary-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 280px;
+}
+
+/* Fullscreen Controls - Compact */
+.fullscreen-controls {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.fullscreen-controls .input-row {
+    gap: 8px;
+    align-items: center;
+}
+
+.fullscreen-controls .salary-group {
+    gap: 6px;
+    min-width: 200px;
+}
+
+.fullscreen-controls .input-with-currency {
+    padding: 2px;
+    border-radius: 6px;
+}
+
+.fullscreen-controls .salary-field {
+    padding: 6px 8px;
+    font-size: 14px;
+    min-width: 80px;
+}
+
+.fullscreen-controls .inline-currency-select {
+    padding: 6px 8px;
+    font-size: 12px;
+    min-width: 60px;
+    padding-right: 20px;
+}
+
+.fullscreen-controls .arrow-icon {
+    font-size: 14px;
+    margin: 0 2px;
+}
+
+.fullscreen-controls .quick-settings {
+    gap: 4px;
+}
+
+.fullscreen-controls .toggle-btn {
+    padding: 4px 6px;
+    font-size: 11px;
+    border-radius: 4px;
+}
+
+.fullscreen-controls .toggle-icon {
+    font-size: 12px;
+}
+
+.fullscreen-controls .toggle-text {
+    font-size: 10px;
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.salary-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 280px;
+}
+
+.input-with-currency {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 2px;
+    transition: all 0.3s ease;
+    flex: 1;
+    max-width: 140px;
+}
+
+.input-with-currency:focus-within {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.salary-field {
+    border: none;
+    background: transparent;
+    padding: 6px 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c3e50;
+    flex: 1;
+    min-width: 70px;
+    width: 80px;
+}
+
+.salary-field:focus {
+    outline: none;
+}
+
+.inline-currency-select {
+    border: none;
+    background: #e9ecef;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #495057;
+    cursor: pointer;
+    appearance: none;
+    min-width: 50px;
+    width: 60px;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23495057' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 8px center;
+    background-repeat: no-repeat;
+    background-size: 12px;
+    padding-right: 28px;
+}
+
+.inline-currency-select:focus {
+    outline: none;
+    background-color: #dee2e6;
+}
+
+.arrow-icon {
+    font-size: 18px;
+    color: #6c757d;
+    margin: 0 4px;
+}
+
+.display-currency {
+    display: flex;
+}
+
+.quick-settings {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.setting-toggle {
+    position: relative;
+}
+
+.setting-toggle input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 11px;
+    font-weight: 500;
+    color: #6c757d;
+    user-select: none;
+}
+
+.toggle-btn:hover {
+    background: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.setting-toggle input:checked + .toggle-btn {
+    background: #667eea;
+    border-color: #667eea;
+    color: white;
+    transform: scale(1.02);
+}
+
+.toggle-icon {
+    font-size: 12px;
+}
+
+.toggle-text {
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* Tax Data Disclaimer */
+.tax-disclaimer {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 243, 205, 0.95);
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+    padding: 8px 12px;
+    max-width: 350px;
+    z-index: 998;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+}
+
+.disclaimer-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.disclaimer-text {
+    font-size: 10px;
+    color: #856404;
+    line-height: 1.3;
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .tax-legend {
+        position: fixed;
+        top: 80px;
+        left: 20px;
+        max-width: 480px;
+    }
+
+    .tax-disclaimer {
+        bottom: 80px;
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .header-main {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .app-info {
+        justify-content: space-between;
+    }
+
+    .map-calculator-controls .input-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .map-calculator-controls .salary-group {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .simple-header {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+
+    .app-name {
+        font-size: 20px;
+    }
+
+    .map-calculator-controls .arrow-icon {
+        display: none;
+    }
+
+    .map-calculator-controls .quick-settings {
+        justify-content: center;
+    }
 }
 
 .language-selector-container {
@@ -79,24 +476,38 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     min-height: 100vh;
-    color: #333;
+    height: 100vh;
+    color: #2c3e50;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative;
 }
 
-h1 {
-    text-align: center;
-    color: white;
-    margin-bottom: 30px;
-    font-size: 2.5rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+/* Hide sections only in fullscreen mode */
+body.fullscreen-mode .calculator-section {
+    display: none !important;
+}
+
+/* Show sections in normal mode */
+body:not(.fullscreen-mode) .results-section,
+body:not(.fullscreen-mode) .disclaimer {
+    display: block !important;
+}
+
+.input-group {
+    display: none;
 }
 
 .calculator-section {
@@ -136,6 +547,78 @@ input, select {
 input:focus, select:focus {
     outline: none;
     border-color: #667eea;
+}
+
+/* Checkbox styles */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    padding: 8px 0;
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border-radius: 4px;
+    border: 2px solid #ddd;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.checkbox-label:hover .checkmark {
+    background-color: #f0f0f0;
+    border-color: #667eea;
+}
+
+.checkbox-label input:checked ~ .checkmark {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-label input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-label .checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 4px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.info-tooltip {
+    margin-left: 4px;
+    cursor: help;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.info-tooltip:hover {
+    opacity: 1;
 }
 
 .calculate-btn {
@@ -180,20 +663,21 @@ input:focus, select:focus {
 }
 
 .map-container {
+    width: 100%;
+    height: 100vh;
     background: white;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
     overflow: hidden;
     position: relative;
 }
 
 /* Map header with fullscreen toggle */
 .map-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 15px;
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .map-title {
@@ -257,13 +741,13 @@ input:focus, select:focus {
     box-shadow: none;
 }
 
-/* Fullscreen input section */
+/* Fullscreen input section - Compact */
 .fullscreen-inputs {
-    margin-bottom: 15px;
-    padding: 15px 20px;
+    margin-bottom: 8px;
+    padding: 8px 12px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .compact-input-group {
@@ -328,6 +812,11 @@ input:focus, select:focus {
     display: block !important;
 }
 
+/* Hide normal map controls when in fullscreen mode, but not fullscreen controls */
+.map-container.fullscreen .map-title-section .map-calculator-controls:not(.fullscreen-controls) {
+    display: none !important;
+}
+
 .map-container.fullscreen .world-map {
     height: calc(100vh - 200px);
 }
@@ -364,30 +853,41 @@ body.map-fullscreen {
 
 .world-map {
     width: 100%;
-    height: 500px;
-    border-radius: 10px;
+    height: 100vh;
+    border-radius: 0;
     position: relative;
 }
 
 .tax-legend {
+    position: fixed;
+    top: 20px;
+    left: 540px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 8px 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    z-index: 999;
 }
 
 .legend-item {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 3px;
+    font-size: 11px;
 }
 
 .legend-color {
-    width: 20px;
-    height: 15px;
-    border-radius: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
 }
 
 .disclaimer {
@@ -442,6 +942,77 @@ body.map-fullscreen {
     background: white;
     border: none;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Ensure popup close button is visible and styled */
+.enhanced-tax-popup .leaflet-popup-close-button {
+    color: #666 !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    padding: 4px 8px !important;
+    margin: 0 !important;
+    border: none !important;
+    background: rgba(255,255,255,0.9) !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    transition: all 0.2s ease !important;
+    z-index: 1000 !important;
+    right: 8px !important;
+    top: 8px !important;
+}
+
+.enhanced-tax-popup .leaflet-popup-close-button:hover {
+    background: rgba(255,255,255,1) !important;
+    color: #333 !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+}
+
+/* Compact Tax Popup Styles */
+.compact-tax-popup .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border: none;
+    background: white;
+    min-width: 240px;
+    max-width: 280px;
+}
+
+.compact-tax-popup .leaflet-popup-content {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.3;
+    font-size: 13px;
+}
+
+.compact-tax-popup .leaflet-popup-tip {
+    background: white;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.compact-tax-popup .leaflet-popup-close-button {
+    color: #666 !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    padding: 2px 6px !important;
+    margin: 0 !important;
+    border: none !important;
+    background: rgba(255,255,255,0.9) !important;
+    border-radius: 3px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    transition: all 0.2s ease !important;
+    z-index: 1000 !important;
+    right: 6px !important;
+    top: 6px !important;
+}
+
+.compact-tax-popup .leaflet-popup-close-button:hover {
+    background: rgba(255,255,255,1) !important;
+    color: #333 !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
 }
 
 /* Unified popup container */
@@ -911,6 +1482,87 @@ body.map-fullscreen {
     background: none !important;
     border: none !important;
     cursor: pointer;
+    position: relative;
+}
+
+/* Add a subtle connecting line indicator */
+.country-tax-label::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -15px;
+    width: 12px;
+    height: 1px;
+    background: rgba(0,0,0,0.3);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Country Name Pop Labels */
+.country-name-pop-label {
+    background: none !important;
+    border: none !important;
+    cursor: pointer;
+    position: relative;
+    z-index: 500; /* Lower than tax labels but above markers */
+}
+
+.country-name-pop-content {
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    backdrop-filter: blur(4px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+    white-space: nowrap;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.country-name-pop-content:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    opacity: 1;
+    background: rgba(255, 255, 255, 1);
+    z-index: 600;
+}
+
+/* Pop animation effect */
+.country-name-pop-content::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #333;
+    z-index: 1;
+}
+
+.country-name-pop-content::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid rgba(255, 255, 255, 0.95);
+    z-index: 2;
 }
 
 /* Base label styles */
@@ -1497,6 +2149,61 @@ body.map-fullscreen {
     }
 }
 
+/* Zoom level specific label sizing - Added from index2.html logic */
+.zoom-small .country-tax-label .tax-label-content.compact {
+    font-size: 9px;
+    padding: 4px 8px;
+    min-width: 90px;
+}
+
+.zoom-small .country-name-pop-content {
+    font-size: 9px;
+    padding: 2px 4px;
+    max-width: 80px;
+}
+
+.zoom-medium .country-tax-label .tax-label-content.compact {
+    font-size: 11px;
+    padding: 8px 12px;
+    min-width: 110px;
+}
+
+.zoom-medium .country-name-pop-content {
+    font-size: 11px;
+    padding: 4px 8px;
+    max-width: 100px;
+}
+
+.zoom-large .country-tax-label .tax-label-content.compact {
+    font-size: 13px;
+    padding: 10px 16px;
+    min-width: 130px;
+}
+
+.zoom-large .country-name-pop-content {
+    font-size: 13px;
+    padding: 6px 12px;
+    max-width: 140px;
+}
+
+.zoom-xlarge .country-tax-label .tax-label-content.compact {
+    font-size: 15px;
+    padding: 12px 20px;
+    min-width: 150px;
+}
+
+.zoom-xlarge .country-name-pop-content {
+    font-size: 15px;
+    padding: 8px 16px;
+    max-width: 180px;
+}
+
+/* Hide labels at very low zoom for clarity */
+.zoom-very-small .country-tax-label,
+.zoom-very-small .country-name-pop-label {
+    display: none !important;
+}
+
 /* Responsive label adjustments */
 @media (max-width: 768px) {
     .tax-label-content.compact {
@@ -1546,5 +2253,12 @@ body.map-fullscreen {
 
     .tax-label-content.expanded .breakdown-row {
         font-size: 9px;
+    }
+
+    /* Responsive country name pop labels */
+    .country-name-pop-content {
+        font-size: 10px;
+        padding: 3px 6px;
+        max-width: 100px;
     }
 }

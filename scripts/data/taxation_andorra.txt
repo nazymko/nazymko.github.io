@@ -1,0 +1,60 @@
+## Taxation in Andorra
+
+Andorra's tax system has undergone significant reforms in recent years, transitioning from a system once associated with tax haven status towards greater alignment with European Union and OECD standards.  The system is a blend of direct and indirect taxes, with a growing emphasis on transparency and international cooperation. The Andorran tax year corresponds to the calendar year (January 1st - December 31st).
+
+**Personal Income Tax (IRPF)**
+
+*   **Tax System Type:** Progressive
+*   **Current Tax Brackets (2025):**
+    *   €0 - €24,000: 0%
+    *   €24,001 - €40,000: 5%
+    *   €40,001+: 10%
+*   **Tax-Free Allowances/Standard Deductions:**  The first €3,000 of savings income is tax exempt, taxed at 10% thereafter.  Specific deductions and allowances are not detailed in readily available sources.
+
+**Value Added Tax (VAT) / Goods and Services Tax (GST) (IGI)**
+
+*   **Standard Rate:** 4.5%
+*   **Reduced Rates:**
+    *   1%: Human consumption goods, books, magazines
+    *   2.5%: Transportation and artistic/cultural services
+    *   9.5%: Banking and financial services
+*   **Exemptions/Zero-Rated Items:** Health, CASS (social security), education, gold investment, and certain NGOs are exempt.
+
+**Corporate Tax (Impost de Societats - IS)**
+
+*   **General Rate:** 10%
+*   **New Businesses:**
+    *   50% reduction in settlement fee (first year)
+    *   Reduced rate of 5% on first €50,000 of income for first 3 years
+    *   10% on remaining taxable income.
+
+**Capital Gains Tax on Property Transfers (PLV)**
+
+*   Applies to transfers of property. The rate decreases annually:
+    *   15% (if sold within the first year)
+    *   Decreases annually until 0% (after 12 years).
+*   Can be avoided by buying another property within six months of sale.
+
+**Social Security and Other Taxes**
+
+*   **Social Security Contributions:** Details regarding specific contribution rates are not readily available. The chunk mentions CASS, which likely incorporates aspects of social security.
+*   **Payroll Taxes:** Information about specific payroll taxes and employee contributions is not provided.
+*   **Special Taxes:**
+    *   Gambling activities tax (Law 37/2014)
+    *   Tax on Registry of Holders of Economic Activities
+    *   Vehicle Ownership Tax Rate
+    *   Trademark Office Fees
+    *   Rate of job applications
+    *   Animal health and food safety rate
+
+**Additional Information**
+
+*   **Currency:** Euro (€)
+*   **Important Notes:** Specific tax calculations can be complex and may involve deductions, allowances, and credits that are not fully detailed in available resources. Consult with a local tax professional for personalized advice.
+*   **Recent Updates/Changes:** Ongoing alignment with international standards means the tax landscape can change. Review official Andorran government resources for the most up-to-date information.
+
+**Source:** Extracted information from various sources compiled in 2024, reflecting available data current as of late 2024. Official Andorran government resources are the definitive source for current and precise details.
+
+
+
+**Disclaimer:** This summary is for informational purposes only and does not constitute tax advice. Consult with a qualified tax professional for personalized guidance.

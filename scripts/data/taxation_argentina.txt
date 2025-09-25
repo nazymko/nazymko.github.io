@@ -1,0 +1,48 @@
+## Taxation in Argentina
+
+Argentina's tax system is characterized by a complex legal framework lacking a codified tax code, relying instead on separate laws and executive decrees. The Federal Administration of Public Revenue (AFIP) is responsible for tax administration at all levels (federal, provincial, and municipal). The system operates on a self-assessment basis with no formal tax ruling system.  This summary provides an overview of key taxes and rates relevant to tax calculations as of 2025. All amounts are in Argentine Pesos (ARS). Note: Given Argentina's history of high inflation and frequent adjustments, specific figures and regulations are subject to rapid change. Consulting professional advice is strongly recommended.
+
+**Personal Income Tax:**
+
+*   **Tax System Type:** Progressive (federal government only)
+*   **Current Tax Brackets (2025 Estimates - Subject to Change):** Precise brackets and rates are difficult to determine definitively due to ongoing legislative adjustments and inflation. As of 2024, the brackets were:
+    *   0% on income up to ARS [Placeholder - Specific Threshold Needed]
+    *   [Placeholder - Rate and Threshold] on income between ARS [Placeholder - Specific Threshold Needed] and ARS [Placeholder - Specific Threshold Needed]
+    *   [Placeholder - Rate and Threshold] on income between ARS [Placeholder - Specific Threshold Needed] and ARS [Placeholder - Specific Threshold Needed]
+    *   35% on income exceeding ARS [Placeholder - Specific Threshold Needed]
+    * *Note:* These figures are estimates and actual thresholds and rates can fluctuate significantly.
+*   **Tax-Free Allowances/Standard Deductions:**  Information not available in the provided summaries.  Deductions typically include expenses related to health, education, and dependent care, but specific rules are complex and change frequently.
+
+**Value Added Tax (VAT) / Goods and Services Tax (GST):**
+
+*   **Standard Rate:** 21%
+*   **Reduced Rates:**
+    *   10.5% on certain capital goods.
+*   **Zero-Rated Items:** Exports are zero-rated.
+*   **Special Rate:** 27% on services such as water, gas, power, and communication.
+* **Exemptions:** Information not available in the provided summaries.
+
+**Social Security and Other Taxes:**
+
+*   **Social Security Contributions (Employer):**
+    *   17% or 21% of payroll (depending on the specific scheme).
+*   **Social Security Contributions (Employee):** 14%
+*   **Healthcare Contributions:** Employer: 6%; Employee: 2%
+*   **Payroll Taxes:**  No payroll tax.
+*   **Special Taxes & Levies:**
+    *   **Stamp Tax:** 1.5% on real property value.
+    *   **Ad Valorem Property Tax:** On other assets (vehicles).
+    *   **Bank Transaction Tax:** 0.6%
+    *   **Excise Taxes:** Varying rates (8% – 60%) on goods like tobacco, alcohol, electronics, vehicles, and gasoline.
+    *   **Municipal Fees:** For lighting, garbage collection, and other services; rates vary by municipality.
+    * **Simplified Tax System:** Businesses may be eligible for exemption from income tax, VAT, and contributions under this system, subject to strict criteria related to income, space, and electricity usage.
+
+**Additional Information:**
+
+*   **Tax Year Period:**  12-month fiscal period (calendar year).
+*   **Important Notes:** Argentina's tax regulations are highly susceptible to rapid changes. Constant monitoring of legislative updates is critical. Inflation significantly impacts the real value of tax burdens.  The Simplified Tax System offers significant benefits for qualifying businesses but has complex eligibility requirements.
+*   **Recent Updates/Changes:** Agreement on avoidance of double taxation with Russia signed in October 2001. Further recent changes are ongoing and require constant monitoring.
+
+**Source:** Wikipedia (Consulted 2024). Current year information is based on available data but is subject to change.
+
+**Disclaimer:**  This summary is for informational purposes only and does not constitute professional tax advice. Consult with a qualified Argentine tax advisor for specific guidance tailored to your individual circumstances.

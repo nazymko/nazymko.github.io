@@ -1,0 +1,76 @@
+[
+  {
+    "country": "Belgium",
+    "employee_social_security_pct": 13.07,
+    "employer_social_security_pct": 27.00,
+    "notes": "Employee contribution is 13.07% of gross salary; employer contribution is approximately 27%, varying by sector.",
+    "sources": [
+      "https://taxsummaries.pwc.com/belgium/individual/other-taxes",
+      "https://boundlesshq.com/guides/belgium/taxes/"
+    ]
+  },
+  {
+    "country": "Bosnia and Herzegovina",
+    "employee_social_security_pct": 17.00,
+    "employer_social_security_pct": 6.00,
+    "notes": "In the Federation of Bosnia and Herzegovina, the employer pays 0.5% for disaster protection and 0.5% for water protection, calculated on net salary.",
+    "sources": [
+      "https://taxsummaries.pwc.com/bosnia-and-herzegovina/individual/other-taxes",
+      "https://seenews.com/news/bosnias-federation-cuts-social-contribution-rate-for-employers-1271392"
+    ]
+  },
+  {
+    "country": "Bulgaria",
+    "employee_social_security_pct": 13.78,
+    "employer_social_security_pct": 18.92,
+    "notes": "Employee contribution is 13.78%; employer contribution is 18.92%. Total social security contributions amount to 32.7%.",
+    "sources": [
+      "https://taxsummaries.pwc.com/bulgaria/individual/other-taxes"
+    ]
+  },
+  {
+    "country": "Croatia",
+    "employee_social_security_pct": 20.00,
+    "employer_social_security_pct": 17.20,
+    "notes": "Employee contribution is 20%; employer contribution is 17.2%. Total social security contributions amount to 37.2%.",
+    "sources": [
+      "https://taxsummaries.pwc.com/croatia/individual/other-taxes"
+    ]
+  },
+  {
+    "country": "Cyprus",
+    "employee_social_security_pct": 8.30,
+    "employer_social_security_pct": 8.30,
+    "notes": "Both employee and employer contribute 8.3% each, totaling 16.6%.",
+    "sources": [
+      "https://taxsummaries.pwc.com/cyprus/individual/other-taxes"
+    ]
+  },
+  {
+    "country": "Czech Republic",
+    "employee_social_security_pct": 6.50,
+    "employer_social_security_pct": 25.00,
+    "notes": "Employee contribution is 6.5%; employer contribution is 25%. Total social security contributions amount to 31.5%.",
+    "sources": [
+      "https://taxsummaries.pwc.com/czech-republic/individual/other-taxes"
+    ]
+  },
+  {
+    "country": "Denmark",
+    "employee_social_security_pct": 8.00,
+    "employer_social_security_pct": 8.00,
+    "notes": "Both employee and employer contribute 8% each, totaling 16%.",
+    "sources": [
+      "https://taxsummaries.pwc.com/denmark/individual/other-taxes"
+    ]
+  },
+  {
+    "country": "Estonia",
+    "employee_social_security_pct": 1.60,
+    "employer_social_security_pct": 33.80,
+    "notes": "Employee contribution is 1.6%; employer contribution is 33.8%. Total social security contributions amount to 35.4%.",
+    "sources": [
+      "https://taxsummaries.pwc.com/estonia/individual/other-taxes"
+    ]
+  }
+]

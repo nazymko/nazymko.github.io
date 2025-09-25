@@ -1,0 +1,82 @@
+[
+  {
+    "country": "Albania",
+    "employee_social_security_pct": 11.2,
+    "employer_social_security_pct": 16.7,
+    "notes": "Employee = social insurance + health; employer = social insurance + health",
+    "sources": [
+      "https://taxsummaries.pwc.com/albania/individual/other-taxes",
+      "https://www2.deloitte.com/content/dam/Deloitte/global/Documents/Tax/dttl-tax-albaniahighlights-2024.pdf"
+    ]
+  },
+  {
+    "country": "Andorra",
+    "employee_social_security_pct": 6.5,
+    "employer_social_security_pct": 15.5,
+    "notes": "Total contributions ~22% (split employee/employer as shown). Some guides present breakdowns by scheme.",
+    "sources": [
+      "https://en.andorraservices.com/guia-completa-de-la-seguridad-social-andorra/",
+      "https://remotepeople.com/countries/andorra/hire-employees/payroll-tax/"
+    ]
+  },
+  {
+    "country": "Armenia",
+    "employee_social_security_pct": "5% (<= AMD 500,000) / 10% (above, capped rules)",
+    "employer_social_security_pct": 0,
+    "notes": "Funded pension contributions are largely employee-paid; employers do not pay a separate social security percentage (state co-finances some schemes). See local rules for thresholds and caps.",
+    "sources": [
+      "https://taxsummaries.pwc.com/armenia/individual/other-taxes",
+      "https://armenian-lawyer.com/business-immigration/payroll-tax-rates-and-social-security-contributions-in-armenia/"
+    ]
+  },
+  {
+    "country": "Austria",
+    "employee_social_security_pct": 17.07,
+    "employer_social_security_pct": 20.48,
+    "notes": "Rates shown are the common combined rates; specific components (pension/health/unemployment/accident) make up the totals and some items have contribution ceilings.",
+    "sources": [
+      "https://taxsummaries.pwc.com/austria/individual/other-taxes",
+      "https://www.bdo.at/en-gb/insights/people-organisation/social-security-contributions-and-employer-costs-2025"
+    ]
+  },
+  {
+    "country": "Azerbaijan",
+    "employee_social_security_pct": 3,
+    "employer_social_security_pct": 22,
+    "notes": "Standard rates for most employees; some industry-specific rules (e.g., oil & gas) and small additional rates (medical, unemployment) may apply.",
+    "sources": [
+      "https://taxsummaries.pwc.com/azerbaijan/individual/other-taxes",
+      "https://tradingeconomics.com/azerbaijan/social-security-rate-for-employees"
+    ]
+  },
+  {
+    "country": "Bahrain",
+    "employee_social_security_pct": 8,
+    "employer_social_security_pct": 17,
+    "notes": "Applies to Bahraini (national) employees; expatriate employees have different (usually lower) contribution rules. Employer rate increased in recent years (phased up to 20% by 2028 in some schedules).",
+    "sources": [
+      "https://www.ramco.com/payce/payroll-compliance-bahrain",
+      "https://trustrc.com/en/bahrain-increase-in-employer-social-security-contributions/"
+    ]
+  },
+  {
+    "country": "Bangladesh",
+    "employee_social_security_pct": null,
+    "employer_social_security_pct": null,
+    "notes": "No single mandatory national social-security percentage applied to all employees (provident funds/gratuity arrangements are typical); practices vary and many sources treat PF as contractual/sectoral.",
+    "sources": [
+      "https://taxsummaries.pwc.com/bangladesh/individual/other-taxes",
+      "https://remotepeople.com/countries/bangladesh/hire-employees/payroll-tax/"
+    ]
+  },
+  {
+    "country": "Belarus",
+    "employee_social_security_pct": 1,
+    "employer_social_security_pct": 34,
+    "notes": "Typical breakdown: employee pays small pension/social percentage (~1%); employers pay the large bulk (~28% pension + ~6% social + minor accident insurance). Check local official table for exact class-based accident-insurance rates.",
+    "sources": [
+      "https://rivermate.com/guides/belarus/taxes",
+      "https://www.papayaglobal.com/countrypedia/country/belarus/"
+    ]
+  }
+]

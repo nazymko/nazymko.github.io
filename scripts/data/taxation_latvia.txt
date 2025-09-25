@@ -1,0 +1,64 @@
+**Taxation in Latvia**
+
+Latvia operates a modern, flat‑tax system for individuals, complemented by a value‑added tax (VAT) and mandatory social‑security contributions. The tax year follows the calendar year (1 January – 31 December). The 2024 fiscal regime remains largely unchanged from 2023, with a flat personal income tax of 23 % and a standard VAT rate of 21 %. The following table provides the key rates and thresholds required for tax calculations.
+
+---
+
+### Personal Income Tax
+
+| Item | Detail |
+|------|--------|
+| **Tax system type** | Flat tax |
+| **Flat rate** | **23 %** on all taxable income |
+| **Tax‑free allowance** | **€900** per taxpayer per year (standard allowance) |
+| **Dependent allowance** | **€1,980** per dependent per year |
+| **Deductions** | None beyond standard and dependent allowances (no progressive brackets) |
+| **Social‑security deduction** | N/A – social‑security contributions are separate |
+
+**Calculation example:**  
+Taxable income = €50 000 – €900 (standard) – €1 980 (dependent) = €47 120  
+Income tax = 23 % × €47 120 = **€10,837.60**
+
+---
+
+### Value Added Tax (VAT)
+
+| Item | Rate / Detail |
+|------|---------------|
+| **Standard VAT rate** | **21 %** |
+| **Reduced VAT rates** | **12 %** for medications and heating fuel |
+| **Zero‑rated / exempt items** | • Education services <br>• Medical care <br>• Financial transactions <br>• Residential rent (within specific limits) |
+| **Special cases** | VAT‑exempt status applies to non‑profit organisations that meet legal criteria |
+
+**VAT calculation note:** VAT is applied to the sale price of goods and services. For exempt items, no VAT is added to the consumer price.
+
+---
+
+### Social Security and Other Payroll Taxes
+
+| Item | Employer contribution | Employee contribution | Notes |
+|------|------------------------|------------------------|-------|
+| **Pension and health contributions** | **22.59 % – 24.09 %** of gross wages (variable based on income band) | **10.5 % – 11 %** of gross wages (variable based on income band) | Both are mandatory; no separate flat rate. |
+| **Maximum wage ceiling** | €46 600 (2024) | €46 600 (2024) | Contributions above this ceiling are capped. |
+| **Other payroll taxes** | None (no separate military/solidarity tax) | None | |
+| **Social‑security ceiling** | Re‑instated in 2014; remains €46 600 | Same as employer ceiling | |
+
+**Example calculation:**  
+Gross wage: €30 000  
+Employee contribution: 10.5 % × €30 000 = €3 150  
+Employer contribution: 23.5 % × €30 000 = €7 050
+
+---
+
+### Additional Information
+
+| Topic | Detail |
+|-------|--------|
+| **Tax year period** | 1 January – 31 December 2024 |
+| **Important notes** | • Income tax is calculated **after** subtracting the standard allowance and dependent allowance. <br>• Social‑security contributions are **deductible** for tax purposes only to the extent of the standard allowance; however, they are not reduced by the personal income‑tax allowance. <br>• VAT zero‑rated items (education, medical care) do not attract any VAT, but the supplier must certify the exemption. |
+| **Recent updates (2024)** | • The standard personal allowance remained at €900. <br>• Social‑security ceiling unchanged at €46 600. <br>• No changes to VAT rates or exemption list. |
+| **Currency** | Euro (€) |
+
+---
+
+**Source:** Wikipedia – “Taxation in Latvia” (accessed 2024) and official Latvian State Revenue Service (SR) publications.
