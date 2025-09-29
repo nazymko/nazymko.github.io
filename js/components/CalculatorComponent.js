@@ -7,6 +7,9 @@ export class CalculatorComponent {
         this.salary = 0;
         this.inputCurrency = 'USD';
         this.displayCurrency = 'USD';
+        this.includeVAT = true;
+        this.treatEmployerSSAsSalary = true;
+        this.compactUI = false; // Default to full mode
         this.debounceTimer = null;
         this.listeners = new Map();
 
@@ -26,6 +29,9 @@ export class CalculatorComponent {
             salary: document.getElementById('salary'),
             inputCurrency: document.getElementById('inputCurrency'),
             displayCurrency: document.getElementById('displayCurrency'),
+            includeVAT: document.getElementById('includeVAT'),
+            treatEmployerSSAsSalary: document.getElementById('treatEmployerSSAsSalary'),
+            compactUI: document.getElementById('compactUI'),
             loadingInfo: document.getElementById('loadingInfo')
         };
 
@@ -52,6 +58,27 @@ export class CalculatorComponent {
                 this.handleDisplayCurrencyChange();
             });
         }
+
+        // VAT inclusion toggle
+        if (this.elements.includeVAT) {
+            this.elements.includeVAT.addEventListener('change', () => {
+                this.handleVATToggleChange();
+            });
+        }
+
+        // Employer SS as salary toggle
+        if (this.elements.treatEmployerSSAsSalary) {
+            this.elements.treatEmployerSSAsSalary.addEventListener('change', () => {
+                this.handleEmployerSSToggleChange();
+            });
+        }
+
+        // Compact UI toggle
+        if (this.elements.compactUI) {
+            this.elements.compactUI.addEventListener('change', () => {
+                this.handleCompactUIToggleChange();
+            });
+        }
     }
 
     // Load initial values from form
@@ -66,6 +93,17 @@ export class CalculatorComponent {
 
         if (this.elements.displayCurrency) {
             this.displayCurrency = this.elements.displayCurrency.value;
+        }
+
+        if (this.elements.includeVAT) {
+            this.includeVAT = this.elements.includeVAT.checked;
+        }
+        if (this.elements.treatEmployerSSAsSalary) {
+            this.treatEmployerSSAsSalary = this.elements.treatEmployerSSAsSalary.checked;
+        }
+
+        if (this.elements.compactUI) {
+            this.compactUI = this.elements.compactUI.checked;
         }
     }
 
@@ -91,6 +129,25 @@ export class CalculatorComponent {
         this.updateCurrencyDisplays();
     }
 
+    // Handle VAT toggle changes
+    handleVATToggleChange() {
+        this.includeVAT = this.elements.includeVAT.checked;
+        this.triggerCalculation();
+    }
+
+    // Handle Employer SS as salary toggle changes
+    handleEmployerSSToggleChange() {
+        this.treatEmployerSSAsSalary = this.elements.treatEmployerSSAsSalary.checked;
+        this.triggerCalculation();
+    }
+
+    // Handle Compact UI toggle changes
+    handleCompactUIToggleChange() {
+        this.compactUI = this.elements.compactUI.checked;
+        // Notify map component to refresh popups with new UI mode
+        this.emit('uiModeChanged', { compactUI: this.compactUI });
+    }
+
     // Trigger tax calculation
     async triggerCalculation() {
         if (this.salary <= 0) {
@@ -104,7 +161,9 @@ export class CalculatorComponent {
             const results = await calculateTaxesForAllCountries(
                 this.salary,
                 this.inputCurrency,
-                this.displayCurrency
+                this.displayCurrency,
+                this.includeVAT,
+                this.treatEmployerSSAsSalary
             );
 
             this.emit('calculationComplete', {

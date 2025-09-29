@@ -1,0 +1,332 @@
+{
+  "Europe (Western & Central)": [
+    {
+      "country": "Albania",
+      "employee": 9,
+      "employer": 17,
+      "original": { "employee": "~8-10%", "employer": "~16-18%" },
+      "notes": "combined for pensions, health"
+    },
+    {
+      "country": "Andorra",
+      "employee": 7,
+      "employer": 13,
+      "original": { "employee": "~6-8%", "employer": "~12-14%" },
+      "notes": "covers pensions, healthcare"
+    },
+    {
+      "country": "Austria",
+      "employee": 11.3,
+      "employer": 20.9,
+      "original": { "employee": "~11.3%", "employer": "~20.9%" },
+      "notes": "pensions, healthcare, unemployment"
+    },
+    {
+      "country": "Belarus",
+      "employee": 9,
+      "employer": 17.5,
+      "original": { "employee": "~9%", "employer": "~17.5%" },
+      "notes": "pensions, healthcare, social insurance"
+    },
+    {
+      "country": "Belgium",
+      "employee": 13.07,
+      "employer": 23.9,
+      "original": { "employee": "~13.07%", "employer": "~23.9%" },
+      "notes": "pensions, healthcare, unemployment"
+    },
+    {
+      "country": "Bosnia and Herzegovina",
+      "employee": 11,
+      "employer": 27.5,
+      "original": { "employee": "~10-12%", "employer": "~25-30%" },
+      "notes": "pensions, health"
+    },
+    {
+      "country": "Bulgaria",
+      "employee": 8,
+      "employer": 18,
+      "original": { "employee": "~8%", "employer": "~18%" },
+      "notes": "pensions, healthcare, unemployment"
+    },
+    {
+      "country": "Croatia",
+      "employee": 15.2,
+      "employer": 28.2,
+      "original": { "employee": "~15.2%", "employer": "~28.2%" },
+      "notes": "pensions, healthcare, unemployment"
+    },
+    {
+      "country": "Czech Republic",
+      "employee": 6.5,
+      "employer": 21.5,
+      "original": { "employee": "~6.5%", "employer": "~21.5%" },
+      "notes": "pensions, healthcare, social insurance"
+    },
+    {
+      "country": "Denmark",
+      "employee": 7.5,
+      "employer": 27.6,
+      "original": { "employee": "~7.5%", "employer": "~27.6%" },
+      "notes": "pensions, healthcare, unemployment"
+    },
+    {
+      "country": "Estonia",
+      "employee": 33,
+      "employer": 17,
+      "original": { "employee": "~33%", "employer": "17%" },
+      "notes": "gross wage (employee), pension (employer)"
+    },
+    {
+      "country": "Finland",
+      "employee": 7.15,
+      "employer": 17.36,
+      "original": { "employee": "~7.15%", "employer": "~17.36%" },
+      "notes": "pensions, healthcare"
+    },
+    {
+      "country": "France",
+      "employee": 7.25,
+      "employer": 25.3,
+      "original": { "employee": "~7.25%", "employer": "~25.3%" },
+      "notes": "social security contributions"
+    },
+    {
+      "country": "Germany",
+      "employee": 11.2,
+      "employer": 20.4,
+      "original": { "employee": "~11.2%", "employer": "~20.4%" },
+      "notes": "pensions, healthcare, unemployment"
+    },
+    {
+      "country": "Hungary",
+      "employee": 7,
+      "employer": 13,
+      "original": { "employee": "~7%", "employer": "~13%" },
+      "notes": "pensions, healthcare"
+    },
+    {
+      "country": "Ireland",
+      "employee": 4,
+      "employer": 8.7,
+      "original": { "employee": "~4%", "employer": "~8.7%" },
+      "notes": "social insurance - pensions, health, unemployment"
+    },
+    {
+      "country": "Latvia",
+      "employee": 11,
+      "employer": 23.5,
+      "original": { "employee": "~11%", "employer": "~23.5%" },
+      "notes": "pensions, healthcare, social insurance"
+    },
+    {
+      "country": "Lithuania",
+      "employee": 10,
+      "employer": 29,
+      "original": { "employee": "~10%", "employer": "~29%" },
+      "notes": "pensions, healthcare, social insurance"
+    },
+    {
+      "country": "Luxembourg",
+      "employee": 8.9,
+      "employer": 16.7,
+      "original": { "employee": "~8.9%", "employer": "~16.7%" },
+      "notes": "pensions, healthcare, social insurance"
+    },
+    {
+      "country": "Malta",
+      "employee": 10,
+      "employer": 25,
+      "original": { "employee": "~10%", "employer": "~25%" },
+      "notes": "social security – pensions, healthcare, unemployment"
+    },
+    {
+      "country": "Netherlands",
+      "employee": 19.1,
+      "employer": 25.7,
+      "original": { "employee": "~19.1%", "employer": "~25.7%" },
+      "notes": "pensions, healthcare, unemployment"
+    },
+    {
+      "country": "Norway",
+      "employee": 7.9,
+      "employer": 14.1,
+      "original": { "employee": "~7.9%", "employer": "~14.1%" },
+      "notes": "pensions, healthcare, unemployment"
+    },
+    {
+      "country": "Poland",
+      "employee": 9,
+      "employer": 20.3,
+      "original": { "employee": "~9%", "employer": "~20.3%" },
+      "notes": "pensions, healthcare, social insurance"
+    },
+    {
+      "country": "Romania",
+      "employee": 16,
+      "employer": 33,
+      "original": { "employee": "~16%", "employer": "~33%" },
+      "notes": "pensions, healthcare, social insurance"
+    },
+    {
+      "country": "Slovakia",
+      "employee": 9,
+      "employer": 18,
+      "original": { "employee": "~9%", "employer": "~18%" },
+      "notes": "pensions, healthcare, social insurance"
+    },
+    {
+      "country": "Slovenia",
+      "employee": 14,
+      "employer": 23,
+      "original": { "employee": "~14%", "employer": "~23%" },
+      "notes": "pensions, healthcare, social insurance"
+    },
+    {
+      "country": "Sweden",
+      "employee": 31.4,
+      "employer": 31.4,
+      "original": { "employee": "~31.4%", "employer": "~31.4%" },
+      "notes": "pensions, healthcare, parental insurance"
+    },
+    {
+      "country": "Switzerland",
+      "employee": 5.15,
+      "employer": 5.15,
+      "original": { "employee": "~5.15%", "employer": "~5.15% + Cantonal contributions vary" },
+      "notes": "pension, healthcare varies by canton"
+    },
+    {
+      "country": "United Kingdom",
+      "employee": 13.8,
+      "employer": 15.3,
+      "original": { "employee": "~13.8%", "employer": "~15.3%" },
+      "notes": "National Insurance - pensions, health, unemployment"
+    }
+  ],
+  "Europe (Eastern & Southeastern)": [
+    {
+      "country": "Greece",
+      "employee": 14.5,
+      "employer": 18.7,
+      "original": { "employee": "~14.5%", "employer": "~18.7%" },
+      "notes": "pensions, healthcare"
+    },
+    {
+      "country": "Cyprus",
+      "employee": 6.8,
+      "employer": 15.8,
+      "original": { "employee": "~6.8%", "employer": "~15.8%" },
+      "notes": "social security - pensions, healthcare"
+    },
+    {
+      "country": "Serbia",
+      "employee": 10,
+      "employer": 22,
+      "original": { "employee": "~10%", "employer": "~22%" },
+      "notes": "pensions, healthcare, social insurance"
+    },
+    {
+      "country": "Turkey",
+      "employee": 9,
+      "employer": 18,
+      "original": { "employee": "~9%", "employer": "~18%" },
+      "notes": "social security – pensions, health, unemployment"
+    }
+  ],
+  "Eurasia (Central Asia & Caucasus)": [
+    {
+      "country": "Armenia",
+      "employee": 6.5,
+      "employer": 22,
+      "original": { "employee": "~6.5%", "employer": "~22%" },
+      "notes": "pensions, healthcare"
+    },
+    {
+      "country": "Azerbaijan",
+      "employee": 6,
+      "employer": 27,
+      "original": { "employee": "~6%", "employer": "~27%" },
+      "notes": "pensions, healthcare, social insurance"
+    },
+    {
+      "country": "Georgia",
+      "employee": 23,
+      "employer": 35,
+      "original": { "employee": "~23%", "employer": "~35%" },
+      "notes": "pensions, healthcare"
+    },
+    {
+      "country": "Kazakhstan",
+      "employee": 10,
+      "employer": 11,
+      "original": { "employee": "~10%", "employer": "~11%" },
+      "notes": "pension and social insurance"
+    },
+    {
+      "country": "Kyrgyzstan",
+      "employee": 4,
+      "employer": 18,
+      "original": { "employee": "~4%", "employer": "~18%" },
+      "notes": "pensions, healthcare"
+    },
+    {
+      "country": "Russia",
+      "employee": 22,
+      "employer": 33,
+      "original": { "employee": "~22%", "employer": "~33%" },
+      "notes": "pensions, healthcare, social insurance"
+    },
+    {
+      "country": "Tajikistan",
+      "employee": 13,
+      "employer": 28,
+      "original": { "employee": "~13%", "employer": "~28%" },
+      "notes": "pensions, healthcare"
+    },
+    {
+      "country": "Turkmenistan",
+      "employee": null,
+      "employer": null,
+      "original": { "employee": "Data unavailable", "employer": "Data unavailable" },
+      "notes": "heavily subsidized by government"
+    },
+    {
+      "country": "Uzbekistan",
+      "employee": 11,
+      "employer": 29,
+      "original": { "employee": "~11%", "employer": "~29%" },
+      "notes": "pensions, healthcare"
+    }
+  ],
+  "Surrounding Regions (Middle East & North Africa)": [
+    {
+      "country": "Israel",
+      "employee": 5.75,
+      "employer": 18.75,
+      "original": { "employee": "~5.75%", "employer": "~18.75%" },
+      "notes": "social security – pensions, healthcare"
+    },
+    {
+      "country": "Egypt",
+      "employee": 5,
+      "employer": 10,
+      "original": { "employee": "~5%", "employer": "~10%" },
+      "notes": "pensions, healthcare"
+    },
+    {
+      "country": "United Arab Emirates",
+      "employee": null,
+      "employer": null,
+      "original": { "employee": "Data variable", "employer": "Data variable" },
+      "notes": "depends on employment type and nationality; often subsidized"
+    },
+    {
+      "country": "Saudi Arabia",
+      "employee": null,
+      "employer": null,
+      "original": { "employee": "Data variable", "employer": "Data variable" },
+      "notes": "depends on employment type and nationality; often subsidized"
+    }
+  ]
+}

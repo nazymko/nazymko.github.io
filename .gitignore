@@ -20,6 +20,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Trace logs from Python scripts
+scripts/logs/
+logs/
+
 # Runtime data
 pids
 *.pid
@@ -81,3 +85,4 @@ dev.*
 *.zip
 *.tar.gz
 *.rar
+*api.key

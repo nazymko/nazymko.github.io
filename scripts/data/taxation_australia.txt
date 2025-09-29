@@ -1,0 +1,87 @@
+**Taxation in Australia**
+
+Australia’s tax system is administered primarily by the federal government through the Australian Taxation Office (ATO). Personal income tax is the largest source of revenue, followed by the Goods and Services Tax (GST) and social‑security contributions such as the Medicare levy and superannuation guarantees. State governments levy payroll taxes and contribute to the Commonwealth Grants Commission for GST revenue distribution.
+
+---
+
+### Personal Income Tax
+
+| Income (AUD) | Marginal tax rate |
+|--------------|-------------------|
+| $0 – $18,200 | 0 % (tax‑free threshold) |
+| $18,201 – $45,000 | 19 % |
+| $45,001 – $120,000 | 32.5 % |
+| $120,001 – $180,000 | 37 % |
+| $180,001+ | 45 % |
+
+**Additional Medicare Levy**
+
+| Income (AUD) | Medicare levy |
+|--------------|----------------|
+| ≤ $23,226 | 0 % (single) |
+| $23,227 – $51,173 | 1 % |
+| $51,174+ | 2 % |
+
+*(Thresholds apply to singles; married couples have doubled thresholds.)*
+
+**Tax‑free allowances / deductions**
+
+| Item | Amount (AUD) |
+|------|--------------|
+| Personal tax‑free threshold | $18,200 |
+| Low‑income tax offset (single) | $700 (0.0‑0.5% of taxable income up to $45,000) |
+| Low‑income tax offset (married) | $1,400 |
+| Work‑related deduction | Variable – expenses incurred for earning assessable income |
+| Superannuation contribution deduction | Up to $37,500 for concessional (before‑tax) contributions in 2023‑24 |
+
+**Standard deduction**  
+Australia does not provide a single “standard deduction.” Instead, eligible expenses are itemised and claimed individually (e.g., work‑related expenses, self‑education, charitable donations).
+
+---
+
+### Value Added Tax (Goods and Services Tax – GST)
+
+| Item | Rate |
+|------|------|
+| Standard GST | 10 % |
+| Reduced / zero‑rated items |  
+| • Basic food items | 0 % (zero‑rated) |
+| • Prescription medicine | 0 % |
+| • Residential rents | 0 % (tax‑exempt) |
+| • Children’s clothing (≤ $50) | 0 % (zero‑rated) |
+| • Medical and dental services | 0 % |
+
+**Exemptions**
+
+- Education courses (up to a limit)  
+- Health and welfare services (e.g., Medicare)  
+- Child care and early learning services  
+
+---
+
+### Social Security and Other Taxes
+
+| Type | Description | Rate / Threshold |
+|------|-------------|------------------|
+| **Superannuation Guarantee (SG)** | Mandatory employer contribution to employee’s superannuation fund | 11.5 % of ordinary time earnings (2023‑24); increases to 12 % from 1 July 2025 |
+| **Medicare Levy Surcharge (MLS)** | Additional levy for private health‑insurance holders with taxable income above a threshold | 1 % for incomes $90,001–$105,000; 1.5 % for $105,001+ (single) |
+| **Payroll Tax (state‑based)** | Employer tax on wages exceeding a state threshold | NSW 4.85 % (≥ $1.5 M), SA 4.95 % (≥ $1.5 M), Vic 5.75 % (≥ $1.4 M), QLD 5.75 % (≥ $1.3 M), WA 5.5 % (≥ $1.6 M), NT 4.6 % (≥ $1.6 M) |
+| **Other special taxes** | No additional federal special taxes (military, solidarity, etc.) | — |
+
+---
+
+### Additional Information
+
+- **Tax year**: 1 July – 30 June (e.g., FY 2024‑25 covers 1 July 2024 to 30 June 2025).  
+- **Filing**: Individuals must lodge an annual tax return by 31 October (or via myTax if they use a registered tax agent).  
+- **Superannuation**: Employees may claim a tax offset of 15 % on contributions up to $2,000 (non‑concessional) and a 5 % offset on contributions over $2,000 (up to $15,000) if they meet age/asset tests.  
+- **Medicare levy**: Calculated on taxable income after all deductions.  
+- **GST reporting**: Businesses with annual turnover > $75,000 must register for GST and lodge Business Activity Statements (BAS).  
+- **Recent updates**:  
+  - The SG rate will rise to 12 % from 1 July 2025.  
+  - The MLS thresholds are currently set at $90,001 for single taxpayers and $180,001 for couples (2019‑20 rates apply to 2023‑24).  
+  - No change to the GST standard rate (10 %) as of 2024.  
+
+---
+
+**Source:** Wikipedia (accessed 2025) – “Taxation in Australia” plus ATO policy documents and Australian Treasury releases (2023‑24).

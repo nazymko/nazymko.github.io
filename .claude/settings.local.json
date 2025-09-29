@@ -4,7 +4,13 @@
       "Bash(python:*)",
       "Bash(npm i:*)",
       "Bash(node:*)",
-      "Bash(start \"C:\\Users\\User\\IdeaProjects\\map\\index.html\")"
+      "Bash(start \"C:\\Users\\User\\IdeaProjects\\map\\index.html\")",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(dir)",
+      "Bash(start \"C:\\Users\\User\\IdeaProjects\\map\\index2.html\")"
     ],
     "deny": [],
     "ask": []

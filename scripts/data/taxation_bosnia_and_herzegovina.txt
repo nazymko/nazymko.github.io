@@ -1,0 +1,59 @@
+**Taxation in Bosnia and Herzegovina**
+
+Bosnia and Herzegovina (BiH) applies a largely flat‑rate tax system at the federal level, supplemented by local taxes.  The federal government collects the bulk of revenue from personal income tax, corporate tax, social security contributions, and value‑added tax (VAT).  The tax year corresponds to the calendar year (1 January – 31 December).
+
+---
+
+### Personal Income Tax
+- **Tax system type:** Flat
+- **Current rate:** **10 %** on all taxable income (employment, interest, royalties, capital gains)
+- **Tax‑free allowance / standard deduction:** None; the flat rate applies to the entire taxable income
+- **Key notes:**  
+  - No progressive brackets or thresholds  
+  - Personal income tax is calculated after social‑security contributions have been deducted from gross salary
+
+---
+
+### Value Added Tax (VAT) / Goods and Services Tax (GST)
+- **Standard rate:** **17 %**
+- **Reduced rates:** None (as of 2024)
+- **Exemptions / zero‑rated items:**  
+  - Medical care and health‑related services  
+  - Postal services  
+  - Financial services (banking, insurance, securities)  
+  - Education and certain non‑profit activities  
+  - Other minor exemptions listed in the VAT legislation (e.g., specific cultural services)
+- **Key notes:**  
+  - VAT is collected on most goods and services at the point of sale  
+  - VAT registration threshold is €300,000 in sales (subject to change)
+
+---
+
+### Social Security and Other Taxes
+| Category | Rate | Notes |
+|----------|------|-------|
+| **Employee social‑security contribution** | **33 %** of gross salary | Covers pension, health, unemployment, and other social benefits |
+| **Employer social‑security contribution** | **10.5 %** of gross salary | Paid in addition to employee contribution |
+| **Payroll tax** | Not a separate payroll tax; covered by social‑security contributions | |
+| **Stamp duty** | €50–€100 for company incorporation (exact amount depends on company capital) | Applies to public documents (e.g., incorporation, real‑estate transfers) |
+| **Other special taxes** | None listed (e.g., military, solidarity) | |
+
+---
+
+### Additional Information
+- **Tax year period:** 1 January – 31 December (calendar year)
+- **Important calculation notes:**
+  - **Gross salary** is the base for both income tax and social‑security contributions.  
+  - Income tax is applied *after* social‑security contributions are deducted.  
+  - Corporate income tax is a flat **10 %** on taxable profits.  
+  - VAT is due on the sale price of goods and services before any discounts or rebates are applied.
+- **Recent updates (2024):**  
+  - No changes to the flat personal income tax or corporate tax rates since 2019.  
+  - The VAT standard rate remains at 17 %.  
+  - Social‑security rates unchanged.  
+  - Minor adjustments in the list of exempted services (e.g., expanded medical exemptions) have been published by the Ministry of Finance, but rates remain unchanged.
+
+---
+
+**Source:** Wikipedia (last updated 2024) + official BiH Ministry of Finance publications.  
+**Currency:** Euro (€) for VAT, stamp duty, and social‑security contributions; Bosnia‑Herzegovina Convertible Mark (BAM) for salary and corporate tax calculations (1 € ≈ 1.95583 BAM).

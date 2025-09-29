@@ -3,477 +3,2179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Tax Calculator Map</title>
+    <title>World Map with Country Labels</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
 
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
+        #map {
+            height: 100vh;
+            width: 100vw;
+        }
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles.css">
+        .country-label {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #007cba;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            white-space: nowrap;
+            pointer-events: auto;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .country-label:hover {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transform: scale(1.05);
+        }
+
+        .country-marker {
+            /* Container for the marker - no styling needed since we use inline HTML */
+        }
+
+        /* Zoom level specific label sizing */
+        .zoom-small .country-label {
+            font-size: 10px;
+            padding: 2px 4px;
+        }
+
+        .zoom-medium .country-label {
+            font-size: 12px;
+            padding: 4px 8px;
+        }
+
+        .zoom-large .country-label {
+            font-size: 14px;
+            padding: 6px 12px;
+        }
+
+        .zoom-xlarge .country-label {
+            font-size: 16px;
+            padding: 8px 16px;
+        }
+
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+            width: 380px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .info-panel h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .info-panel p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .zoom-controls span {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .tax-controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            width: 280px;
+            max-width: 280px;
+            box-sizing: border-box;
+        }
+
+        .tax-controls h3 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+            font-size: 13px;
+        }
+
+        .control-group input,
+        .control-group select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+
+        .control-group input:focus,
+        .control-group select:focus {
+            outline: none;
+            border-color: #007cba;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #007cba, #005a8b);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calculate-btn:hover {
+            background: linear-gradient(135deg, #005a8b, #007cba);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,124,186,0.3);
+        }
+
+        .country-label.calculated {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border-color: #28a745;
+        }
+
+        .country-label.calculated:hover {
+            background: linear-gradient(135deg, #20c997, #28a745);
+        }
+
+        .tax-info {
+            font-size: 10px;
+            margin-top: 2px;
+            line-height: 1.2;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-section">
-            <h1 data-i18n="appTitle">🌍 Global Tax Calculator Map</h1>
-            <div id="languageSelector" class="language-selector-container"></div>
+    <div id="map"></div>
+
+    <div class="tax-controls">
+        <h3>💰 Tax Calculator</h3>
+        <div class="control-group">
+            <label for="salary" id="salaryLabel">Monthly Salary:</label>
+            <input type="number" id="salary" placeholder="Enter salary" value="2000" min="0" step="100">
         </div>
-
-        <div class="calculator-section">
-            <h2 data-i18n="calculatorTitle">💰 Global Tax Comparison Calculator</h2>
-            <p data-i18n="calculatorSubtitle">Enter your monthly salary to see how much tax you would pay in different countries around the world.</p>
-
-            <div class="input-group">
-                <div class="input-field">
-                    <label for="salary" data-i18n="monthlySalary">Monthly Salary</label>
-                    <input type="number" id="salary" data-i18n-placeholder="salaryPlaceholder" placeholder="Enter your monthly salary" value="700" min="0" step="50">
-                </div>
-
-                <div class="input-field">
-                    <label for="inputCurrency" data-i18n="inputCurrency">Input Currency</label>
-                    <select id="inputCurrency">
-                        <option value="USD">USD - US Dollar</option>
-                        <option value="EUR">EUR - Euro</option>
-                        <option value="GBP">GBP - British Pound</option>
-                        <option value="JPY">JPY - Japanese Yen</option>
-                        <option value="CAD">CAD - Canadian Dollar</option>
-                        <option value="AUD">AUD - Australian Dollar</option>
-                        <option value="CHF">CHF - Swiss Franc</option>
-                        <option value="CNY">CNY - Chinese Yuan</option>
-                        <option value="SEK">SEK - Swedish Krona</option>
-                        <option value="NOK">NOK - Norwegian Krone</option>
-                        <option value="DKK">DKK - Danish Krone</option>
-                        <option value="PLN">PLN - Polish Zloty</option>
-                        <option value="CZK">CZK - Czech Koruna</option>
-                        <option value="HUF">HUF - Hungarian Forint</option>
-                        <option value="RON">RON - Romanian Leu</option>
-                        <option value="BGN">BGN - Bulgarian Lev</option>
-                        <option value="HRK">HRK - Croatian Kuna</option>
-                        <option value="RUB">RUB - Russian Ruble</option>
-                        <option value="UAH">UAH - Ukrainian Hryvnia</option>
-                        <option value="TRY">TRY - Turkish Lira</option>
-                        <option value="INR">INR - Indian Rupee</option>
-                        <option value="KRW">KRW - South Korean Won</option>
-                        <option value="SGD">SGD - Singapore Dollar</option>
-                        <option value="HKD">HKD - Hong Kong Dollar</option>
-                        <option value="NZD">NZD - New Zealand Dollar</option>
-                        <option value="MXN">MXN - Mexican Peso</option>
-                        <option value="BRL">BRL - Brazilian Real</option>
-                        <option value="ARS">ARS - Argentine Peso</option>
-                        <option value="CLP">CLP - Chilean Peso</option>
-                        <option value="COP">COP - Colombian Peso</option>
-                        <option value="ZAR">ZAR - South African Rand</option>
-                        <option value="EGP">EGP - Egyptian Pound</option>
-                        <option value="AED">AED - UAE Dirham</option>
-                        <option value="SAR">SAR - Saudi Riyal</option>
-                        <option value="ILS">ILS - Israeli Shekel</option>
-                        <option value="THB">THB - Thai Baht</option>
-                        <option value="MYR">MYR - Malaysian Ringgit</option>
-                        <option value="IDR">IDR - Indonesian Rupiah</option>
-                        <option value="PHP">PHP - Philippine Peso</option>
-                        <option value="VND">VND - Vietnamese Dong</option>
-                        <option value="PKR">PKR - Pakistani Rupee</option>
-                        <option value="BDT">BDT - Bangladeshi Taka</option>
-                        <option value="LKR">LKR - Sri Lankan Rupee</option>
-                        <option value="MMK">MMK - Myanmar Kyat</option>
-                        <option value="KZT">KZT - Kazakhstani Tenge</option>
-                        <option value="UZS">UZS - Uzbekistani Som</option>
-                        <option value="GEL">GEL - Georgian Lari</option>
-                        <option value="AMD">AMD - Armenian Dram</option>
-                        <option value="AZN">AZN - Azerbaijani Manat</option>
-                        <option value="BYN">BYN - Belarusian Ruble</option>
-                        <option value="MDL">MDL - Moldovan Leu</option>
-                        <option value="MKD">MKD - North Macedonian Denar</option>
-                        <option value="RSD">RSD - Serbian Dinar</option>
-                        <option value="BAM">BAM - Bosnia-Herzegovina Mark</option>
-                        <option value="ALL">ALL - Albanian Lek</option>
-                        <option value="MNT">MNT - Mongolian Tugrik</option>
-                        <option value="NGN">NGN - Nigerian Naira</option>
-                        <option value="KES">KES - Kenyan Shilling</option>
-                        <option value="GHS">GHS - Ghanaian Cedi</option>
-                        <option value="ETB">ETB - Ethiopian Birr</option>
-                        <option value="UGX">UGX - Ugandan Shilling</option>
-                        <option value="TZS">TZS - Tanzanian Shilling</option>
-                        <option value="MAD">MAD - Moroccan Dirham</option>
-                        <option value="DZD">DZD - Algerian Dinar</option>
-                        <option value="TND">TND - Tunisian Dinar</option>
-                        <option value="XOF">XOF - West African CFA Franc</option>
-                        <option value="XAF">XAF - Central African CFA Franc</option>
-                    </select>
-                </div>
-
-                <div class="input-field">
-                    <label for="displayCurrency" data-i18n="displayCurrency">Display Results In</label>
-                    <select id="displayCurrency">
-                        <option value="USD">USD - US Dollar</option>
-                        <option value="EUR">EUR - Euro</option>
-                        <option value="GBP">GBP - British Pound</option>
-                        <option value="JPY">JPY - Japanese Yen</option>
-                        <option value="CAD">CAD - Canadian Dollar</option>
-                        <option value="AUD">AUD - Australian Dollar</option>
-                        <option value="CHF">CHF - Swiss Franc</option>
-                        <option value="CNY">CNY - Chinese Yuan</option>
-                        <option value="SEK">SEK - Swedish Krona</option>
-                        <option value="NOK">NOK - Norwegian Krone</option>
-                        <option value="DKK">DKK - Danish Krone</option>
-                        <option value="PLN">PLN - Polish Zloty</option>
-                        <option value="CZK">CZK - Czech Koruna</option>
-                        <option value="HUF">HUF - Hungarian Forint</option>
-                        <option value="RON">RON - Romanian Leu</option>
-                        <option value="BGN">BGN - Bulgarian Lev</option>
-                        <option value="HRK">HRK - Croatian Kuna</option>
-                        <option value="RUB">RUB - Russian Ruble</option>
-                        <option value="UAH">UAH - Ukrainian Hryvnia</option>
-                        <option value="TRY">TRY - Turkish Lira</option>
-                        <option value="INR">INR - Indian Rupee</option>
-                        <option value="KRW">KRW - South Korean Won</option>
-                        <option value="SGD">SGD - Singapore Dollar</option>
-                        <option value="HKD">HKD - Hong Kong Dollar</option>
-                        <option value="NZD">NZD - New Zealand Dollar</option>
-                        <option value="MXN">MXN - Mexican Peso</option>
-                        <option value="BRL">BRL - Brazilian Real</option>
-                        <option value="ARS">ARS - Argentine Peso</option>
-                        <option value="CLP">CLP - Chilean Peso</option>
-                        <option value="COP">COP - Colombian Peso</option>
-                        <option value="ZAR">ZAR - South African Rand</option>
-                        <option value="EGP">EGP - Egyptian Pound</option>
-                        <option value="AED">AED - UAE Dirham</option>
-                        <option value="SAR">SAR - Saudi Riyal</option>
-                        <option value="ILS">ILS - Israeli Shekel</option>
-                        <option value="THB">THB - Thai Baht</option>
-                        <option value="MYR">MYR - Malaysian Ringgit</option>
-                        <option value="IDR">IDR - Indonesian Rupiah</option>
-                        <option value="PHP">PHP - Philippine Peso</option>
-                        <option value="VND">VND - Vietnamese Dong</option>
-                        <option value="PKR">PKR - Pakistani Rupee</option>
-                        <option value="BDT">BDT - Bangladeshi Taka</option>
-                        <option value="LKR">LKR - Sri Lankan Rupee</option>
-                        <option value="MMK">MMK - Myanmar Kyat</option>
-                        <option value="KZT">KZT - Kazakhstani Tenge</option>
-                        <option value="UZS">UZS - Uzbekistani Som</option>
-                        <option value="GEL">GEL - Georgian Lari</option>
-                        <option value="AMD">AMD - Armenian Dram</option>
-                        <option value="AZN">AZN - Azerbaijani Manat</option>
-                        <option value="BYN">BYN - Belarusian Ruble</option>
-                        <option value="MDL">MDL - Moldovan Leu</option>
-                        <option value="MKD">MKD - North Macedonian Denar</option>
-                        <option value="RSD">RSD - Serbian Dinar</option>
-                        <option value="BAM">BAM - Bosnia-Herzegovina Mark</option>
-                        <option value="ALL">ALL - Albanian Lek</option>
-                        <option value="MNT">MNT - Mongolian Tugrik</option>
-                        <option value="NGN">NGN - Nigerian Naira</option>
-                        <option value="KES">KES - Kenyan Shilling</option>
-                        <option value="GHS">GHS - Ghanaian Cedi</option>
-                        <option value="ETB">ETB - Ethiopian Birr</option>
-                        <option value="UGX">UGX - Ugandan Shilling</option>
-                        <option value="TZS">TZS - Tanzanian Shilling</option>
-                        <option value="MAD">MAD - Moroccan Dirham</option>
-                        <option value="DZD">DZD - Algerian Dinar</option>
-                        <option value="TND">TND - Tunisian Dinar</option>
-                        <option value="XOF">XOF - West African CFA Franc</option>
-                        <option value="XAF">XAF - Central African CFA Franc</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="loading-info" id="loadingInfo" style="display: none;">
-                <p>🔄 Fetching exchange rates and calculating taxes for all countries...</p>
+        <div class="control-group">
+            <label for="inputCurrency">Input Currency:</label>
+            <select id="inputCurrency">
+                <option value="USD">USD - US Dollar</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="GBP">GBP - British Pound</option>
+                <option value="CAD">CAD - Canadian Dollar</option>
+                <option value="AUD">AUD - Australian Dollar</option>
+                <option value="CHF">CHF - Swiss Franc</option>
+                <option value="SEK">SEK - Swedish Krona</option>
+                <option value="NOK">NOK - Norwegian Krone</option>
+                <option value="DKK">DKK - Danish Krone</option>
+                <option value="ISK">ISK - Icelandic Krona</option>
+                <option value="PLN">PLN - Polish Zloty</option>
+                <option value="UAH">UAH - Ukrainian Hryvnia</option>
+                <option value="RUB">RUB - Russian Ruble</option>
+                <option value="JPY">JPY - Japanese Yen</option>
+                <option value="CNY">CNY - Chinese Yuan</option>
+                <option value="HKD">HKD - Hong Kong Dollar</option>
+                <option value="TWD">TWD - Taiwan New Dollar</option>
+                <option value="MNT">MNT - Mongolian Tugrik</option>
+                <option value="MOP">MOP - Macanese Pataca</option>
+                <option value="KRW">KRW - South Korean Won</option>
+                <option value="SGD">SGD - Singapore Dollar</option>
+                <option value="THB">THB - Thai Baht</option>
+                <option value="IDR">IDR - Indonesian Rupiah</option>
+                <option value="INR">INR - Indian Rupee</option>
+                <option value="ZAR">ZAR - South African Rand</option>
+                <option value="NGN">NGN - Nigerian Naira</option>
+                <option value="EGP">EGP - Egyptian Pound</option>
+                <option value="SAR">SAR - Saudi Riyal</option>
+                <option value="AED">AED - UAE Dirham</option>
+                <option value="BRL">BRL - Brazilian Real</option>
+                <option value="ARS">ARS - Argentine Peso</option>
+                <option value="MXN">MXN - Mexican Peso</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label for="displayCurrency">Display Currency:</label>
+            <select id="displayCurrency">
+                <option value="USD">USD - US Dollar</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="GBP">GBP - British Pound</option>
+                <option value="CAD">CAD - Canadian Dollar</option>
+                <option value="AUD">AUD - Australian Dollar</option>
+                <option value="CHF">CHF - Swiss Franc</option>
+                <option value="SEK">SEK - Swedish Krona</option>
+                <option value="NOK">NOK - Norwegian Krone</option>
+                <option value="DKK">DKK - Danish Krone</option>
+                <option value="ISK">ISK - Icelandic Krona</option>
+                <option value="PLN">PLN - Polish Zloty</option>
+                <option value="UAH">UAH - Ukrainian Hryvnia</option>
+                <option value="RUB">RUB - Russian Ruble</option>
+                <option value="JPY">JPY - Japanese Yen</option>
+                <option value="CNY">CNY - Chinese Yuan</option>
+                <option value="HKD">HKD - Hong Kong Dollar</option>
+                <option value="TWD">TWD - Taiwan New Dollar</option>
+                <option value="MNT">MNT - Mongolian Tugrik</option>
+                <option value="MOP">MOP - Macanese Pataca</option>
+                <option value="KRW">KRW - South Korean Won</option>
+                <option value="SGD">SGD - Singapore Dollar</option>
+                <option value="THB">THB - Thai Baht</option>
+                <option value="IDR">IDR - Indonesian Rupiah</option>
+                <option value="INR">INR - Indian Rupee</option>
+                <option value="ZAR">ZAR - South African Rand</option>
+                <option value="NGN">NGN - Nigerian Naira</option>
+                <option value="EGP">EGP - Egyptian Pound</option>
+                <option value="SAR">SAR - Saudi Riyal</option>
+                <option value="AED">AED - UAE Dirham</option>
+                <option value="BRL">BRL - Brazilian Real</option>
+                <option value="ARS">ARS - Argentine Peso</option>
+                <option value="MXN">MXN - Mexican Peso</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label style="display: flex; align-items: center; cursor: pointer; font-size: 14px;">
+                <input type="checkbox" id="includeSocialSecurity" checked style="margin-right: 8px; transform: scale(1.2);">
+                <span>🏥 Include Employer Social Security in tax</span>
+            </label>
+            <div style="font-size: 11px; color: #666; margin-top: 4px; margin-left: 24px;">
+                ${i18n.t('includeEmployerContributions')}<br>
+                <span style="font-size: 10px; font-style: italic;">${i18n.t('employeeSSAlwaysIncluded')}</span>
             </div>
         </div>
-
-        <div class="map-container">
-            <div class="map-header">
-                <div class="map-title">
-                    <h2 data-i18n="mapTitle">🗺️ Interactive Tax Visualization Map</h2>
-                    <p data-i18n="mapSubtitle" data-i18n-params='{"currency":"USD"}'>Map colors represent actual tax burden in <span class="currency-display">USD</span>. Click markers for detailed information.</p>
-                </div>
-                <button id="fullscreenToggle" class="fullscreen-btn" data-i18n-title="toggleFullscreen" title="Toggle fullscreen map">
-                    <span class="expand-icon">⤢</span>
-                    <span class="contract-icon" style="display: none;">⤡</span>
-                </button>
-            </div>
-
-            <!-- Compact input section for fullscreen mode -->
-            <div class="fullscreen-inputs" id="fullscreenInputs" style="display: none;">
-                <div class="compact-input-group">
-                    <div class="compact-input-field">
-                        <label for="fullscreenSalary" data-i18n="monthlySalary">Monthly Salary</label>
-                        <input type="number" id="fullscreenSalary" data-i18n-placeholder="salaryPlaceholder" placeholder="Enter salary" min="0" step="50">
-                    </div>
-                    <div class="compact-input-field">
-                        <label for="fullscreenInputCurrency" data-i18n="inputCurrency">Input Currency</label>
-                        <select id="fullscreenInputCurrency">
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="GBP">GBP</option>
-                            <option value="JPY">JPY</option>
-                            <option value="CAD">CAD</option>
-                            <option value="AUD">AUD</option>
-                            <option value="CHF">CHF</option>
-                            <option value="CNY">CNY</option>
-                            <option value="SEK">SEK</option>
-                            <option value="NOK">NOK</option>
-                            <option value="DKK">DKK</option>
-                            <option value="PLN">PLN</option>
-                            <option value="CZK">CZK</option>
-                            <option value="HUF">HUF</option>
-                            <option value="RON">RON</option>
-                            <option value="BGN">BGN</option>
-                            <option value="HRK">HRK</option>
-                            <option value="RUB">RUB</option>
-                            <option value="UAH">UAH</option>
-                            <option value="TRY">TRY</option>
-                            <option value="INR">INR</option>
-                            <option value="KRW">KRW</option>
-                            <option value="SGD">SGD</option>
-                            <option value="HKD">HKD</option>
-                            <option value="NZD">NZD</option>
-                            <option value="MXN">MXN</option>
-                            <option value="BRL">BRL</option>
-                            <option value="ARS">ARS</option>
-                            <option value="CLP">CLP</option>
-                            <option value="COP">COP</option>
-                            <option value="ZAR">ZAR</option>
-                            <option value="EGP">EGP</option>
-                            <option value="AED">AED</option>
-                            <option value="SAR">SAR</option>
-                            <option value="ILS">ILS</option>
-                            <option value="THB">THB</option>
-                            <option value="MYR">MYR</option>
-                            <option value="IDR">IDR</option>
-                            <option value="PHP">PHP</option>
-                            <option value="VND">VND</option>
-                            <option value="PKR">PKR</option>
-                            <option value="BDT">BDT</option>
-                            <option value="LKR">LKR</option>
-                            <option value="MMK">MMK</option>
-                            <option value="KZT">KZT</option>
-                            <option value="UZS">UZS</option>
-                            <option value="GEL">GEL</option>
-                            <option value="AMD">AMD</option>
-                            <option value="AZN">AZN</option>
-                            <option value="BYN">BYN</option>
-                            <option value="MDL">MDL</option>
-                            <option value="MKD">MKD</option>
-                            <option value="RSD">RSD</option>
-                            <option value="BAM">BAM</option>
-                            <option value="ALL">ALL</option>
-                            <option value="MNT">MNT</option>
-                            <option value="NGN">NGN</option>
-                            <option value="KES">KES</option>
-                            <option value="GHS">GHS</option>
-                            <option value="ETB">ETB</option>
-                            <option value="UGX">UGX</option>
-                            <option value="TZS">TZS</option>
-                            <option value="MAD">MAD</option>
-                            <option value="DZD">DZD</option>
-                            <option value="TND">TND</option>
-                            <option value="XOF">XOF</option>
-                            <option value="XAF">XAF</option>
-                        </select>
-                    </div>
-                    <div class="compact-input-field">
-                        <label for="fullscreenDisplayCurrency" data-i18n="displayCurrency">Display Currency</label>
-                        <select id="fullscreenDisplayCurrency">
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="GBP">GBP</option>
-                            <option value="JPY">JPY</option>
-                            <option value="CAD">CAD</option>
-                            <option value="AUD">AUD</option>
-                            <option value="CHF">CHF</option>
-                            <option value="CNY">CNY</option>
-                            <option value="SEK">SEK</option>
-                            <option value="NOK">NOK</option>
-                            <option value="DKK">DKK</option>
-                            <option value="PLN">PLN</option>
-                            <option value="CZK">CZK</option>
-                            <option value="HUF">HUF</option>
-                            <option value="RON">RON</option>
-                            <option value="BGN">BGN</option>
-                            <option value="HRK">HRK</option>
-                            <option value="RUB">RUB</option>
-                            <option value="UAH">UAH</option>
-                            <option value="TRY">TRY</option>
-                            <option value="INR">INR</option>
-                            <option value="KRW">KRW</option>
-                            <option value="SGD">SGD</option>
-                            <option value="HKD">HKD</option>
-                            <option value="NZD">NZD</option>
-                            <option value="MXN">MXN</option>
-                            <option value="BRL">BRL</option>
-                            <option value="ARS">ARS</option>
-                            <option value="CLP">CLP</option>
-                            <option value="COP">COP</option>
-                            <option value="ZAR">ZAR</option>
-                            <option value="EGP">EGP</option>
-                            <option value="AED">AED</option>
-                            <option value="SAR">SAR</option>
-                            <option value="ILS">ILS</option>
-                            <option value="THB">THB</option>
-                            <option value="MYR">MYR</option>
-                            <option value="IDR">IDR</option>
-                            <option value="PHP">PHP</option>
-                            <option value="VND">VND</option>
-                            <option value="PKR">PKR</option>
-                            <option value="BDT">BDT</option>
-                            <option value="LKR">LKR</option>
-                            <option value="MMK">MMK</option>
-                            <option value="KZT">KZT</option>
-                            <option value="UZS">UZS</option>
-                            <option value="GEL">GEL</option>
-                            <option value="AMD">AMD</option>
-                            <option value="AZN">AZN</option>
-                            <option value="BYN">BYN</option>
-                            <option value="MDL">MDL</option>
-                            <option value="MKD">MKD</option>
-                            <option value="RSD">RSD</option>
-                            <option value="BAM">BAM</option>
-                            <option value="ALL">ALL</option>
-                            <option value="MNT">MNT</option>
-                            <option value="NGN">NGN</option>
-                            <option value="KES">KES</option>
-                            <option value="GHS">GHS</option>
-                            <option value="ETB">ETB</option>
-                            <option value="UGX">UGX</option>
-                            <option value="TZS">TZS</option>
-                            <option value="MAD">MAD</option>
-                            <option value="DZD">DZD</option>
-                            <option value="TND">TND</option>
-                            <option value="XOF">XOF</option>
-                            <option value="XAF">XAF</option>
-                        </select>
-                    </div>
-                    <div class="compact-input-field">
-                        <button id="fullscreenViewToggle" class="view-toggle-btn" title="Toggle labels view">
-                            <span class="grid-icon">⚏</span>
-                            <span class="map-icon" style="display: none;">🗺</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="world-map" id="worldMap">
-                <div class="map-loading" id="mapLoading">
-                    <div class="loading-spinner"></div>
-                    <p>Calculating taxes...</p>
-                </div>
-                <!-- Grid view container -->
-                <div class="labels-grid" id="labelsGrid">
-                    <!-- Grid cards will be populated here -->
-                </div>
-            </div>
-
-            <div class="tax-legend">
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #28a745;"></div>
-                    <span data-i18n="taxHavens">Tax Havens (0%)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #40c057;"></div>
-                    <span data-i18n="veryLow">Very Low (≤10%)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #69db7c;"></div>
-                    <span data-i18n="low">Low (≤20%)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #ffeb3b;"></div>
-                    <span data-i18n="moderate">Moderate (≤30%)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #ff9800;"></div>
-                    <span data-i18n="medium">Medium (≤40%)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #f44336;"></div>
-                    <span data-i18n="high">High (≤50%)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #b71c1c;"></div>
-                    <span data-i18n="highest">Highest (>50%)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #9e9e9e;"></div>
-                    <span data-i18n="noCalculation">No Calculation</span>
-                </div>
+        <div class="control-group">
+            <label style="display: flex; align-items: center; cursor: pointer; font-size: 14px;">
+                <input type="checkbox" id="includeVAT" checked style="margin-right: 8px; transform: scale(1.2);">
+                <span>🛍️ Include VAT in calculations</span>
+            </label>
+            <div style="font-size: 11px; color: #666; margin-top: 4px; margin-left: 24px;">
+                ${i18n.t('vatAppliesToSpending')}
             </div>
         </div>
-
-        <!-- Results Table Section -->
-        <div class="results-section" id="resultsTableContainer" style="display: none;">
-            <div class="results-header">
-                <h2 data-i18n="resultsTitle">📊 Tax Comparison Results</h2>
-                <div class="results-controls">
-                    <input type="text" id="countrySearch" class="search-box" data-i18n-placeholder="searchCountries" placeholder="Search countries...">
-                    <button id="exportBtn" class="export-btn" data-i18n="exportCsv">📥 Export CSV</button>
-                </div>
-            </div>
-
-            <div class="summary-stats">
-                <div class="stat-item">
-                    <h4 data-i18n="totalCountries">Countries Analyzed</h4>
-                    <div class="stat-value" id="totalCountries">0</div>
-                </div>
-                <div class="stat-item">
-                    <h4 data-i18n="averageTax" data-i18n-params='{"currency":"USD"}'>Average Tax (<span class="currency-display">USD</span>)</h4>
-                    <div class="stat-value" id="avgTax">$0</div>
-                </div>
-                <div class="stat-item">
-                    <h4 data-i18n="highestTax" data-i18n-params='{"currency":"USD"}'>Highest Tax</h4>
-                    <div class="stat-value" id="maxTax">$0</div>
-                </div>
-                <div class="stat-item">
-                    <h4 data-i18n="lowestTax" data-i18n-params='{"currency":"USD"}'>Lowest Tax</h4>
-                    <div class="stat-value" id="minTax">$0</div>
-                </div>
-            </div>
-
-            <div class="results-table-container">
-                <table class="results-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th class="sort-header" data-column="countryName" onclick="window.sortTable('countryName')">
-                                Country <span class="sort-indicator">↕</span>
-                            </th>
-                            <th class="sort-header" data-column="taxAmountInDisplayCurrency" onclick="window.sortTable('taxAmountInDisplayCurrency')">
-                                Annual Tax (<span class="currency-display">USD</span>) <span class="sort-indicator">↓</span>
-                            </th>
-                            <th class="sort-header" data-column="effectiveRate" onclick="window.sortTable('effectiveRate')">
-                                Tax Rate <span class="sort-indicator">↕</span>
-                            </th>
-                            <th class="sort-header" data-column="netIncomeInDisplayCurrency" onclick="window.sortTable('netIncomeInDisplayCurrency')">
-                                Net Income (<span class="currency-display">USD</span>) <span class="sort-indicator">↕</span>
-                            </th>
-                            <th>Local Currency</th>
-                            <th>Exchange Rate</th>
-                        </tr>
-                    </thead>
-                    <tbody id="resultsTableBody">
-                        <!-- Results will be populated here -->
-                    </tbody>
-                </table>
-            </div>
+        <div class="control-group">
+            <label for="language">🌐 Language:</label>
+            <select id="language" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+                <option value="en">🇺🇸 English</option>
+                <option value="uk">🇺🇦 Українська</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="it">🇮🇹 Italiano</option>
+                <option value="es">🇪🇸 Español</option>
+            </select>
         </div>
-
-        <div class="disclaimer">
-            <strong data-i18n="disclaimer">📌 Disclaimer:</strong> <span data-i18n="disclaimerText">This calculator provides estimates based on basic income tax brackets for 2024-2025.
-            Actual taxes may vary due to deductions, credits, social security contributions, municipal taxes, and other factors.
-            Consult a tax professional for accurate calculations. Data covers 146+ countries with progressive, flat, and zero-tax systems.</span>
+        <button class="calculate-btn" id="calculate-btn">Calculate Taxes</button>
+        <div style="margin-top: 10px; font-size: 11px; color: #666; text-align: center;" id="exchange-rate-status">
+            💱 Loading...
         </div>
     </div>
 
-    <!-- Leaflet JavaScript -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
+    <div class="info-panel" id="info-panel">
+        <h3>Country Information</h3>
+        <p>Click on a country label to see details</p>
+    </div>
+    <div class="zoom-controls">
+        <span>Zoom Level: <span id="zoom-level">3</span></span>
+    </div>
 
-    <!-- Custom JavaScript modules -->
-    <script type="module" src="js/translations.js"></script>
-    <script type="module" src="js/i18nHelper.js"></script>
-    <script type="module" src="js/currencyDropdown.js"></script>
-    <script type="module" src="js/app.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module">
+        import { taxData } from './js/taxData.js';
+        import { i18n } from './js/languages.js';
+
+        // Enhanced Currency service with real-time exchange rates
+        class CurrencyService {
+            constructor() {
+                this.exchangeRates = {};
+                this.baseCurrency = 'USD';
+                this.lastUpdated = null;
+                this.isLoading = false;
+                // Using exchangerate-api.com (free tier: 1500 requests/month)
+                this.apiUrl = 'https://api.exchangerate-api.com/v4/latest/USD';
+
+                // Fallback rates in case API fails (all countries from taxData)
+                this.fallbackRates = {
+                    'USD': 1.0,    // US Dollar
+                    'EUR': 0.85,   // Euro (Germany, France, Spain, Italy, Netherlands, Austria, Belgium, Portugal, Ireland, Finland, Slovenia, Lithuania, Estonia, Latvia, Slovakia, Luxembourg)
+                    'GBP': 0.73,   // British Pound (United Kingdom)
+                    'CAD': 1.25,   // Canadian Dollar (Canada)
+                    'AUD': 1.35,   // Australian Dollar (Australia)
+                    'CHF': 0.92,   // Swiss Franc (Switzerland)
+                    'SEK': 8.5,    // Swedish Krona (Sweden)
+                    'NOK': 8.8,    // Norwegian Krone (Norway)
+                    'DKK': 6.3,    // Danish Krone (Denmark)
+                    'ISK': 120,    // Icelandic Krona (Iceland)
+                    'PLN': 3.9,    // Polish Zloty (Poland)
+                    'UAH': 27,     // Ukrainian Hryvnia (Ukraine)
+                    'RUB': 75,     // Russian Ruble (Russia)
+                    'JPY': 110,    // Japanese Yen (Japan)
+                    'CNY': 6.45,   // Chinese Yuan (China)
+                    'HKD': 7.8,    // Hong Kong Dollar (Hong Kong)
+                    'TWD': 28,     // Taiwan New Dollar (Taiwan)
+                    'MNT': 2500,   // Mongolian Tugrik (Mongolia)
+                    'MOP': 8.1,    // Macanese Pataca (Macau)
+                    'KRW': 1180,   // South Korean Won (South Korea)
+                    'SGD': 1.35,   // Singapore Dollar (Singapore)
+                    'THB': 31,     // Thai Baht (Thailand)
+                    'IDR': 14200,  // Indonesian Rupiah (Indonesia)
+                    'INR': 74,     // Indian Rupee (India)
+                    'ZAR': 14.5,   // South African Rand (South Africa)
+                    'NGN': 411,    // Nigerian Naira (Nigeria)
+                    'EGP': 15.7,   // Egyptian Pound (Egypt)
+                    'SAR': 3.75,   // Saudi Riyal (Saudi Arabia)
+                    'AED': 3.67,   // UAE Dirham (United Arab Emirates)
+                    'BRL': 5.2,    // Brazilian Real (Brazil)
+                    'ARS': 98,     // Argentine Peso (Argentina)
+                    'MXN': 20      // Mexican Peso (Mexico)
+                };
+            }
+
+            async fetchExchangeRates() {
+                if (this.isLoading) return;
+
+                this.isLoading = true;
+                if (exchangeRateStatus) {
+                    updateExchangeRateStatus('loading');
+                    exchangeRateStatus.style.color = '#007bff';
+                }
+
+                try {
+                    console.log('🔄 Fetching real-time exchange rates...');
+                    const response = await fetch(this.apiUrl);
+
+                    if (!response.ok) {
+                        throw new Error(`API responded with status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    this.exchangeRates = data.rates;
+                    this.exchangeRates['USD'] = 1; // Ensure USD base is 1
+                    this.lastUpdated = new Date();
+
+                    console.log('✅ Exchange rates updated successfully from API');
+                    console.log(`📊 Loaded ${Object.keys(this.exchangeRates).length} currency rates`);
+
+                    if (exchangeRateStatus) {
+                        updateExchangeRateStatus('success');
+                        exchangeRateStatus.style.color = '#28a745';
+                    }
+                    return true;
+
+                } catch (error) {
+                    console.warn('⚠️ Failed to fetch real-time rates, using fallback:', error.message);
+                    this.exchangeRates = { ...this.fallbackRates };
+                    this.lastUpdated = new Date();
+
+                    if (exchangeRateStatus) {
+                        updateExchangeRateStatus('fallback');
+                        exchangeRateStatus.style.color = '#ffc107';
+                    }
+                    return false;
+                } finally {
+                    this.isLoading = false;
+                }
+            }
+
+            async ensureRatesLoaded() {
+                if (Object.keys(this.exchangeRates).length === 0 && !this.isLoading) {
+                    await this.fetchExchangeRates();
+                }
+            }
+
+            convertCurrency(amount, fromCurrency, toCurrency) {
+                if (fromCurrency === toCurrency) return amount;
+
+                const fromRate = this.exchangeRates[fromCurrency];
+                const toRate = this.exchangeRates[toCurrency];
+
+                if (!fromRate || !toRate) {
+                    console.warn(`⚠️ Missing exchange rate for ${fromCurrency} to ${toCurrency}, using fallback`);
+                    const fallbackFromRate = this.fallbackRates[fromCurrency] || 1;
+                    const fallbackToRate = this.fallbackRates[toCurrency] || 1;
+                    return (amount / fallbackFromRate) * fallbackToRate;
+                }
+
+                // Convert via USD: amount (fromCurrency) → USD → toCurrency
+                return (amount / fromRate) * toRate;
+            }
+
+            getExchangeRate(fromCurrency, toCurrency) {
+                if (fromCurrency === toCurrency) return 1;
+
+                const fromRate = this.exchangeRates[fromCurrency];
+                const toRate = this.exchangeRates[toCurrency];
+
+                if (!fromRate || !toRate) {
+                    console.warn(`⚠️ Missing exchange rate for ${fromCurrency} to ${toCurrency}`);
+                    const fallbackFromRate = this.fallbackRates[fromCurrency] || 1;
+                    const fallbackToRate = this.fallbackRates[toCurrency] || 1;
+                    return fallbackToRate / fallbackFromRate;
+                }
+
+                return toRate / fromRate;
+            }
+
+            isRatesLoaded() {
+                return Object.keys(this.exchangeRates).length > 0;
+            }
+
+            getLastUpdated() {
+                return this.lastUpdated;
+            }
+
+            getRateSource() {
+                return this.lastUpdated && Object.keys(this.exchangeRates).length > Object.keys(this.fallbackRates).length ? 'API' : 'Fallback';
+            }
+
+            async refreshRates() {
+                return await this.fetchExchangeRates();
+            }
+        }
+
+        const currencyService = new CurrencyService();
+
+        // Tax calculation functions
+        function calculateProgressiveTax(annualIncome, brackets) {
+            let totalTax = 0;
+            let remainingIncome = annualIncome;
+
+            for (let bracket of brackets) {
+                if (remainingIncome <= 0) break;
+
+                const bracketMin = bracket.min;
+                const bracketMax = bracket.max || Infinity;
+                const bracketSize = bracketMax - bracketMin;
+                const taxableInThisBracket = Math.min(remainingIncome, bracketSize);
+
+                if (annualIncome > bracketMin) {
+                    const effectiveTaxableAmount = Math.min(taxableInThisBracket, annualIncome - bracketMin);
+                    totalTax += effectiveTaxableAmount * (bracket.rate / 100);
+                }
+
+                remainingIncome -= taxableInThisBracket;
+            }
+
+            return totalTax;
+        }
+
+        function calculateVAT(netIncome, vatInfo) {
+            if (!vatInfo || !vatInfo.hasVAT) {
+                return { vatAmount: 0, vatRate: 0, hasVAT: false };
+            }
+
+            const vatRate = vatInfo.standard;
+            const vatAmount = (netIncome * vatRate) / (100 + vatRate);
+
+            return {
+                vatAmount,
+                vatRate,
+                hasVAT: true,
+                vatNotes: vatInfo.notes || '',
+                vatDescription: vatInfo.description || ''
+            };
+        }
+
+        function calculateSocialSecurity(grossSalary, socialSecurityInfo) {
+            if (!socialSecurityInfo) {
+                return {
+                    employeeContribution: 0,
+                    employerContribution: 0,
+                    totalContribution: 0,
+                    employeeRate: 0,
+                    employerRate: 0,
+                    hasSocialSecurity: false,
+                    notes: ''
+                };
+            }
+
+            const employeeRate = socialSecurityInfo.employeeRate || 0;
+            const employerRate = socialSecurityInfo.employerRate || 0;
+
+            const employeeContribution = grossSalary * (employeeRate / 100);
+            const employerContribution = grossSalary * (employerRate / 100);
+            const totalContribution = employeeContribution + employerContribution;
+
+            return {
+                employeeContribution,
+                employerContribution,
+                totalContribution,
+                employeeRate,
+                employerRate,
+                hasSocialSecurity: true,
+                notes: socialSecurityInfo.notes || ''
+            };
+        }
+
+        // Calculate actual gross salary from total employment budget when employer SS is included
+        function calculateGrossSalaryFromTotalBudget(totalBudget, socialSecurityInfo, includeEmployerSS) {
+            if (!includeEmployerSS || !socialSecurityInfo) {
+                return totalBudget; // If employer SS not included, total budget = gross salary
+            }
+
+            const employerRate = socialSecurityInfo.employerRate || 0;
+
+            // totalBudget = grossSalary + (grossSalary * employerRate / 100)
+            // totalBudget = grossSalary * (1 + employerRate / 100)
+            // grossSalary = totalBudget / (1 + employerRate / 100)
+
+            return totalBudget / (1 + employerRate / 100);
+        }
+
+        async function calculateTaxForCountry(countryKey, monthlySalary, inputCurrency, displayCurrency, includeVAT = true, includeSocialSecurity = true) {
+            try {
+                // Ensure exchange rates are loaded
+                await currencyService.ensureRatesLoaded();
+
+                const countryInfo = taxData[countryKey];
+                if (!countryInfo) {
+                    console.warn(`No country info found for: ${countryKey}`);
+                    return null;
+                }
+
+                // Convert monthly salary to annual in country's local currency
+                const annualBudgetInInputCurrency = monthlySalary * 12;
+                const annualBudgetInLocalCurrency = currencyService.convertCurrency(
+                    annualBudgetInInputCurrency,
+                    inputCurrency,
+                    countryInfo.currency
+                );
+
+                // Calculate actual gross salary from total budget (reverse calculation when employer SS included)
+                const annualGrossSalaryInLocalCurrency = calculateGrossSalaryFromTotalBudget(
+                    annualBudgetInLocalCurrency,
+                    countryInfo.socialSecurity,
+                    includeSocialSecurity
+                );
+
+                // Calculate income tax based on actual gross salary
+                let incomeTax = 0;
+                if (countryInfo.system === 'progressive') {
+                    incomeTax = calculateProgressiveTax(annualGrossSalaryInLocalCurrency, countryInfo.brackets);
+                } else if (countryInfo.system === 'flat') {
+                    incomeTax = annualGrossSalaryInLocalCurrency * (countryInfo.brackets[0].rate / 100);
+                } else if (countryInfo.system === 'zero_personal') {
+                    incomeTax = 0;
+                }
+
+                // Calculate special taxes (like military tax in Ukraine)
+                let specialTaxAmount = 0;
+                let specialTaxBreakdown = [];
+                if (countryInfo.special_taxes && Array.isArray(countryInfo.special_taxes)) {
+                    for (const tax of countryInfo.special_taxes) {
+                        let taxBase = 0;
+                        // Determine tax base based on target
+                        switch (tax.target) {
+                            case 'gross':
+                                taxBase = annualGrossSalaryInLocalCurrency;
+                                break;
+                            case 'net':
+                                // For now, use gross income - could be enhanced to use actual net income
+                                taxBase = annualGrossSalaryInLocalCurrency;
+                                break;
+                            default:
+                                taxBase = annualGrossSalaryInLocalCurrency;
+                        }
+
+                        const taxAmount = taxBase * (tax.rate / 100);
+                        specialTaxAmount += taxAmount;
+
+                        specialTaxBreakdown.push({
+                            type: tax.type,
+                            rate: tax.rate,
+                            target: tax.target,
+                            description: tax.description,
+                            taxBase: taxBase,
+                            taxAmount: taxAmount
+                        });
+                    }
+                }
+
+                // ALWAYS calculate social security contributions based on actual gross salary
+                const socialSecurityResult = calculateSocialSecurity(annualGrossSalaryInLocalCurrency, countryInfo.socialSecurity);
+
+                // Net income after income tax, special taxes, and employee social security (employee SS always deducted)
+                const netIncomeAfterTax = annualGrossSalaryInLocalCurrency - incomeTax - specialTaxAmount - socialSecurityResult.employeeContribution;
+
+                // Calculate VAT only if includeVAT is true
+                const vatResult = includeVAT ? calculateVAT(netIncomeAfterTax, countryInfo.vat) : { vatAmount: 0, vatRate: 0, hasVAT: false, vatNotes: '', vatDescription: '' };
+
+                // Convert results to display currency
+                const incomeTaxInDisplayCurrency = currencyService.convertCurrency(
+                    incomeTax,
+                    countryInfo.currency,
+                    displayCurrency
+                );
+                const specialTaxAmountInDisplayCurrency = currencyService.convertCurrency(
+                    specialTaxAmount,
+                    countryInfo.currency,
+                    displayCurrency
+                );
+                const vatAmountInDisplayCurrency = currencyService.convertCurrency(
+                    vatResult.vatAmount,
+                    countryInfo.currency,
+                    displayCurrency
+                );
+                const employeeSSInDisplayCurrency = currencyService.convertCurrency(
+                    socialSecurityResult.employeeContribution,
+                    countryInfo.currency,
+                    displayCurrency
+                );
+                const employerSSInDisplayCurrency = currencyService.convertCurrency(
+                    socialSecurityResult.employerContribution,
+                    countryInfo.currency,
+                    displayCurrency
+                );
+                const netIncomeInDisplayCurrency = currencyService.convertCurrency(
+                    netIncomeAfterTax - vatResult.vatAmount,
+                    countryInfo.currency,
+                    displayCurrency
+                );
+
+                // Total tax burden ALWAYS includes income tax, special taxes, and employee social security, plus VAT
+                // If includeSocialSecurity is true, ALSO include employer social security in the total tax burden
+                const employeeTaxBurden = incomeTaxInDisplayCurrency + specialTaxAmountInDisplayCurrency + employeeSSInDisplayCurrency + vatAmountInDisplayCurrency;
+                const totalTax = employeeTaxBurden + (includeSocialSecurity ? employerSSInDisplayCurrency : 0);
+
+                // Effective rate calculated against the input budget amount
+                const effectiveRate = (totalTax / annualBudgetInInputCurrency) * 100;
+
+                // Convert gross salary back to display currency for return
+                const annualGrossSalaryInDisplayCurrency = currencyService.convertCurrency(
+                    annualGrossSalaryInLocalCurrency,
+                    countryInfo.currency,
+                    displayCurrency
+                );
+
+                return {
+                    countryKey,
+                    countryName: countryInfo.name,
+                    currency: countryInfo.currency,
+                    system: countryInfo.system,
+                    annualBudget: annualBudgetInInputCurrency, // Total budget amount entered
+                    annualSalary: annualGrossSalaryInDisplayCurrency, // Actual gross salary (after employer SS deducted if applicable)
+                    incomeTax: incomeTaxInDisplayCurrency,
+                    specialTaxAmount: specialTaxAmountInDisplayCurrency,
+                    specialTaxes: specialTaxBreakdown,
+                    hasSpecialTaxes: specialTaxBreakdown.length > 0,
+                    vatAmount: vatAmountInDisplayCurrency,
+                    employeeSocialSecurity: employeeSSInDisplayCurrency,
+                    employerSocialSecurity: employerSSInDisplayCurrency,
+                    totalSocialSecurity: employeeSSInDisplayCurrency + employerSSInDisplayCurrency,
+                    employeeTaxBurden: employeeTaxBurden, // Income tax + special taxes + employee SS + VAT
+                    totalTax, // Employee burden + employer SS (if enabled)
+                    netIncome: netIncomeInDisplayCurrency,
+                    effectiveRate,
+                    displayCurrency,
+                    hasVAT: vatResult.hasVAT,
+                    vatRate: vatResult.vatRate,
+                    vatNotes: vatResult.vatNotes,
+                    vatDescription: vatResult.vatDescription,
+                    hasSocialSecurity: socialSecurityResult.hasSocialSecurity,
+                    employeeSSRate: socialSecurityResult.employeeRate,
+                    employerSSRate: socialSecurityResult.employerRate,
+                    socialSecurityNotes: socialSecurityResult.notes,
+                    includeEmployerSSInTotal: includeSocialSecurity // Track if employer SS is included in total
+                };
+            } catch (error) {
+                console.error(`Error calculating tax for ${countryKey}:`, error);
+                return null;
+            }
+        }
+
+        // Initialize the map
+        const map = L.map('map').setView([20, 0], 3);
+
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 18
+        }).addTo(map);
+
+        // Store all markers and labels for zoom-responsive behavior
+        const countryMarkers = {};
+        const countryLabels = {};
+        let taxResults = [];
+
+        // Info panel element
+        const infoPanel = document.getElementById('info-panel');
+        const zoomLevelSpan = document.getElementById('zoom-level');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const salaryInput = document.getElementById('salary');
+        const inputCurrencySelect = document.getElementById('inputCurrency');
+        const displayCurrencySelect = document.getElementById('displayCurrency');
+        const includeSocialSecurityCheckbox = document.getElementById('includeSocialSecurity');
+        const includeVATCheckbox = document.getElementById('includeVAT');
+        const exchangeRateStatus = document.getElementById('exchange-rate-status');
+        const languageSelect = document.getElementById('language');
+
+        // Language system initialization
+        function updateUILanguage() {
+            // Update page title
+            document.title = i18n.t('pageTitle');
+
+            // Update labels
+            const salaryLabel = document.getElementById('salaryLabel');
+            if (includeSocialSecurityCheckbox.checked) {
+                salaryLabel.textContent = i18n.t('monthlyEmployerBudget');
+            } else {
+                salaryLabel.textContent = i18n.t('monthlySalary');
+            }
+
+            // Update other labels
+            document.querySelector('label[for="inputCurrency"]').textContent = i18n.t('inputCurrency');
+            document.querySelector('label[for="displayCurrency"]').textContent = i18n.t('displayCurrency');
+            document.querySelector('label[for="language"]').textContent = i18n.t('language');
+
+            // Update checkbox labels
+            includeSocialSecurityCheckbox.nextElementSibling.innerHTML = `🏥 ${i18n.t('includeEmployerSS')}`;
+            includeVATCheckbox.nextElementSibling.innerHTML = `🛍️ ${i18n.t('includeVAT')}`;
+
+            // Update button
+            calculateBtn.textContent = i18n.t('calculateTaxes');
+
+            // Update info panel if it's in initial state
+            const infoPanelH3 = infoPanel.querySelector('h3');
+            if (infoPanelH3 && infoPanelH3.textContent === 'Country Information') {
+                updateInitialInfoPanel();
+            }
+        }
+
+        function updateInitialInfoPanel() {
+            infoPanel.innerHTML = `
+                <h3>${i18n.t('mainTitle')}</h3>
+                <p>${i18n.t('subtitle', { count: Object.keys(taxData).length })}</p>
+                <p>${i18n.t('description')}</p>
+                <p>${i18n.t('mapDescription')}</p>
+            `;
+        }
+
+        function updateExchangeRateStatus(status, message) {
+            let translatedMessage;
+            switch (status) {
+                case 'loading':
+                    translatedMessage = i18n.t('exchangeRateLoading');
+                    break;
+                case 'success':
+                    translatedMessage = i18n.t('exchangeRateSuccess');
+                    break;
+                case 'fallback':
+                    translatedMessage = i18n.t('exchangeRateFallback');
+                    break;
+                default:
+                    translatedMessage = message || '';
+            }
+            exchangeRateStatus.textContent = translatedMessage;
+        }
+
+        // Set initial language from saved preference
+        languageSelect.value = i18n.getCurrentLanguage();
+        updateUILanguage();
+
+        // Enhanced popup functions adapted from index.html MapComponent
+        function getTaxBurdenColor(taxRate) {
+            if (taxRate === 0) return '#28a745';
+            if (taxRate <= 10) return '#40c057';
+            if (taxRate <= 20) return '#69db7c';
+            if (taxRate <= 30) return '#ffeb3b';
+            if (taxRate <= 40) return '#ff9800';
+            if (taxRate <= 50) return '#f44336';
+            if (taxRate <= 60) return '#d32f2f';
+            return '#b71c1c';
+        }
+
+        function formatNumber(number) {
+            if (typeof number !== 'number') return '0';
+            // Ensure proper formatting with commas for thousands
+            return Math.round(number).toLocaleString('en-US');
+        }
+
+        function updateMarkerPopup(marker, countryKey, countryData, taxResult = null) {
+            const vatInfo = countryData.vat;
+            const isCalculated = taxResult !== null;
+            const mainColor = isCalculated ? getTaxBurdenColor(taxResult.effectiveRate) : '#9e9e9e';
+            const headerTextColor = isCalculated && taxResult.effectiveRate > 35 ? '#ffffff' : '#333333';
+
+            const popupContent = buildEnhancedPopup(countryData, taxResult, vatInfo, mainColor, headerTextColor, isCalculated);
+            marker.bindPopup(popupContent, {
+                maxWidth: 350,
+                className: 'enhanced-tax-popup'
+            });
+        }
+
+        function buildEnhancedPopup(countryInfo, taxResult, vatInfo, color, headerTextColor, isCalculated) {
+            const icon = isCalculated ? '🏆' : '🌍';
+            const status = isCalculated ? 'Calculated' : 'Ready to Calculate';
+
+            return `
+                <div class="unified-tax-popup">
+                    <div class="popup-header" style="background: ${color}; color: ${headerTextColor}; padding: 12px; border-radius: 8px 8px 0 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: bold; font-size: 16px; margin-bottom: 2px;">
+                                    ${icon} ${countryInfo.name}
+                                </div>
+                                <div style="font-size: 11px; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    ${i18n.t(countryInfo.system)} ${i18n.t('system')} • ${status}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup-body" style="padding: 12px;">
+                        ${buildCountryInfoSection(countryInfo, vatInfo, color)}
+                        ${isCalculated ? buildTaxCalculationSection(taxResult, color, countryInfo) : buildPreCalculationSection(color, countryInfo.name)}
+                        ${isCalculated ? buildSimpleAdditionalInfoSection(countryInfo, taxResult, color) : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildCountryInfoSection(countryInfo, vatInfo, color) {
+            return `
+                <div class="country-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                    <div class="info-card" style="background: linear-gradient(135deg, ${color}22, ${color}11); border: 1px solid ${color}44; border-radius: 6px; padding: 8px; text-align: center;">
+                        <div style="font-size: 10px; color: ${color}; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Currency</div>
+                        <div style="font-weight: bold; color: #333; margin-top: 2px;">${countryInfo.currency}</div>
+                    </div>
+                    <div class="info-card" style="background: linear-gradient(135deg, ${color}22, ${color}11); border: 1px solid ${color}44; border-radius: 6px; padding: 8px; text-align: center;">
+                        <div style="font-size: 10px; color: ${color}; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">${i18n.t('vatRate')}</div>
+                        <div style="font-weight: bold; color: #333; margin-top: 2px; font-size: 12px;">
+                            ${vatInfo && vatInfo.hasVAT ? `${vatInfo.standard}%` : i18n.t('noVAT')}
+                        </div>
+                        ${vatInfo && vatInfo.notes ? `<div style="font-size: 8px; color: #666; margin-top: 4px; font-style: italic;">${vatInfo.notes}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildActiveBracketInfo(taxResult, countryData) {
+            if (!countryData) return '';
+
+            const annualSalaryInLocalCurrency = currencyService.convertCurrency(
+                taxResult.annualSalary,
+                taxResult.displayCurrency,
+                countryData.currency
+            );
+
+            const incomeTax = formatNumber(taxResult.incomeTax);
+            const vatInfo = taxResult.hasVAT ? ` + ${formatNumber(taxResult.vatAmount)} VAT` : '';
+
+            if (countryData.system === 'progressive') {
+                // Find active brackets
+                const activeBrackets = countryData.brackets.filter(bracket =>
+                    annualSalaryInLocalCurrency > bracket.min &&
+                    (bracket.max === null || annualSalaryInLocalCurrency <= bracket.max)
+                );
+
+                if (activeBrackets.length > 0) {
+                    const topBracket = activeBrackets[activeBrackets.length - 1];
+                    return `
+                        <div style="font-size: 10px; color: #333; line-height: 1.4;">
+                            <div style="font-weight: 600; color: #007bff; margin-bottom: 4px;">
+                                📊 Active Bracket: ${topBracket.rate}% (${formatNumber(topBracket.min)} - ${topBracket.max ? formatNumber(topBracket.max) : '∞'} ${countryData.currency})
+                            </div>
+                            <div style="color: #666;">
+                                🏛️ Income Tax: ${taxResult.displayCurrency} ${incomeTax}${vatInfo}
+                            </div>
+                        </div>
+                    `;
+                }
+            } else if (countryData.system === 'flat') {
+                return `
+                    <div style="font-size: 10px; color: #333; line-height: 1.4;">
+                        <div style="font-weight: 600; color: #28a745; margin-bottom: 4px;">
+                            📊 Flat Rate: ${countryData.brackets[0].rate}% on all income
+                        </div>
+                        <div style="color: #666;">
+                            🏛️ Income Tax: ${taxResult.displayCurrency} ${incomeTax}${vatInfo}
+                        </div>
+                    </div>
+                `;
+            } else if (countryData.system === 'zero_personal') {
+                return `
+                    <div style="font-size: 10px; color: #333; line-height: 1.4;">
+                        <div style="font-weight: 600; color: #6c757d; margin-bottom: 4px;">
+                            🏝️ Tax Haven: 0% income tax
+                        </div>
+                        <div style="color: #666;">
+                            🏛️ Income Tax: ${taxResult.displayCurrency} 0${vatInfo}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return '';
+        }
+
+        function buildTaxCalculationSection(taxResult, color, countryData) {
+            const textColor = taxResult.effectiveRate > 35 ? '#ffffff' : '#333333';
+            const totalTax = formatNumber(taxResult.totalTax);
+
+            return `
+                <div class="tax-calculation-section">
+                    <!-- Active Bracket Info -->
+                    <div style="background: linear-gradient(135deg, ${color}15, ${color}08); border: 1px solid ${color}33; border-radius: 6px; padding: 10px; margin-bottom: 8px;">
+                        <div style="font-size: 11px; color: ${color}; font-weight: bold; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">📊 ${i18n.t('taxBreakdown')}</div>
+                        ${buildActiveBracketInfo(taxResult, countryData)}
+                    </div>
+
+                    <!-- Total Tax -->
+                    <div class="total-tax" style="background: ${color}; color: ${textColor}; border-radius: 6px; padding: 12px; margin-bottom: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: bold; font-size: 14px;">💰 ${i18n.t('totalTaxBurden')}</div>
+                                <div style="font-size: 11px; opacity: 0.9;">
+                                    Effective rate: ${taxResult.effectiveRate.toFixed(1)}% • Click for details →
+                                </div>
+                            </div>
+                            <div style="text-align: right; margin-left: 10px;">
+                                <div style="font-weight: bold; font-size: 18px;">${taxResult.displayCurrency} ${totalTax}</div>
+                                <div style="font-size: 11px; opacity: 0.8;">Annual Total</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildPreCalculationSection(color, countryName = "this country") {
+            return `
+                <div class="pre-calculation" style="text-align: center; padding: 16px; background: rgba(0,0,0,0.03); border-radius: 8px; border: 2px dashed ${color}44;">
+                    <div style="font-size: 24px; margin-bottom: 8px;">🧮</div>
+                    <div style="font-size: 12px; color: #666; font-weight: 500; margin-bottom: 4px;">Ready for Tax Calculation</div>
+                    <div style="font-size: 10px; color: #888; line-height: 1.4;">
+                        Enter your salary above and click "Calculate Taxes" to see detailed tax breakdown for ${countryName}.
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildAdditionalInfoSection(countryInfo, taxResult, color) {
+            let additionalInfo = '';
+
+            // Detailed calculation breakdown
+            additionalInfo += buildDetailedCalculation(countryInfo, taxResult, color);
+
+            // Tax bracket info for progressive systems
+            if (countryInfo.system === 'progressive') {
+                const brackets = countryInfo.brackets;
+                if (brackets && brackets.length > 0) {
+                    const bracketInfo = brackets.map(bracket =>
+                        `${bracket.rate}% (${formatNumber(bracket.min)} - ${bracket.max ? formatNumber(bracket.max) : '∞'})`
+                    ).join(', ');
+
+                    additionalInfo += `
+                        <div style="background: rgba(0,0,0,0.03); border-radius: 6px; padding: 8px; margin-bottom: 8px;">
+                            <div style="font-size: 10px; color: ${color}; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">📈 All Tax Brackets (${countryInfo.currency})</div>
+                            <div style="font-size: 9px; color: #666; line-height: 1.3;">${bracketInfo}</div>
+                        </div>
+                    `;
+                }
+            }
+
+            // Exchange rate info if different currencies
+            if (taxResult && taxResult.displayCurrency !== countryInfo.currency) {
+                const rate = currencyService.getExchangeRate(countryInfo.currency, taxResult.displayCurrency);
+                additionalInfo += `
+                    <div style="background: rgba(0,0,0,0.03); border-radius: 6px; padding: 8px;">
+                        <div style="font-size: 10px; color: ${color}; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">💱 Exchange Rate</div>
+                        <div style="font-size: 9px; color: #666;">1 ${countryInfo.currency} = ${rate.toFixed(4)} ${taxResult.displayCurrency}</div>
+                    </div>
+                `;
+            }
+
+            return additionalInfo;
+        }
+
+        // Simplified version for popups (without detailed calculations)
+        function buildSimpleAdditionalInfoSection(countryInfo, taxResult, color) {
+            let additionalInfo = '';
+
+            // Exchange rate info if different currencies
+            if (taxResult && taxResult.displayCurrency !== countryInfo.currency) {
+                const rate = currencyService.getExchangeRate(countryInfo.currency, taxResult.displayCurrency);
+                additionalInfo += `
+                    <div style="background: rgba(0,0,0,0.03); border-radius: 6px; padding: 8px; margin-top: 8px;">
+                        <div style="font-size: 9px; color: ${color}; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">💱 Exchange Rate</div>
+                        <div style="font-size: 8px; color: #666;">1 ${countryInfo.currency} = ${rate.toFixed(4)} ${taxResult.displayCurrency}</div>
+                    </div>
+                `;
+            }
+
+            return additionalInfo;
+        }
+
+        function buildDetailedCalculation(countryInfo, taxResult, color) {
+            const annualSalaryInLocalCurrency = currencyService.convertCurrency(
+                taxResult.annualSalary,
+                taxResult.displayCurrency,
+                countryInfo.currency
+            );
+
+            let calculationSteps = '';
+
+            if (countryInfo.system === 'progressive') {
+                calculationSteps += `
+                    <div style="font-size: 9px; color: #666; margin-bottom: 4px;">
+                        <strong>Step-by-step calculation:</strong>
+                    </div>
+                `;
+
+                let remainingIncome = annualSalaryInLocalCurrency;
+                let totalTaxLocal = 0;
+                let stepNumber = 1;
+
+                for (let bracket of countryInfo.brackets) {
+                    if (remainingIncome <= 0) break;
+
+                    const bracketMin = bracket.min;
+                    const bracketMax = bracket.max || Infinity;
+                    const bracketSize = bracketMax - bracketMin;
+                    const taxableInThisBracket = Math.min(remainingIncome, bracketSize);
+
+                    if (annualSalaryInLocalCurrency > bracketMin) {
+                        const effectiveTaxableAmount = Math.min(taxableInThisBracket, annualSalaryInLocalCurrency - bracketMin);
+                        const taxForBracket = effectiveTaxableAmount * (bracket.rate / 100);
+                        totalTaxLocal += taxForBracket;
+
+                        if (effectiveTaxableAmount > 0) {
+                            const taxForBracketDisplay = currencyService.convertCurrency(taxForBracket, countryInfo.currency, taxResult.displayCurrency);
+                            calculationSteps += `
+                                <div style="font-size: 8px; color: #555; padding: 2px 0; border-left: 2px solid ${color}; padding-left: 6px; margin: 2px 0;">
+                                    ${stepNumber}. ${bracket.rate}% on ${formatNumber(effectiveTaxableAmount)} ${countryInfo.currency} = ${taxResult.displayCurrency} ${formatNumber(taxForBracketDisplay)}
+                                </div>
+                            `;
+                            stepNumber++;
+                        }
+
+                        remainingIncome -= taxableInThisBracket;
+                    }
+                }
+
+                if (taxResult.hasVAT) {
+                    calculationSteps += `
+                        <div style="font-size: 8px; color: #555; padding: 2px 0; border-left: 2px solid ${color}; padding-left: 6px; margin: 2px 0;">
+                            ${stepNumber}. ${taxResult.vatRate}% VAT on spending = ${taxResult.displayCurrency} ${formatNumber(taxResult.vatAmount)}
+                        </div>
+                    `;
+                }
+
+            } else if (countryInfo.system === 'flat') {
+                const flatTaxLocal = annualSalaryInLocalCurrency * (countryInfo.brackets[0].rate / 100);
+                const flatTaxDisplay = currencyService.convertCurrency(flatTaxLocal, countryInfo.currency, taxResult.displayCurrency);
+
+                calculationSteps += `
+                    <div style="font-size: 9px; color: #666; margin-bottom: 4px;">
+                        <strong>Flat tax calculation:</strong>
+                    </div>
+                    <div style="font-size: 8px; color: #555; padding: 2px 0; border-left: 2px solid ${color}; padding-left: 6px; margin: 2px 0;">
+                        ${countryInfo.brackets[0].rate}% on ${formatNumber(annualSalaryInLocalCurrency)} ${countryInfo.currency} = ${taxResult.displayCurrency} ${formatNumber(flatTaxDisplay)}
+                    </div>
+                `;
+
+                if (taxResult.hasVAT) {
+                    calculationSteps += `
+                        <div style="font-size: 8px; color: #555; padding: 2px 0; border-left: 2px solid ${color}; padding-left: 6px; margin: 2px 0;">
+                            ${taxResult.vatRate}% VAT on spending = ${taxResult.displayCurrency} ${formatNumber(taxResult.vatAmount)}
+                        </div>
+                    `;
+                }
+            } else if (countryInfo.system === 'zero_personal') {
+                calculationSteps += `
+                    <div style="font-size: 9px; color: #666; margin-bottom: 4px;">
+                        <strong>Tax haven calculation:</strong>
+                    </div>
+                    <div style="font-size: 8px; color: #555; padding: 2px 0; border-left: 2px solid ${color}; padding-left: 6px; margin: 2px 0;">
+                        0% income tax = ${taxResult.displayCurrency} 0
+                    </div>
+                `;
+
+                if (taxResult.hasVAT) {
+                    calculationSteps += `
+                        <div style="font-size: 8px; color: #555; padding: 2px 0; border-left: 2px solid ${color}; padding-left: 6px; margin: 2px 0;">
+                            ${taxResult.vatRate}% VAT on spending = ${taxResult.displayCurrency} ${formatNumber(taxResult.vatAmount)}
+                        </div>
+                    `;
+                }
+            }
+
+            return `
+                <div style="background: rgba(0,0,0,0.03); border-radius: 6px; padding: 8px; margin-bottom: 8px;">
+                    <div style="font-size: 10px; color: ${color}; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">🧮 Calculation Details</div>
+                    ${calculationSteps}
+                </div>
+            `;
+        }
+
+        function openCountryPopup(countryKey, countryData) {
+            const marker = countryMarkers[countryKey];
+            if (marker) {
+                marker.openPopup();
+            }
+        }
+
+        // Function to update zoom level display
+        function updateZoomLevel() {
+            const zoom = map.getZoom();
+            zoomLevelSpan.textContent = zoom;
+
+            // Update label visibility and size based on zoom level
+            const mapContainer = document.getElementById('map');
+            mapContainer.classList.remove('zoom-small', 'zoom-medium', 'zoom-large', 'zoom-xlarge');
+
+            if (zoom <= 3) {
+                mapContainer.classList.add('zoom-small');
+                // Hide labels at very low zoom
+                Object.values(countryLabels).forEach(label => {
+                    if (label._icon) {
+                        label._icon.style.display = zoom < 2 ? 'none' : 'block';
+                    }
+                });
+            } else if (zoom <= 5) {
+                mapContainer.classList.add('zoom-medium');
+                Object.values(countryLabels).forEach(label => {
+                    if (label._icon) label._icon.style.display = 'block';
+                });
+            } else if (zoom <= 8) {
+                mapContainer.classList.add('zoom-large');
+                Object.values(countryLabels).forEach(label => {
+                    if (label._icon) label._icon.style.display = 'block';
+                });
+            } else {
+                mapContainer.classList.add('zoom-xlarge');
+                Object.values(countryLabels).forEach(label => {
+                    if (label._icon) label._icon.style.display = 'block';
+                });
+            }
+        }
+
+        // Function to display detailed country information in the info panel
+        function showDetailedCountryInfo(countryKey, countryData) {
+            console.log(`Showing detailed info for ${countryKey}. Available tax results:`, taxResults.length);
+
+            // Close any existing tax bracket popup when switching countries
+            const existingPopup = document.getElementById('tax-bracket-popup');
+            if (existingPopup) {
+                existingPopup.remove();
+            }
+
+            const taxResult = taxResults.find(r => r.countryKey === countryKey);
+            console.log(`Tax result found:`, taxResult);
+
+            const vatInfo = countryData.vat;
+            const isCalculated = taxResult !== null;
+            const mainColor = isCalculated ? getTaxBurdenColor(taxResult.effectiveRate) : '#9e9e9e';
+
+            let content = `
+                <div style="border-radius: 12px; overflow: hidden; background: white;">
+                    <div style="background: linear-gradient(135deg, ${mainColor}, ${mainColor}dd); color: ${isCalculated && taxResult.effectiveRate > 35 ? '#ffffff' : '#333333'}; padding: 20px;">
+                        <h2 style="margin: 0; font-size: 22px; font-weight: 700;">${isCalculated ? '🏆' : '🌍'} ${countryData.name}</h2>
+                        <div style="font-size: 13px; opacity: 0.9; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            ${i18n.t(countryData.system)} ${i18n.t('system')} • ${isCalculated ? i18n.t('calculated') : i18n.t('ready')}
+                        </div>
+                    </div>
+                    <div style="padding: 20px;">
+            `;
+
+            if (taxResult) {
+                content += buildDetailedCountryContent(countryData, vatInfo, taxResult, mainColor, countryKey);
+            } else {
+                content += buildReadyToCalculateContent(countryData, vatInfo, mainColor);
+            }
+
+            content += `
+                    </div>
+                </div>
+            `;
+
+            infoPanel.innerHTML = content;
+        }
+
+        function buildDetailedCountryContent(countryData, vatInfo, taxResult, mainColor, countryKey) {
+            const annualSalaryInLocalCurrency = currencyService.convertCurrency(
+                taxResult.annualSalary,
+                taxResult.displayCurrency,
+                countryData.currency
+            );
+
+            // Calculate employment cost structure (simulated - assume 15% employer overhead)
+            const totalEmployerBudget = taxResult.annualSalary * 1.15;
+            const availableForSalary = taxResult.annualSalary;
+            const netIncomeAfterTax = taxResult.netIncome - taxResult.vatAmount;
+            const monthlyNetIncome = netIncomeAfterTax / 12;
+
+            return `
+                <!-- Enhanced Country Info -->
+                <div style="background: linear-gradient(135deg, ${mainColor}15, ${mainColor}08); border: 1px solid ${mainColor}33; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div style="text-align: center; padding: 12px; background: rgba(255,255,255,0.8); border-radius: 6px;">
+                            <div style="font-size: 10px; color: ${mainColor}; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Currency</div>
+                            <div style="font-weight: bold; color: #333; margin-top: 2px; font-size: 16px;">${countryData.currency}</div>
+                        </div>
+                        <div style="text-align: center; padding: 12px; background: rgba(255,255,255,0.8); border-radius: 6px;">
+                            <div style="font-size: 10px; color: ${mainColor}; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">${i18n.t('vatRate')}</div>
+                            <div style="font-weight: bold; color: #333; margin-top: 2px; font-size: 16px;">
+                                ${vatInfo && vatInfo.hasVAT ? `${vatInfo.standard}%` : i18n.t('noVAT')}
+                            </div>
+                            ${vatInfo && vatInfo.notes ? `<div style="font-size: 9px; color: #666; margin-top: 6px; font-style: italic;">${vatInfo.notes}</div>` : ''}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Employment Cost Structure -->
+                <div style="background: linear-gradient(135deg, #007bff15, #007bff08); border: 1px solid #007bff33; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                    <div style="font-size: 12px; color: #007bff; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">💼 ${i18n.t('employmentCostStructure')}</div>
+
+                    ${taxResult.includeEmployerSSInTotal ? `
+                    <div style="padding: 10px; background: rgba(0,123,255,0.1); border-radius: 6px; margin-bottom: 12px;">
+                        <div style="font-size: 11px; color: #007bff; font-weight: bold; margin-bottom: 4px;">📊 ${i18n.t('budgetBreakdown')} (${taxResult.displayCurrency} ${formatNumber(taxResult.annualBudget)} ${i18n.t('annual')}):</div>
+                        <div style="font-size: 11px; color: #666;">
+                            💰 ${i18n.t('actualGrossSalary')}: ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)}<br>
+                            🏢 ${i18n.t('employerSS')} (${taxResult.employerSSRate}%): ${taxResult.displayCurrency} ${formatNumber(taxResult.employerSocialSecurity)}
+                        </div>
+                    </div>
+                    ` : `
+                    <div style="padding: 10px; background: rgba(108,117,125,0.1); border-radius: 6px; margin-bottom: 12px;">
+                        <div style="font-size: 11px; color: #666; margin-bottom: 4px;">💰 Input amount treated as gross salary</div>
+                        <div style="font-size: 12px; color: #333; font-weight: bold;">${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} annual</div>
+                    </div>
+                    `}
+
+                    <div style="margin-top: 8px; font-size: 12px; color: #333; padding: 8px; background: rgba(255,255,255,0.6); border-radius: 4px;">
+                        <strong>${i18n.t('localCurrencyEquivalent')}</strong><br>
+                        <span style="color: #666;">
+                            ${countryData.currency} ${formatNumber(currencyService.convertCurrency(taxResult.annualSalary, taxResult.displayCurrency, countryData.currency))} ${i18n.t('annual')}
+                            (${formatNumber(currencyService.convertCurrency(taxResult.annualSalary, taxResult.displayCurrency, countryData.currency) / 12)} ${i18n.t('monthly')})
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Tax Breakdown Section -->
+                <div style="background: linear-gradient(135deg, ${mainColor}15, ${mainColor}08); border: 1px solid ${mainColor}33; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                    <div style="font-size: 12px; color: ${mainColor}; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">💸 ${i18n.t('taxBreakdown')}</div>
+
+                    <!-- Income Tax -->
+                    <div style="padding: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.8); border-radius: 6px; border-left: 4px solid #dc3545;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="flex: 1;">
+                                <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px;">1.🏛️ ${i18n.t('incomeTax')} (${((taxResult.incomeTax / taxResult.annualSalary) * 100).toFixed(2)}%)</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px;">💡 ${taxResult.displayCurrency} ${formatNumber(taxResult.incomeTax)} ${i18n.t('taxOn')} ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} ${i18n.t('income')}</div>
+                                <div style="font-size: 10px; color: #007bff; cursor: pointer;" onclick="showTaxBracketPopup('${countryKey}')">ℹ️ ${i18n.t('clickForTaxBracketBreakdown')}</div>
+                            </div>
+                            <div style="text-align: right; margin-left: 12px;">
+                                <div style="font-size: 14px; font-weight: bold; color: #dc3545;">${taxResult.displayCurrency} ${formatNumber(taxResult.incomeTax)}</div>
+                                <div style="font-size: 10px; color: #666;">${countryData.currency} ${formatNumber(currencyService.convertCurrency(taxResult.incomeTax, taxResult.displayCurrency, countryData.currency))}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${taxResult.hasSpecialTaxes ? `
+                    <!-- Special Taxes -->
+                    <div style="padding: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.8); border-radius: 6px; border-left: 4px solid #6f42c1;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="flex: 1;">
+                                <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px;">2.⚖️ ${i18n.t('specialTaxes')}</div>
+                                ${taxResult.specialTaxes.map(tax => `
+                                    <div style="font-size: 10px; color: #666; margin-bottom: 2px;">
+                                        • ${tax.description} (${tax.rate}% on ${tax.target})
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div style="text-align: right; margin-left: 12px;">
+                                <div style="font-size: 14px; font-weight: bold; color: #6f42c1;">${taxResult.displayCurrency} ${formatNumber(taxResult.specialTaxAmount)}</div>
+                                <div style="font-size: 10px; color: #666;">${countryData.currency} ${formatNumber(currencyService.convertCurrency(taxResult.specialTaxAmount, taxResult.displayCurrency, countryData.currency))}</div>
+                            </div>
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    ${taxResult.hasSocialSecurity ? `
+                    <!-- Employee Social Security -->
+                    <div style="padding: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.8); border-radius: 6px; border-left: 4px solid #17a2b8;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="flex: 1;">
+                                <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px;">3.🏥 ${i18n.t('employeeSocialSecurity')} (${taxResult.employeeSSRate}%)</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px;">💡 ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} × ${taxResult.employeeSSRate}%</div>
+                                <div style="font-size: 10px; color: #666;">${taxResult.socialSecurityNotes}</div>
+                            </div>
+                            <div style="text-align: right; margin-left: 12px;">
+                                <div style="font-size: 14px; font-weight: bold; color: #17a2b8;">${taxResult.displayCurrency} ${formatNumber(taxResult.employeeSocialSecurity)}</div>
+                                <div style="font-size: 10px; color: #666;">${countryData.currency} ${formatNumber(currencyService.convertCurrency(taxResult.employeeSocialSecurity, taxResult.displayCurrency, countryData.currency))}</div>
+                            </div>
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    ${taxResult.hasVAT ? `
+                    <!-- VAT -->
+                    <div style="padding: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.8); border-radius: 6px; border-left: 4px solid #ffc107;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="flex: 1;">
+                                <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px;">4.🛍️ ${i18n.t('vatOnSpending')} (${taxResult.vatRate}%)</div>
+                                <div style="font-size: 10px; color: #666; margin-bottom: 4px;">💡 ${taxResult.displayCurrency} ${formatNumber(netIncomeAfterTax)} (${i18n.t('netIncome')}) × ${taxResult.vatRate}%</div>
+                                <div style="font-size: 10px; color: #666;">${i18n.t('appliedWhenSpendingIncome')}</div>
+                                ${taxResult.vatNotes ? `<div style="font-size: 9px; color: #999; margin-top: 4px; font-style: italic;">📝 ${taxResult.vatNotes}</div>` : ''}
+                                ${taxResult.vatDescription ? `<div style="font-size: 9px; color: #999; margin-top: 2px;">ℹ️ ${taxResult.vatDescription}</div>` : ''}
+                            </div>
+                            <div style="text-align: right; margin-left: 12px;">
+                                <div style="font-size: 14px; font-weight: bold; color: #ffc107;">${taxResult.displayCurrency} ${formatNumber(taxResult.vatAmount)}</div>
+                                <div style="font-size: 10px; color: #666;">${countryData.currency} ${formatNumber(currencyService.convertCurrency(taxResult.vatAmount, taxResult.displayCurrency, countryData.currency))}</div>
+                            </div>
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+
+                ${taxResult.hasSocialSecurity ? `
+                <!-- Employer Social Security -->
+                <div style="background: linear-gradient(135deg, ${taxResult.includeEmployerSSInTotal ? '#6f42c1' : '#6c757d'}, ${taxResult.includeEmployerSSInTotal ? '#5a32a3' : '#5a6268'}); color: white; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-size: 16px; font-weight: bold; margin-bottom: 4px;">🏢 Employer Social Security</div>
+                        <div style="font-size: 12px; opacity: 0.9;">
+                            ${taxResult.includeEmployerSSInTotal
+                                ? i18n.t('includedInTotalTax')
+                                : i18n.t('additionalEmployerCost')}
+                            (${taxResult.employerSSRate}% ${i18n.t('ofGrossSalary')})
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 22px; font-weight: bold;">${taxResult.displayCurrency} ${formatNumber(taxResult.employerSocialSecurity)}</div>
+                            <div style="font-size: 14px; opacity: 0.8;">${countryData.currency} ${formatNumber(currencyService.convertCurrency(taxResult.employerSocialSecurity, taxResult.displayCurrency, countryData.currency))}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 12px; opacity: 0.9;">Total Employment Cost</div>
+                            <div style="font-size: 16px; font-weight: bold;">${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary + taxResult.employerSocialSecurity)}</div>
+                        </div>
+                    </div>
+                </div>
+                ` : ''}
+
+                <!-- Total Tax Burden -->
+                <div style="background: ${mainColor}; color: ${taxResult.effectiveRate > 35 ? '#ffffff' : '#333333'}; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-size: 16px; font-weight: bold; margin-bottom: 4px;">💰 ${i18n.t('totalTaxBurden')}</div>
+                        <div style="font-size: 12px; opacity: 0.9;">
+                            ${taxResult.effectiveRate.toFixed(1)}% ${i18n.t('effectiveRateOn')} ${taxResult.displayCurrency} ${formatNumber(taxResult.includeEmployerSSInTotal ? taxResult.annualBudget : taxResult.annualSalary)}
+                            ${taxResult.includeEmployerSSInTotal ? ` (${i18n.t('totalEmploymentBudget')})` : ` (${i18n.t('grossSalary')})`}
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 22px; font-weight: bold;">${taxResult.displayCurrency} ${formatNumber(taxResult.totalTax)}</div>
+                        <div style="font-size: 14px; opacity: 0.8;">${countryData.currency} ${formatNumber(currencyService.convertCurrency(taxResult.totalTax, taxResult.displayCurrency, countryData.currency))}</div>
+                    </div>
+
+                    <div style="margin-top: 12px; padding: 12px; background: rgba(255,255,255,0.15); border-radius: 6px;">
+                        <div style="font-size: 11px; font-weight: 600; margin-bottom: 6px;">📋 ${i18n.t('howCalculated')}:</div>
+                        <div style="font-size: 10px; line-height: 1.4; margin-bottom: 4px;">
+                            <strong>${i18n.t('calculation')}:</strong> ${i18n.t('incomeTax')}: ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} × ${getIncomeTaxRate(countryData, annualSalaryInLocalCurrency)}% = ${taxResult.displayCurrency} ${formatNumber(taxResult.incomeTax)}${taxResult.hasSpecialTaxes ? ` + ${i18n.t('specialTaxes')}: ${taxResult.displayCurrency} ${formatNumber(taxResult.specialTaxAmount)}` : ''}${taxResult.hasSocialSecurity ? ` + ${i18n.t('employeeSocialSecurity')}: ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} × ${taxResult.employeeSSRate}% = ${taxResult.displayCurrency} ${formatNumber(taxResult.employeeSocialSecurity)}` : ''}${taxResult.hasVAT ? ` + ${i18n.t('vatOnSpending')}: ${taxResult.displayCurrency} ${formatNumber(netIncomeAfterTax)} (${i18n.t('netIncome')}) × ${taxResult.vatRate}% = ${taxResult.displayCurrency} ${formatNumber(taxResult.vatAmount)}` : ''}${taxResult.hasSocialSecurity && taxResult.includeEmployerSSInTotal ? ` + ${i18n.t('employerSocialSecurity')}: ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} × ${taxResult.employerSSRate}% = ${taxResult.displayCurrency} ${formatNumber(taxResult.employerSocialSecurity)}` : ''}
+                        </div>
+                        <div style="font-size: 10px; line-height: 1.4;">
+                            <strong>${i18n.t('components')}:</strong> ${i18n.t('incomeTax')} ${getIncomeTaxRate(countryData, annualSalaryInLocalCurrency)}%: ${taxResult.displayCurrency} ${formatNumber(taxResult.incomeTax)}${taxResult.hasSpecialTaxes ? ` + ${i18n.t('specialTaxes')}: ${taxResult.displayCurrency} ${formatNumber(taxResult.specialTaxAmount)}` : ''}${taxResult.hasSocialSecurity ? ` + ${i18n.t('employeeSocialSecurity')} ${taxResult.employeeSSRate}%: ${taxResult.displayCurrency} ${formatNumber(taxResult.employeeSocialSecurity)}` : ''}${taxResult.hasVAT ? ` + ${i18n.t('vatOnSpending')} ${taxResult.vatRate}%: ${taxResult.displayCurrency} ${formatNumber(taxResult.vatAmount)}` : ''}${taxResult.hasSocialSecurity && taxResult.includeEmployerSSInTotal ? ` + ${i18n.t('employerSocialSecurity')} ${taxResult.employerSSRate}%: ${taxResult.displayCurrency} ${formatNumber(taxResult.employerSocialSecurity)}` : ''}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Net Income -->
+                <div style="background: #28a745; color: white; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-size: 16px; font-weight: bold; margin-bottom: 4px;">💚 ${i18n.t('netAnnualIncome')}</div>
+                        <div style="font-size: 12px; opacity: 0.9;">${i18n.t('takehomePay')}</div>
+                        <div style="font-size: 11px; opacity: 0.8; margin-top: 4px;">💡 ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} - ${taxResult.displayCurrency} ${formatNumber(taxResult.totalTax)} = ${taxResult.displayCurrency} ${formatNumber(taxResult.netIncome)}</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 22px; font-weight: bold;">${taxResult.displayCurrency} ${formatNumber(taxResult.netIncome)}</div>
+                            <div style="font-size: 14px; opacity: 0.8;">${countryData.currency} ${formatNumber(currencyService.convertCurrency(taxResult.netIncome, taxResult.displayCurrency, countryData.currency))}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 12px; opacity: 0.9;">≈ ${taxResult.displayCurrency} ${formatNumber(monthlyNetIncome)} per month</div>
+                        </div>
+                    </div>
+                </div>
+
+                ${buildExchangeRateInfo(countryData, taxResult, mainColor)}
+            `;
+        }
+
+        // Helper function to get income tax rate
+        function getIncomeTaxRate(countryData, annualSalaryInLocalCurrency) {
+            if (countryData.system === 'flat') {
+                return countryData.brackets[0].rate;
+            } else if (countryData.system === 'zero_personal') {
+                return 0;
+            } else if (countryData.system === 'progressive') {
+                // Find the active bracket
+                const activeBrackets = countryData.brackets.filter(bracket =>
+                    annualSalaryInLocalCurrency > bracket.min &&
+                    (bracket.max === null || annualSalaryInLocalCurrency <= bracket.max)
+                );
+                if (activeBrackets.length > 0) {
+                    return activeBrackets[activeBrackets.length - 1].rate;
+                }
+                return 0;
+            }
+            return 0;
+        }
+
+        function buildClickableActiveBracket(taxResult, countryData, mainColor, countryKey) {
+            const annualSalaryInLocalCurrency = currencyService.convertCurrency(
+                taxResult.annualSalary,
+                taxResult.displayCurrency,
+                countryData.currency
+            );
+
+            if (countryData.system === 'progressive') {
+                const activeBrackets = countryData.brackets.filter(bracket =>
+                    annualSalaryInLocalCurrency > bracket.min &&
+                    (bracket.max === null || annualSalaryInLocalCurrency <= bracket.max)
+                );
+
+                if (activeBrackets.length > 0) {
+                    const topBracket = activeBrackets[activeBrackets.length - 1];
+                    return `
+                        <div onclick="showTaxBracketPopup('${countryKey}')"
+                             style="cursor: pointer; padding: 12px; background: rgba(0,123,255,0.1); border: 2px solid #007bff; border-radius: 6px; transition: all 0.2s ease;"
+                             onmouseover="this.style.background='rgba(0,123,255,0.2)'; this.style.transform='translateY(-1px)'"
+                             onmouseout="this.style.background='rgba(0,123,255,0.1)'; this.style.transform='translateY(0px)'">
+                            <div style="font-size: 14px; font-weight: 600; color: #007bff; margin-bottom: 4px;">
+                                📊 Active Bracket: ${topBracket.rate}%
+                            </div>
+                            <div style="font-size: 12px; color: #666;">
+                                Range: ${formatNumber(topBracket.min)} - ${topBracket.max ? formatNumber(topBracket.max) : '∞'} ${countryData.currency}
+                            </div>
+                            <div style="font-size: 11px; color: #007bff; margin-top: 4px; text-decoration: underline;">
+                                Click to see all tax brackets →
+                            </div>
+                        </div>
+                    `;
+                }
+            } else if (countryData.system === 'flat') {
+                return `
+                    <div onclick="showTaxBracketPopup('${countryKey}')"
+                         style="cursor: pointer; padding: 12px; background: rgba(40,167,69,0.1); border: 2px solid #28a745; border-radius: 6px; transition: all 0.2s ease;"
+                         onmouseover="this.style.background='rgba(40,167,69,0.2)'; this.style.transform='translateY(-1px)'"
+                         onmouseout="this.style.background='rgba(40,167,69,0.1)'; this.style.transform='translateY(0px)'">
+                        <div style="font-size: 14px; font-weight: 600; color: #28a745; margin-bottom: 4px;">
+                            📊 Flat Rate: ${countryData.brackets[0].rate}%
+                        </div>
+                        <div style="font-size: 12px; color: #666;">
+                            ${i18n.t('appliedToAllIncome')} levels
+                        </div>
+                        <div style="font-size: 11px; color: #28a745; margin-top: 4px; text-decoration: underline;">
+                            Click to see tax details →
+                        </div>
+                    </div>
+                `;
+            } else if (countryData.system === 'zero_personal') {
+                return `
+                    <div onclick="showTaxBracketPopup('${countryKey}')"
+                         style="cursor: pointer; padding: 12px; background: rgba(108,117,125,0.1); border: 2px solid #6c757d; border-radius: 6px; transition: all 0.2s ease;"
+                         onmouseover="this.style.background='rgba(108,117,125,0.2)'; this.style.transform='translateY(-1px)'"
+                         onmouseout="this.style.background='rgba(108,117,125,0.1)'; this.style.transform='translateY(0px)'">
+                        <div style="font-size: 14px; font-weight: 600; color: #6c757d; margin-bottom: 4px;">
+                            🏝️ Tax Haven: 0% Income Tax
+                        </div>
+                        <div style="font-size: 12px; color: #666;">
+                            No personal income tax
+                        </div>
+                        <div style="font-size: 11px; color: #6c757d; margin-top: 4px; text-decoration: underline;">
+                            Click to see tax details →
+                        </div>
+                    </div>
+                `;
+            }
+
+            return '';
+        }
+
+        function buildReadyToCalculateContent(countryData, vatInfo, mainColor) {
+            return `
+                ${buildCountryInfoSection(countryData, vatInfo, mainColor)}
+                <div style="text-align: center; padding: 24px; background: rgba(0,0,0,0.03); border-radius: 12px; border: 2px dashed ${mainColor}44;">
+                    <div style="font-size: 32px; margin-bottom: 12px;">🧮</div>
+                    <div style="font-size: 16px; color: #666; font-weight: 500; margin-bottom: 8px;">Ready for Tax Calculation</div>
+                    <div style="font-size: 13px; color: #888; line-height: 1.5;">
+                        Enter your salary above and click "Calculate Taxes" to see detailed tax breakdown for ${countryData.name}.
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildExchangeRateInfo(countryData, taxResult, mainColor) {
+            if (taxResult && taxResult.displayCurrency !== countryData.currency) {
+                const rate = currencyService.getExchangeRate(countryData.currency, taxResult.displayCurrency);
+                return `
+                    <div style="background: rgba(0,0,0,0.03); border-radius: 8px; padding: 12px;">
+                        <div style="font-size: 11px; color: ${mainColor}; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">💱 Exchange Rate</div>
+                        <div style="font-size: 13px; color: #666;">1 ${countryData.currency} = ${rate.toFixed(4)} ${taxResult.displayCurrency}</div>
+                    </div>
+                `;
+            }
+            return '';
+        }
+
+        // Function to show tax bracket popup (similar to original index.html)
+        window.showTaxBracketPopup = function(countryKey) {
+            const countryData = taxData[countryKey];
+            const taxResult = taxResults.find(r => r.countryKey === countryKey);
+
+            if (!countryData) return;
+
+            // Remove existing popup if any
+            const existingPopup = document.getElementById('tax-bracket-popup');
+            if (existingPopup) {
+                existingPopup.remove();
+            }
+
+            // Create popup positioned to the left of info panel
+            const popup = document.createElement('div');
+            popup.id = 'tax-bracket-popup';
+            popup.style.cssText = `
+                position: absolute;
+                top: 10px;
+                right: 410px;
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+                width: 350px;
+                max-height: calc(100vh - 40px);
+                overflow-y: auto;
+                z-index: 1001;
+                border: 1px solid rgba(255,255,255,0.3);
+                backdrop-filter: blur(10px);
+                animation: slideInFromRight 0.3s ease-out;
+            `;
+
+            const mainColor = taxResult ? getTaxBurdenColor(taxResult.effectiveRate) : '#9e9e9e';
+
+            let content = `
+                <style>
+                    @keyframes popupSlideIn {
+                        from { transform: scale(0.8); opacity: 0; }
+                        to { transform: scale(1); opacity: 1; }
+                    }
+                </style>
+                <div style="background: linear-gradient(135deg, ${mainColor}, ${mainColor}dd); color: ${taxResult && taxResult.effectiveRate > 35 ? '#ffffff' : '#333333'}; padding: 20px; border-radius: 16px 16px 0 0;">
+                    <h3 style="margin: 0; font-size: 20px; font-weight: 700;">📈 ${i18n.t('taxBrackets')} - ${countryData.name}</h3>
+                    <div style="font-size: 13px; opacity: 0.9; margin-top: 4px;">
+                        ${i18n.t(countryData.system)} ${i18n.t('taxSystem')}
+                    </div>
+                </div>
+                <div style="padding: 20px;">
+            `;
+
+            if (countryData.system === 'progressive') {
+                content += buildProgressiveBracketDisplay(countryData, taxResult, mainColor);
+            } else if (countryData.system === 'flat') {
+                content += buildFlatTaxDisplay(countryData, taxResult, mainColor);
+            } else if (countryData.system === 'zero_personal') {
+                content += buildTaxHavenDisplay(countryData, taxResult, mainColor);
+            }
+
+            content += `
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button onclick="document.getElementById('tax-bracket-popup').remove()"
+                                style="background: ${mainColor}; color: ${taxResult && taxResult.effectiveRate > 35 ? '#ffffff' : '#333333'}; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            popup.innerHTML = content;
+
+            // Add close button functionality
+            popup.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    popup.remove();
+                }
+            });
+
+            document.body.appendChild(popup);
+        }
+
+        function buildProgressiveBracketDisplay(countryData, taxResult, mainColor) {
+            const annualSalaryInLocalCurrency = taxResult ? currencyService.convertCurrency(
+                taxResult.annualSalary,
+                taxResult.displayCurrency,
+                countryData.currency
+            ) : 0;
+
+            let content = '';
+
+            // Add tax summary at the top if we have a calculation
+            if (taxResult) {
+                const incomeTaxInLocalCurrency = currencyService.convertCurrency(
+                    taxResult.incomeTax,
+                    taxResult.displayCurrency,
+                    countryData.currency
+                );
+                const effectiveIncomeTaxRate = annualSalaryInLocalCurrency > 0 ?
+                    (incomeTaxInLocalCurrency / annualSalaryInLocalCurrency) * 100 : 0;
+
+                content += `
+                    <div style="margin-bottom: 20px; padding: 16px; background: linear-gradient(135deg, ${mainColor}, ${mainColor}dd); color: white; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">📊 ${i18n.t('taxSummary')}</div>
+                        <div style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">${effectiveIncomeTaxRate.toFixed(2)}%</div>
+                        <div style="font-size: 12px; opacity: 0.9;">Effective Income Tax Rate</div>
+                        <div style="font-size: 14px; font-weight: 600; margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.2); border-radius: 6px;">
+                            ${taxResult.displayCurrency} ${formatNumber(taxResult.incomeTax)} ${i18n.t('taxOn')} ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} ${i18n.t('income')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            content += `
+                <div style="margin-bottom: 16px;">
+                    <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px;">${i18n.t('progressiveTaxBrackets')}</div>
+                    <div style="font-size: 12px; color: #666;">${i18n.t('taxRatesIncrease')}</div>
+                </div>
+            `;
+
+            // Calculate tax for each bracket if we have a result
+            let remainingIncome = annualSalaryInLocalCurrency;
+            let totalCalculatedTax = 0;
+
+            countryData.brackets.forEach((bracket, index) => {
+                const isActive = taxResult && annualSalaryInLocalCurrency > bracket.min &&
+                    (bracket.max === null || annualSalaryInLocalCurrency <= bracket.max);
+
+                let taxFromThisBracket = 0;
+                let taxableInThisBracket = 0;
+
+                if (taxResult && remainingIncome > 0) {
+                    const bracketMin = bracket.min;
+                    const bracketMax = bracket.max || Infinity;
+                    const bracketSize = bracketMax - bracketMin;
+                    taxableInThisBracket = Math.min(remainingIncome, bracketSize);
+
+                    if (annualSalaryInLocalCurrency > bracketMin) {
+                        const effectiveTaxableAmount = Math.min(taxableInThisBracket, annualSalaryInLocalCurrency - bracketMin);
+                        taxFromThisBracket = effectiveTaxableAmount * (bracket.rate / 100);
+                        totalCalculatedTax += taxFromThisBracket;
+                    }
+
+                    remainingIncome -= taxableInThisBracket;
+                }
+
+                const taxFromThisBracketInDisplayCurrency = taxResult ?
+                    currencyService.convertCurrency(taxFromThisBracket, countryData.currency, taxResult.displayCurrency) : 0;
+
+                content += `
+                    <div style="margin-bottom: 8px; padding: 12px; border-radius: 8px; border: 2px solid ${isActive ? mainColor : '#e9ecef'}; background: ${isActive ? mainColor + '15' : '#f8f9fa'}; transition: all 0.2s;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; margin-bottom: 4px;">
+                                    <div style="font-size: 16px; font-weight: 600; color: ${isActive ? mainColor : '#333'};">
+                                        ${isActive ? '🎯 ' : ''}${bracket.rate}%
+                                    </div>
+                                    ${isActive ? `<div style="background: ${mainColor}; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; margin-left: 8px;">${i18n.t('active')}</div>` : ''}
+                                </div>
+                                <div style="font-size: 12px; color: #666; margin-bottom: 4px;">
+                                    ${formatNumber(bracket.min)} - ${bracket.max ? formatNumber(bracket.max) : '∞'} ${countryData.currency}
+                                </div>
+                                ${taxResult && taxFromThisBracket > 0 ? `
+                                    <div style="font-size: 11px; color: #007bff; background: rgba(0,123,255,0.1); padding: 4px 6px; border-radius: 4px; margin-top: 6px;">
+                                        💰 ${i18n.t('taxFromThisBracket')}: ${taxResult.displayCurrency} ${formatNumber(taxFromThisBracketInDisplayCurrency)}
+                                    </div>
+                                    <div style="font-size: 10px; color: #666; margin-top: 2px; font-style: italic;">
+                                        ${formatNumber(Math.min(taxableInThisBracket, annualSalaryInLocalCurrency - bracket.min))} ${countryData.currency} × ${bracket.rate}%
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (taxResult) {
+                const totalTaxInLocalCurrency = currencyService.convertCurrency(
+                    taxResult.incomeTax,
+                    taxResult.displayCurrency,
+                    countryData.currency
+                );
+
+                content += `
+                    <div style="margin-top: 16px; padding: 12px; background: ${mainColor}22; border-radius: 8px; border-left: 4px solid ${mainColor};">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">${i18n.t('calculationSummary')}:</div>
+                        <div style="font-size: 13px; color: #333; margin-bottom: 4px;">
+                            💰 ${i18n.t('totalIncome')}: ${formatNumber(annualSalaryInLocalCurrency)} ${countryData.currency}
+                        </div>
+                        <div style="font-size: 13px; color: #333; margin-bottom: 4px;">
+                            🏛️ ${i18n.t('totalIncomeTax')}: ${formatNumber(totalTaxInLocalCurrency)} ${countryData.currency}
+                        </div>
+                        <div style="font-size: 13px; color: #333;">
+                            💱 ${i18n.t('inUSD').replace('USD', taxResult.displayCurrency)}: ${formatNumber(taxResult.incomeTax)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return content;
+        }
+
+        function buildFlatTaxDisplay(countryData, taxResult, mainColor) {
+            let content = '';
+
+            // Add tax summary at the top if we have a calculation
+            if (taxResult) {
+                const annualSalaryInLocalCurrency = currencyService.convertCurrency(
+                    taxResult.annualSalary,
+                    taxResult.displayCurrency,
+                    countryData.currency
+                );
+                const effectiveIncomeTaxRate = countryData.brackets[0].rate;
+
+                content += `
+                    <div style="margin-bottom: 20px; padding: 16px; background: linear-gradient(135deg, ${mainColor}, ${mainColor}dd); color: white; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">📊 ${i18n.t('taxSummary')}</div>
+                        <div style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">${effectiveIncomeTaxRate.toFixed(2)}%</div>
+                        <div style="font-size: 12px; opacity: 0.9;">${i18n.t('flatIncomeTaxRate')}</div>
+                        <div style="font-size: 14px; font-weight: 600; margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.2); border-radius: 6px;">
+                            ${taxResult.displayCurrency} ${formatNumber(taxResult.incomeTax)} ${i18n.t('taxOn')} ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} ${i18n.t('income')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            content += `
+                <div style="margin-bottom: 16px;">
+                    <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px;">${i18n.t('flatTaxSystem')}</div>
+                    <div style="font-size: 12px; color: #666;">${i18n.t('singleRateApplied')}</div>
+                </div>
+                <div style="padding: 16px; border-radius: 8px; border: 2px solid ${mainColor}; background: ${mainColor}15;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; font-weight: 700; color: ${mainColor}; margin-bottom: 8px;">
+                            ${countryData.brackets[0].rate}%
+                        </div>
+                        <div style="font-size: 14px; color: #333; margin-bottom: 4px;">
+                            ${i18n.t('appliedToAllIncome')}
+                        </div>
+                        <div style="font-size: 12px; color: #666;">
+                            ${i18n.t('noIncomeThresholds')}
+                        </div>
+                        ${taxResult ? `
+                            <div style="margin-top: 12px; padding: 8px; background: rgba(255,255,255,0.5); border-radius: 6px;">
+                                <div style="font-size: 12px; color: #666; margin-bottom: 4px;">${i18n.t('calculation')}:</div>
+                                <div style="font-size: 13px; color: #333; font-weight: 600;">
+                                    ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} × ${countryData.brackets[0].rate}%
+                                </div>
+                                <div style="font-size: 14px; color: ${mainColor}; font-weight: 700; margin-top: 4px;">
+                                    = ${taxResult.displayCurrency} ${formatNumber(taxResult.incomeTax)}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+                ${taxResult ? `
+                <div style="margin-top: 16px; padding: 12px; background: ${mainColor}22; border-radius: 8px; border-left: 4px solid ${mainColor};">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">${i18n.t('taxBreakdown')}:</div>
+                    <div style="font-size: 13px; color: #333; margin-bottom: 4px;">
+                        💰 ${i18n.t('totalIncome')}: ${formatNumber(currencyService.convertCurrency(taxResult.annualSalary, taxResult.displayCurrency, countryData.currency))} ${countryData.currency}
+                    </div>
+                    <div style="font-size: 13px; color: #333; margin-bottom: 4px;">
+                        🏛️ Income Tax (${countryData.brackets[0].rate}%): ${formatNumber(currencyService.convertCurrency(taxResult.incomeTax, taxResult.displayCurrency, countryData.currency))} ${countryData.currency}
+                    </div>
+                    <div style="font-size: 13px; color: #333;">
+                        💱 In ${taxResult.displayCurrency}: ${formatNumber(taxResult.incomeTax)}
+                    </div>
+                </div>
+                ` : ''}
+            `;
+
+            return content;
+        }
+
+        function buildTaxHavenDisplay(countryData, taxResult, mainColor) {
+            let content = '';
+
+            // Add tax summary at the top if we have a calculation
+            if (taxResult) {
+                content += `
+                    <div style="margin-bottom: 20px; padding: 16px; background: linear-gradient(135deg, #28a745, #20c997); color: white; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">📊 ${i18n.t('taxSummary')}</div>
+                        <div style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">0.00%</div>
+                        <div style="font-size: 12px; opacity: 0.9;">Income Tax Rate (Tax Haven)</div>
+                        <div style="font-size: 14px; font-weight: 600; margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.2); border-radius: 6px;">
+                            ${taxResult.displayCurrency} 0 tax on ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} income
+                        </div>
+                    </div>
+                `;
+            }
+
+            content += `
+                <div style="margin-bottom: 16px;">
+                    <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px;">Tax Haven</div>
+                    <div style="font-size: 12px; color: #666;">No personal income tax</div>
+                </div>
+                <div style="padding: 16px; border-radius: 8px; border: 2px solid #28a745; background: rgba(40,167,69,0.1);">
+                    <div style="text-align: center;">
+                        <div style="font-size: 32px; margin-bottom: 8px;">🏝️</div>
+                        <div style="font-size: 24px; font-weight: 700; color: #28a745; margin-bottom: 8px;">
+                            0% Income Tax
+                        </div>
+                        <div style="font-size: 14px; color: #333; margin-bottom: 4px;">
+                            Tax-free personal income
+                        </div>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">
+                            Popular offshore financial center
+                        </div>
+                        ${taxResult ? `
+                            <div style="margin-top: 12px; padding: 8px; background: rgba(255,255,255,0.5); border-radius: 6px;">
+                                <div style="font-size: 12px; color: #666; margin-bottom: 4px;">${i18n.t('calculation')}:</div>
+                                <div style="font-size: 13px; color: #333; font-weight: 600;">
+                                    ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} × 0%
+                                </div>
+                                <div style="font-size: 14px; color: #28a745; font-weight: 700; margin-top: 4px;">
+                                    = ${taxResult.displayCurrency} 0
+                                </div>
+                                ${taxResult.hasVAT ? `
+                                    <div style="font-size: 12px; color: #666; margin-top: 8px; border-top: 1px solid #ddd; padding-top: 8px;">
+                                        Note: VAT may still apply on purchases${taxResult.vatNotes ? ` (${taxResult.vatNotes})` : ''}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+                ${taxResult ? `
+                <div style="margin-top: 16px; padding: 12px; background: rgba(40,167,69,0.1); border-radius: 8px; border-left: 4px solid #28a745;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">${i18n.t('taxBreakdown')}:</div>
+                    <div style="font-size: 13px; color: #333; margin-bottom: 4px;">
+                        💰 ${i18n.t('totalIncome')}: ${formatNumber(currencyService.convertCurrency(taxResult.annualSalary, taxResult.displayCurrency, countryData.currency))} ${countryData.currency}
+                    </div>
+                    <div style="font-size: 13px; color: #333; margin-bottom: 4px;">
+                        🏛️ Income Tax (0%): 0 ${countryData.currency}
+                    </div>
+                    <div style="font-size: 13px; color: #333;">
+                        💱 In ${taxResult.displayCurrency}: 0
+                    </div>
+                    ${taxResult.hasVAT ? `
+                        <div style="font-size: 13px; color: #333; margin-top: 4px; padding-top: 4px; border-top: 1px solid #ddd;">
+                            🛍️ VAT (${taxResult.vatRate}%): ${taxResult.displayCurrency} ${formatNumber(taxResult.vatAmount)}
+                            ${taxResult.vatNotes ? `<div style="font-size: 10px; color: #666; margin-top: 2px; font-style: italic;">${taxResult.vatNotes}</div>` : ''}
+                        </div>
+                    ` : ''}
+                </div>
+                ` : ''}
+            `;
+
+            return content;
+        }
+
+        // Simplified function for backwards compatibility
+        function showCountryInfo(countryKey, countryData) {
+            showDetailedCountryInfo(countryKey, countryData);
+        }
+
+        // Function to calculate taxes for all countries (now async)
+        async function calculateAllTaxes() {
+            const salary = parseFloat(salaryInput.value);
+            const inputCurrency = inputCurrencySelect.value;
+            const displayCurrency = displayCurrencySelect.value;
+            const includeSocialSecurity = includeSocialSecurityCheckbox.checked;
+            const includeVAT = includeVATCheckbox.checked;
+
+            if (!salary || salary <= 0) {
+                alert('Please enter a valid salary amount');
+                return;
+            }
+
+            console.log(`🧮 Starting calculation for salary: ${salary} ${inputCurrency}, display: ${displayCurrency}, SS: ${includeSocialSecurity}, VAT: ${includeVAT}`);
+
+            calculateBtn.classList.add('loading');
+            calculateBtn.textContent = 'Loading rates...';
+
+            // Clear previous results
+            taxResults = [];
+
+            try {
+                // Ensure exchange rates are loaded first
+                await currencyService.ensureRatesLoaded();
+                calculateBtn.textContent = 'Calculating...';
+
+                // Calculate taxes for each country
+                const calculations = Object.keys(taxData).map(async countryKey => {
+                    const result = await calculateTaxForCountry(countryKey, salary, inputCurrency, displayCurrency, includeVAT, includeSocialSecurity);
+                    return result;
+                });
+
+                const results = await Promise.all(calculations);
+                taxResults = results.filter(result => result !== null);
+
+                console.log(`✅ Tax calculation complete. Results for ${taxResults.length} countries`);
+
+                // Update labels with tax information
+                updateLabelsWithTaxInfo();
+
+                // Update info panel with exchange rate info
+                const rateSource = currencyService.getRateSource();
+                const lastUpdated = currencyService.getLastUpdated();
+                infoPanel.innerHTML = `
+                    <h3>📊 Tax Calculation Complete</h3>
+                    <p><strong>Salary:</strong> ${inputCurrency} ${salary.toLocaleString()}/month</p>
+                    <p><strong>Display Currency:</strong> ${displayCurrency}</p>
+                    <p><strong>Countries Analyzed:</strong> ${taxResults.length}</p>
+                    <p><strong>Exchange Rates:</strong> ${rateSource} ${lastUpdated ? `(${lastUpdated.toLocaleTimeString()})` : ''}</p>
+                    <p>Click on any country label to see detailed tax breakdown.</p>
+                `;
+
+            } catch (error) {
+                console.error('❌ Error during calculation:', error);
+                infoPanel.innerHTML = `
+                    <h3>⚠️ Calculation Error</h3>
+                    <p>There was an error calculating taxes. Please try again.</p>
+                    <p><small>Error: ${error.message}</small></p>
+                `;
+            } finally {
+                calculateBtn.classList.remove('loading');
+                calculateBtn.textContent = 'Calculate Taxes';
+            }
+        }
+
+        // Function to update labels with tax information
+        function updateLabelsWithTaxInfo() {
+            taxResults.forEach(result => {
+                const label = countryLabels[result.countryKey];
+                const marker = countryMarkers[result.countryKey];
+
+                if (label) {
+                    // Update label appearance and content
+                    const labelContent = `
+                        <div style="font-weight: bold; margin-bottom: 2px;">${result.countryName}</div>
+                        <div class="tax-info">
+                            💰 ${result.displayCurrency} ${Math.round(result.totalTax).toLocaleString()}/yr
+                            <br>📈 ${result.effectiveRate.toFixed(1)}% total tax
+                        </div>
+                    `;
+
+                    label.setIcon(L.divIcon({
+                        className: 'country-label calculated',
+                        html: labelContent,
+                        iconSize: [null, null],
+                        iconAnchor: [null, null]
+                    }));
+                }
+
+                if (marker) {
+                    // Update marker color based on tax rate
+                    if (marker._icon && marker._icon.firstChild) {
+                        const color = getTaxBurdenColor(result.effectiveRate);
+                        marker._icon.firstChild.style.backgroundColor = color;
+                    }
+                }
+            });
+        }
+
+        // Create custom marker icon
+        function createMarkerIcon(color = '#007cba') {
+            return L.divIcon({
+                className: 'country-marker',
+                html: `<div style="background-color: ${color}; border: 2px solid #fff; border-radius: 50%; width: 12px; height: 12px; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>`,
+                iconSize: [12, 12],
+                iconAnchor: [6, 6]
+            });
+        }
+
+        // Create custom label icon
+        function createLabelIcon(countryName) {
+            return L.divIcon({
+                className: 'country-label',
+                html: countryName,
+                iconSize: [null, null],
+                iconAnchor: [null, null]
+            });
+        }
+
+        // Add countries to the map
+        Object.entries(taxData).forEach(([countryKey, countryData]) => {
+            const [lat, lng] = countryData.coordinates;
+
+            // Create marker
+            const marker = L.marker([lat, lng], {
+                icon: createMarkerIcon()
+            }).addTo(map);
+
+            // Create label (offset slightly from marker for better visibility)
+            const label = L.marker([lat + 0.5, lng], {
+                icon: createLabelIcon(countryData.name)
+            }).addTo(map);
+
+            // Add click handlers - show detailed info in top-right panel only
+            const clickHandler = () => {
+                showDetailedCountryInfo(countryKey, countryData);
+            };
+            marker.on('click', clickHandler);
+            label.on('click', clickHandler);
+
+            // Store references
+            countryMarkers[countryKey] = marker;
+            countryLabels[countryKey] = label;
+
+            // Add hover effects
+            marker.on('mouseover', function() {
+                if (this._icon && this._icon.firstChild) {
+                    this._icon.firstChild.style.transform = 'scale(1.2)';
+                    this._icon.firstChild.style.boxShadow = '0 4px 8px rgba(0,0,0,0.4)';
+                }
+            });
+
+            marker.on('mouseout', function() {
+                if (this._icon && this._icon.firstChild) {
+                    this._icon.firstChild.style.transform = 'scale(1)';
+                    this._icon.firstChild.style.boxShadow = '0 2px 4px rgba(0,0,0,0.3)';
+                }
+            });
+        });
+
+        // Handle zoom events
+        map.on('zoomend', updateZoomLevel);
+
+        // Add event listener for calculate button
+        calculateBtn.addEventListener('click', calculateAllTaxes);
+
+        // Add keyboard shortcut for calculation (Enter key)
+        salaryInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                calculateAllTaxes();
+            }
+        });
+
+        // Debounce function for automatic recalculation
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Automatic recalculation function
+        async function autoRecalculate() {
+            const salary = parseFloat(salaryInput.value);
+            if (salary && salary > 0) {
+                console.log('🔄 Auto-recalculating...');
+                await calculateAllTaxes();
+            }
+        }
+
+        // Debounced version (500ms delay)
+        const debouncedRecalculate = debounce(autoRecalculate, 500);
+
+        // Add event listeners for automatic recalculation
+        salaryInput.addEventListener('input', debouncedRecalculate);
+        inputCurrencySelect.addEventListener('change', debouncedRecalculate);
+        displayCurrencySelect.addEventListener('change', debouncedRecalculate);
+
+        // Add event listener for Language change
+        languageSelect.addEventListener('change', function() {
+            i18n.setLanguage(this.value);
+            updateUILanguage();
+
+            // Recalculate to update popups with new language if calculations exist
+            const salary = parseFloat(salaryInput.value);
+            if (salary && salary > 0 && taxResults.length > 0) {
+                calculateAllTaxes();
+            }
+        });
+
+        // Add event listener for Social Security checkbox to recalculate and update label when toggled
+        includeSocialSecurityCheckbox.addEventListener('change', async function() {
+            // Update salary label based on checkbox state with current language
+            updateUILanguage();
+
+            // Recalculate if there's a valid salary
+            const salary = parseFloat(salaryInput.value);
+            if (salary && salary > 0) {
+                await calculateAllTaxes();
+            }
+        });
+
+        // Add event listener for VAT checkbox to recalculate when toggled
+        includeVATCheckbox.addEventListener('change', async function() {
+            const salary = parseFloat(salaryInput.value);
+            if (salary && salary > 0) {
+                await calculateAllTaxes();
+            }
+        });
+
+        // Initial zoom level setup
+        updateZoomLevel();
+
+        // Show initial information
+        updateInitialInfoPanel();
+
+        // Add map bounds to show all countries
+        const group = new L.featureGroup(Object.values(countryMarkers));
+        map.fitBounds(group.getBounds().pad(0.1));
+
+        // Automatically calculate taxes with default values to show functionality
+        setTimeout(async () => {
+            console.log('🚀 Running initial calculation with default values');
+            await calculateAllTaxes();
+        }, 1000);
+    </script>
 </body>
 </html>

@@ -1,0 +1,49 @@
+## Taxation in Austria
+
+Austria operates a complex tax system relying heavily on income, corporate, and consumption taxes. The system has undergone recent changes aimed at both increasing revenue and stimulating economic activity. This summary provides a condensed overview of the key aspects of the Austrian tax system as of late 2024, with a focus on providing the most current information available. *Please note that tax laws are subject to change, and professional advice should be sought for specific situations.*
+
+**Personal Income Tax:**
+
+*   **Tax System Type:** Progressive. The Austrian income tax system is progressive, meaning higher earners pay a higher percentage of their income in taxes.
+*   **Current Tax Brackets (2024/2025):**  The tax brackets are adjusted annually and the most recent data (2024/2025) are available online.  Rates are applied to the taxable income, after allowable deductions. Here's an approximation of the brackets:
+    *   €0 – €11,000: 0%
+    *   €11,001 – €19,108: 20%
+    *   €19,109 – €31,091: 30%
+    *   €31,092 – €62,317: 40%
+    *   €62,318 – €93,127: 48%
+    *   €93,128 - €1,000,000: 50%
+    *   Over €1,000,000: 55% (super-rich tax)
+*   **Tax-Free Allowances/Standard Deductions:**  A basic allowance of €11,000 is tax-free. Self-employed persons can deduct a business allowance of €3,900 per year. Various other deductions are available (e.g., for dependents, special expenses), reducing the taxable income.
+
+**Value Added Tax (VAT) / Goods and Services Tax (GST):**
+
+*   **Standard Rate:** 20%
+*   **Reduced Rates:**
+    *   13% on hostel rooms and cultural events.
+    *   10% on basic foods.
+*   **Exemptions/Zero-Rated Items:** Exports are exempt. Certain services provided to foreign customers may also be exempt.
+
+**Social Security and Other Taxes:**
+
+*   **Social Security Contributions (as of 2024 - approximate):**
+    *   **Pension Insurance:** 12.55% (employee) + 14.55% (employer). Total 27.1%.
+    *   **Accident Insurance:** 1.3% (employer).
+    *   **Health Insurance:** 3.78% (employee) + 7.48% (employer). Total 11.26%.
+    *   **Unemployment Insurance:** 1.5% (employee) + 3.0% (employer). Total 4.5%.
+    *   **Severance Fund (for employees):** Approximately 1.53% (employer).
+*   **Payroll Taxes:**  Include contributions to the above-mentioned social security programs.
+*   **Corporate Income Tax (Körperschaftssteuer):** 25%
+*   **Minimum Corporate Income Tax (Mindestkörperschaftssteuer):** 5% of registered capital.
+*   **Capital Gains Tax:** 27.5% (for dividends, increased from 25% in 2016); 25% on other capital gains.
+*   **Real Estate Transfer Tax:** 3.5% (unless it's a family transfer).  Overall costs, including notary fees and administrative charges, can range from 10% to 15% of the purchase price.
+*   **Vehicle Tax (Kfz-Steuer):** Based on engine size for motorcycles, and horsepower for other vehicles.
+*   **Municipal Tax:**  Variable rates levied by the municipality.
+*   **Excise Duty (Verbrauchssteuer):** Aligned with EU regulations for petrol, tobacco, alcohol, and energy products.
+
+**Additional Information:**
+
+*   **Tax Year Period:**  January 1st - December 31st.
+*   **Important Notes About Calculation:** The personal income tax is calculated progressively.  Various deductions and allowances reduce taxable income, impacting the final tax liability. Social Security contributions are calculated based on gross income, subject to annual maximum contribution bases (approximately €4,980/month for regular payments and €9,960/year for special payments).
+*   **Recent Updates/Changes (2024):**  While significant changes have been less frequent recently, continuous adjustments to the thresholds and rates are made annually. It is crucial to consult current official publications for precise values.
+
+**Source:**  Austrian Federal Ministry of Finance ([https://www.bmf.gv.at/](https://www.bmf.gv.at/)) and Wikipedia (as of late 2024). *Always verify with official sources for accuracy and updates.*

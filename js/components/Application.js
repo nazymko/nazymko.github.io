@@ -90,6 +90,11 @@ export class Application {
             this.handleCalculationError(data);
         });
 
+        // UI mode change events
+        this.components.calculator.on('uiModeChanged', (data) => {
+            this.handleUIModeChange(data);
+        });
+
         // Results table events
         this.components.resultsTable.on('rowSelected', (data) => {
             this.handleCountrySelected(data);
@@ -152,6 +157,16 @@ export class Application {
         this.components.map.highlightCountry(result.countryKey);
 
         console.log(`🎯 Country selected: ${result.countryName}`);
+    }
+
+    // Handle UI mode change
+    handleUIModeChange(data) {
+        const { compactUI } = data;
+
+        // Update map component with new UI mode
+        this.components.map.setUIMode(compactUI);
+
+        console.log(`🎨 UI mode changed: ${compactUI ? 'Compact' : 'Full'}`);
     }
 
     // Handle language change

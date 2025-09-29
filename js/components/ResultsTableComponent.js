@@ -86,8 +86,14 @@ export class ResultsTableComponent {
     // Get sorted results based on current sort settings
     getSortedResults() {
         return [...this.currentResults].sort((a, b) => {
-            const aVal = a[this.currentSortColumn];
-            const bVal = b[this.currentSortColumn];
+            let aVal = a[this.currentSortColumn];
+            let bVal = b[this.currentSortColumn];
+
+            // Handle income tax rate calculation for sorting
+            if (this.currentSortColumn === 'incomeTaxRate') {
+                aVal = a.grossIncome > 0 ? (a.incomeTax / a.grossIncome) * 100 : 0;
+                bVal = b.grossIncome > 0 ? (b.incomeTax / b.grossIncome) * 100 : 0;
+            }
 
             if (typeof aVal === 'string') {
                 return this.currentSortDirection === 'asc'
@@ -116,8 +122,10 @@ export class ResultsTableComponent {
         row.appendChild(this.createCell(index + 1, 'rank-cell'));
         row.appendChild(this.createCountryCell(result));
         row.appendChild(this.createTaxAmountCell(result));
+        row.appendChild(this.createIncomeTaxRateCell(result));
         row.appendChild(this.createRateCell(result));
         row.appendChild(this.createNetIncomeCell(result));
+        row.appendChild(this.createEmployerCostCell(result));
         row.appendChild(this.createLocalAmountsCell(result));
         row.appendChild(this.createExchangeRateCell(result));
 
@@ -166,6 +174,20 @@ export class ResultsTableComponent {
         return cell;
     }
 
+    // Create income tax rate cell
+    createIncomeTaxRateCell(result) {
+        const cell = document.createElement('td');
+        cell.className = 'income-tax-rate';
+
+        // Calculate income tax rate (income tax / gross income * 100)
+        const incomeTaxRate = result.grossIncome > 0
+            ? (result.incomeTax / result.grossIncome) * 100
+            : 0;
+
+        cell.textContent = `${incomeTaxRate.toFixed(2)}%`;
+        return cell;
+    }
+
     // Create tax rate cell
     createRateCell(result) {
         const cell = document.createElement('td');
@@ -182,29 +204,87 @@ export class ResultsTableComponent {
         return cell;
     }
 
+    // Create employer cost cell
+    createEmployerCostCell(result) {
+        const cell = document.createElement('td');
+        cell.className = 'employer-cost';
+
+        if (result.hasSocialSecurity && result.totalEmployerCostInDisplayCurrency) {
+            const employerCostRate = result.employerCostRate || 100;
+            const costIncrease = employerCostRate - 100;
+
+            cell.innerHTML = `
+                <div class="employer-cost-breakdown">
+                    <div class="total-cost"><strong>${this.currentDisplayCurrency} ${result.totalEmployerCostInDisplayCurrency.toLocaleString()}</strong></div>
+                    <div class="cost-details">
+                        <small>+${costIncrease.toFixed(1)}% vs salary</small><br>
+                        <small>SS: ${this.currentDisplayCurrency} ${result.employerSocialSecurityInDisplayCurrency.toLocaleString()} (${result.employerSocialSecurityRate}%)</small>
+                    </div>
+                </div>
+            `;
+        } else {
+            cell.innerHTML = `
+                <div class="employer-cost-breakdown">
+                    <div class="total-cost"><strong>${this.currentDisplayCurrency} ${result.grossIncomeInDisplayCurrency.toLocaleString()}</strong></div>
+                    <div class="cost-details"><small>No employer SS</small></div>
+                </div>
+            `;
+        }
+
+        return cell;
+    }
+
     // Create local amounts cell
     createLocalAmountsCell(result) {
         const cell = document.createElement('td');
+        console.log(result.countryKey,result)
         cell.className = 'local-amounts';
 
         let breakdown = `<div class="local-info">`;
-        breakdown += `<div><strong>Total: ${result.currency} ${result.taxAmount.toLocaleString()}</strong></div>`;
-        breakdown += `<div><small>Income Tax: ${result.currency} ${result.incomeTax.toLocaleString()}</small></div>`;
+
+        // First line: Total gross income in bold black
+        const grossIncome = result.grossIncome || (result.netIncome + result.taxAmount);
+        breakdown += `<div style="font-weight: bold; color: #000; margin-bottom: 5px;">Salary: ${result.currency} ${grossIncome.toLocaleString()}</div>`;
+
+        // Tax breakdown in red color
+        breakdown += `<div style="color: #d32f2f; font-size: 0.9em;">Income Tax: ${result.currency} ${result.incomeTax.toLocaleString()}</div>`;
 
         // Add special taxes if available
         if (result.specialTaxes && result.specialTaxes.length > 0) {
             for (const tax of result.specialTaxes) {
                 const taxName = tax.type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                breakdown += `<div><small>${taxName}: ${result.currency} ${tax.taxAmount.toLocaleString()}</small></div>`;
+                const taxRate = tax.rate ? tax.rate.toFixed(1) : 'N/A';
+                breakdown += `<div style="color: #d32f2f; font-size: 0.9em;">${taxName} (${taxRate}%): ${result.currency} ${tax.taxAmount.toLocaleString()}</div>`;
             }
+        }
+
+        // Add employee social security if available
+        if (result.hasSocialSecurity && result.employeeSocialSecurity > 0) {
+            const empSSRate = result.employeeSocialSecurityRate ? result.employeeSocialSecurityRate.toFixed(1) : 'N/A';
+            breakdown += `<div style="color: #d32f2f; font-size: 0.9em;">Employee SS (${empSSRate}%): ${result.currency} ${result.employeeSocialSecurity.toLocaleString()}</div>`;
         }
 
         // Add VAT if available
         if (result.hasVAT && result.vatAmount > 0) {
-            breakdown += `<div><small>VAT: ${result.currency} ${result.vatAmount.toLocaleString()}</small></div>`;
+            const vatRate = result.vatRate ? result.vatRate.toFixed(1) : 'N/A';
+            breakdown += `<div style="color: #d32f2f; font-size: 0.9em;">VAT (${vatRate}%): ${result.currency} ${result.vatAmount.toLocaleString()}</div>`;
         }
 
-        breakdown += `<div>Net: ${result.currency} ${result.netIncome.toLocaleString()}</div>`;
+        // Line separator and total
+        breakdown += `<hr style="margin: 8px 0; border: none; border-top: 1px solid #ccc;">`;
+        breakdown += `<div style="font-weight: bold; color: #d32f2f; margin-bottom: 5px;">Total Employee Tax: ${result.currency} ${result.taxAmount.toLocaleString()}</div>`;
+
+        // Net income in light green
+        breakdown += `<div style="font-weight: bold; color: #4caf50; margin-top: 5px;">Net: ${result.currency} ${result.netIncome.toLocaleString()}</div>`;
+
+        // Add employer cost if social security exists
+        if (result.hasSocialSecurity && result.employerSocialSecurity > 0) {
+            breakdown += `<hr style="margin: 8px 0; border: none; border-top: 1px solid #ccc;">`;
+            const empRateSSRate = result.employerSocialSecurityRate ? result.employerSocialSecurityRate.toFixed(1) : 'N/A';
+            breakdown += `<div style="color: #ff5722; font-size: 0.9em;">Employer SS (${empRateSSRate}%): ${result.currency} ${result.employerSocialSecurity.toLocaleString()}</div>`;
+            breakdown += `<div style="font-weight: bold; color: #ff5722; margin-top: 5px;">Total Employer Cost: ${result.currency} ${result.totalEmployerCost.toLocaleString()}</div>`;
+        }
+
         breakdown += `</div>`;
 
         cell.innerHTML = breakdown;
@@ -323,35 +403,59 @@ export class ResultsTableComponent {
             'Currency',
             `Total Tax (${this.currentDisplayCurrency})`,
             `Income Tax (${this.currentDisplayCurrency})`,
+            `Missing Income (${this.currentDisplayCurrency})`,
+            `Employee SS (${this.currentDisplayCurrency})`,
             `VAT (${this.currentDisplayCurrency})`,
             'VAT Rate (%)',
+            'Income Tax Rate (%)',
+            'Missing Income Rate (%)',
+            'Employee SS Rate (%)',
             'Effective Rate (%)',
             `Net Income (${this.currentDisplayCurrency})`,
+            `Employment Cost (${this.currentDisplayCurrency})`,
             'Local Total Tax',
             'Local Income Tax',
+            'Local Missing Income',
+            'Local Employee SS',
             'Local VAT',
             'Local Net Income',
+            'Local Employment Cost',
             'Exchange Rate'
         ];
 
         const csvData = [
             headers.join(','),
-            ...this.currentResults.map((result, index) => [
-                index + 1,
-                `"${result.countryName}"`,
-                result.currency,
-                result.taxAmountInDisplayCurrency.toFixed(2),
-                result.incomeTaxInDisplayCurrency ? result.incomeTaxInDisplayCurrency.toFixed(2) : '0',
-                result.vatAmountInDisplayCurrency ? result.vatAmountInDisplayCurrency.toFixed(2) : '0',
-                result.vatRate ? result.vatRate.toFixed(2) : '0',
-                result.effectiveRate.toFixed(2),
-                result.netIncomeInDisplayCurrency.toFixed(2),
-                result.taxAmount.toFixed(2),
-                result.incomeTax ? result.incomeTax.toFixed(2) : '0',
-                result.vatAmount ? result.vatAmount.toFixed(2) : '0',
-                result.netIncome.toFixed(2),
-                result.exchangeRate ? result.exchangeRate.toFixed(4) : '1'
-            ].join(','))
+            ...this.currentResults.map((result, index) => {
+                const incomeTaxRate = result.grossIncome > 0
+                    ? (result.incomeTax / result.grossIncome) * 100
+                    : 0;
+
+                return [
+                    index + 1,
+                    `"${result.countryName}"`,
+                    result.currency,
+                    result.taxAmountInDisplayCurrency.toFixed(2),
+                    result.incomeTaxInDisplayCurrency ? result.incomeTaxInDisplayCurrency.toFixed(2) : '0',
+                    result.missingIncomeInDisplayCurrency ? result.missingIncomeInDisplayCurrency.toFixed(2) : '0',
+                    result.employeeSocialSecurityInDisplayCurrency ? result.employeeSocialSecurityInDisplayCurrency.toFixed(2) : '0',
+                    result.vatAmountInDisplayCurrency ? result.vatAmountInDisplayCurrency.toFixed(2) : '0',
+                    result.vatRate ? result.vatRate.toFixed(2) : '0',
+                    incomeTaxRate.toFixed(2),
+                    result.employerSocialSecurityRate ? result.employerSocialSecurityRate.toFixed(2) : '0',
+                    result.employeeSocialSecurityRate ? result.employeeSocialSecurityRate.toFixed(2) : '0',
+                    result.effectiveRate.toFixed(2),
+                    result.netIncomeInDisplayCurrency.toFixed(2),
+                    result.totalEmploymentCostInDisplayCurrency ? result.totalEmploymentCostInDisplayCurrency.toFixed(2) : result.grossIncomeInDisplayCurrency.toFixed(2),
+                    result.taxAmount.toFixed(2),
+                    result.incomeTax ? result.incomeTax.toFixed(2) : '0',
+                    result.missingIncome ? result.missingIncome.toFixed(2) : '0',
+                    result.employeeSocialSecurity ? result.employeeSocialSecurity.toFixed(2) : '0',
+                    result.vatAmount ? result.vatAmount.toFixed(2) : '0',
+                    result.netIncome.toFixed(2),
+                    result.totalEmploymentCost ? result.totalEmploymentCost.toFixed(2) : result.grossIncome.toFixed(2),
+                    result.exchangeRate ? result.exchangeRate.toFixed(4) : '1'
+                ].join(',');
+            })
         ].join('\n');
 
         // Download CSV

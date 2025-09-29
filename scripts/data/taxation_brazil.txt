@@ -1,0 +1,64 @@
+**Taxation in Brazil**
+
+Brazil’s tax system is a mix of federal, state, and municipal levies. The federal government collects the most significant taxes—personal income tax (IRPF), corporate income tax, and social‑security contributions—while states and municipalities are responsible for indirect taxes such as ICMS (state value‑added tax) and a range of excise duties (IPI, PIS/Cofins). The following summary focuses on the elements most relevant for individual tax calculations.
+
+---
+
+### Personal Income Tax (IRPF)
+
+| Income bracket (BRL) | Tax rate | Notes |
+|----------------------|----------|-------|
+| 0 – 2 760,00 | **0 %** | Exempt. |
+| 2 760,01 – 3 640,00 | **7.5 %** | |
+| 3 640,01 – 4 520,00 | **15 %** | |
+| 4 520,01 – 5 400,00 | **22.5 %** | |
+| > 5 400,00 | **27.5 %** | |
+
+- **Standard deduction**: BRL 1 212,00 per month (i.e., BRL 14 544,00 per year).  
+- **Additional deductions**: depend on filing status (e.g., dependent children, health and education expenses, retirement contributions).  
+- **Tax year**: January 1 – December 31.  
+- **Filing deadline**: typically the first quarter of the following year (e.g., 2024 tax year filed by the end of March 2025).  
+- **Recent changes** (2024): Brackets and standard deduction were updated to account for inflation; the threshold for the 27.5 % rate was raised to BRL 5 400,00.
+
+---
+
+### Value‑Added Tax (VAT) / State Sales Tax (ICMS)
+
+| Item | Rate | Notes |
+|------|------|-------|
+| **Standard ICMS rate** | **18 % – 25 %** | Varies by state (e.g., 18 % in São Paulo, 25 % in Rio de Janeiro). |
+| **Reduced rates** | 7 % – 12 % | Apply to essential goods (e.g., basic food items, medicines, books). |
+| **Zero‑rated items** | 0 % | Exported goods, agricultural products in specific zones, certain public transport services. |
+
+- **No federal VAT**; all value‑added taxes are levied by states (ICMS) and the federal government (IPI, PIS/Cofins).  
+- **Tax year**: Calendar year.  
+- **Important note**: Businesses may offset ICMS paid on inputs against ICMS collected on sales (input credit system).
+
+---
+
+### Social Security & Payroll Taxes
+
+| Contribution | Rate | Cap (BRL) | Notes |
+|--------------|------|-----------|-------|
+| **Employee payroll (INSS)** | 11 % | 7 507,49 (2024) | Applies to all wages above the cap; wages above cap are taxed at the maximum cap rate. |
+| **Employer payroll (INSS)** | 20 % | Same cap | Includes a 7 % surcharge for entities with high payroll risk. |
+| **Other payroll taxes** | - | - | State and municipal payroll taxes (e.g., state taxes on salaries, municipal tax on salaries) vary by jurisdiction. |
+
+- **Tax year**: Calendar year.  
+- **Deduction**: Contributions paid by the employee are deductible from taxable income up to the cap.
+
+---
+
+### Additional Information
+
+| Item | Details |
+|------|---------|
+| **Tax year period** | January 1 – December 31 (calendar year). |
+| **Calculation notes** | - IRPF is calculated after applying standard and specific deductions. <br> - ICMS input credits must be properly documented. <br> - Social‑security contributions are capped; wages above the cap are taxed at the maximum rate. |
+| **Recent updates** | • 2024 IRPF brackets adjusted for inflation. <br> • State ICMS rates may change during the year; always verify the applicable rate for the specific state. <br> • 2024 INSS cap increased to BRL 7 507,49. |
+
+---
+
+**Source**: Wikipedia (latest update 2024) and official Brazilian tax authority publications.  
+
+*All figures are in Brazilian Reais (BRL).*
