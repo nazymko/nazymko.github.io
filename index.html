@@ -296,20 +296,20 @@
         <div class="control-group">
             <label style="display: flex; align-items: center; cursor: pointer; font-size: 14px;">
                 <input type="checkbox" id="includeSocialSecurity" checked style="margin-right: 8px; transform: scale(1.2);">
-                <span>🏥 Include Employer Social Security in tax</span>
+                <span>Include Employer Social Security in tax</span>
             </label>
-            <div style="font-size: 11px; color: #666; margin-top: 4px; margin-left: 24px;">
-                ${i18n.t('includeEmployerContributions')}<br>
-                <span style="font-size: 10px; font-style: italic;">${i18n.t('employeeSSAlwaysIncluded')}</span>
+            <div id="employerSSExplanation" style="font-size: 11px; color: #666; margin-top: 4px; margin-left: 24px;">
+                Include employer contributions in total tax calculation<br>
+                <span style="font-size: 10px; font-style: italic;">(Employee SS always included in tax burden)</span>
             </div>
         </div>
         <div class="control-group">
             <label style="display: flex; align-items: center; cursor: pointer; font-size: 14px;">
                 <input type="checkbox" id="includeVAT" checked style="margin-right: 8px; transform: scale(1.2);">
-                <span>🛍️ Include VAT in calculations</span>
+                <span>Include VAT in calculations</span>
             </label>
-            <div style="font-size: 11px; color: #666; margin-top: 4px; margin-left: 24px;">
-                ${i18n.t('vatAppliesToSpending')}
+            <div id="vatExplanation" style="font-size: 11px; color: #666; margin-top: 4px; margin-left: 24px;">
+                VAT applies to spending (your after-tax income)
             </div>
         </div>
         <div class="control-group">
@@ -785,8 +785,20 @@
             document.querySelector('label[for="language"]').textContent = i18n.t('language');
 
             // Update checkbox labels
-            includeSocialSecurityCheckbox.nextElementSibling.innerHTML = `🏥 ${i18n.t('includeEmployerSS')}`;
-            includeVATCheckbox.nextElementSibling.innerHTML = `🛍️ ${i18n.t('includeVAT')}`;
+            includeSocialSecurityCheckbox.nextElementSibling.innerHTML = i18n.t('includeEmployerSS');
+            includeVATCheckbox.nextElementSibling.innerHTML = i18n.t('includeVAT');
+
+            // Update explanation texts
+            const employerSSExplanation = document.getElementById('employerSSExplanation');
+            if (employerSSExplanation) {
+                employerSSExplanation.innerHTML = `${i18n.t('includeEmployerContributions')}<br>
+                <span style="font-size: 10px; font-style: italic;">${i18n.t('employeeSSAlwaysIncluded')}</span>`;
+            }
+
+            const vatExplanation = document.getElementById('vatExplanation');
+            if (vatExplanation) {
+                vatExplanation.textContent = i18n.t('vatAppliesToSpending');
+            }
 
             // Update button
             calculateBtn.textContent = i18n.t('calculateTaxes');
@@ -1315,7 +1327,7 @@
                     <div style="padding: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.8); border-radius: 6px; border-left: 4px solid #dc3545;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div style="flex: 1;">
-                                <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px;">1.🏛️ ${i18n.t('incomeTax')} (${((taxResult.incomeTax / taxResult.annualSalary) * 100).toFixed(2)}%)</div>
+                                <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px;">1. ${i18n.t('incomeTax')} (${((taxResult.incomeTax / taxResult.annualSalary) * 100).toFixed(2)}%)</div>
                                 <div style="font-size: 10px; color: #666; margin-bottom: 4px;">💡 ${taxResult.displayCurrency} ${formatNumber(taxResult.incomeTax)} ${i18n.t('taxOn')} ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} ${i18n.t('income')}</div>
                                 <div style="font-size: 10px; color: #007bff; cursor: pointer;" onclick="showTaxBracketPopup('${countryKey}')">ℹ️ ${i18n.t('clickForTaxBracketBreakdown')}</div>
                             </div>
@@ -1331,7 +1343,7 @@
                     <div style="padding: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.8); border-radius: 6px; border-left: 4px solid #6f42c1;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div style="flex: 1;">
-                                <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px;">2.⚖️ ${i18n.t('specialTaxes')}</div>
+                                <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px;">2. ${i18n.t('specialTaxes')}</div>
                                 ${taxResult.specialTaxes.map(tax => `
                                     <div style="font-size: 10px; color: #666; margin-bottom: 2px;">
                                         • ${tax.description} (${tax.rate}% on ${tax.target})
@@ -1351,7 +1363,7 @@
                     <div style="padding: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.8); border-radius: 6px; border-left: 4px solid #17a2b8;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div style="flex: 1;">
-                                <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px;">3.🏥 ${i18n.t('employeeSocialSecurity')} (${taxResult.employeeSSRate}%)</div>
+                                <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px;">3. ${i18n.t('employeeSocialSecurity')} (${taxResult.employeeSSRate}%)</div>
                                 <div style="font-size: 10px; color: #666; margin-bottom: 4px;">💡 ${taxResult.displayCurrency} ${formatNumber(taxResult.annualSalary)} × ${taxResult.employeeSSRate}%</div>
                                 <div style="font-size: 10px; color: #666;">${taxResult.socialSecurityNotes}</div>
                             </div>
@@ -1368,7 +1380,7 @@
                     <div style="padding: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.8); border-radius: 6px; border-left: 4px solid #ffc107;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div style="flex: 1;">
-                                <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px;">4.🛍️ ${i18n.t('vatOnSpending')} (${taxResult.vatRate}%)</div>
+                                <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 2px;">4. ${i18n.t('vatOnSpending')} (${taxResult.vatRate}%)</div>
                                 <div style="font-size: 10px; color: #666; margin-bottom: 4px;">💡 ${taxResult.displayCurrency} ${formatNumber(netIncomeAfterTax)} (${i18n.t('netIncome')}) × ${taxResult.vatRate}%</div>
                                 <div style="font-size: 10px; color: #666;">${i18n.t('appliedWhenSpendingIncome')}</div>
                                 ${taxResult.vatNotes ? `<div style="font-size: 9px; color: #999; margin-top: 4px; font-style: italic;">📝 ${taxResult.vatNotes}</div>` : ''}
@@ -1970,24 +1982,24 @@
                 const rateSource = currencyService.getRateSource();
                 const lastUpdated = currencyService.getLastUpdated();
                 infoPanel.innerHTML = `
-                    <h3>📊 Tax Calculation Complete</h3>
-                    <p><strong>Salary:</strong> ${inputCurrency} ${salary.toLocaleString()}/month</p>
-                    <p><strong>Display Currency:</strong> ${displayCurrency}</p>
-                    <p><strong>Countries Analyzed:</strong> ${taxResults.length}</p>
-                    <p><strong>Exchange Rates:</strong> ${rateSource} ${lastUpdated ? `(${lastUpdated.toLocaleTimeString()})` : ''}</p>
-                    <p>Click on any country label to see detailed tax breakdown.</p>
+                    <h3>📊 ${i18n.t('taxCalculationComplete')}</h3>
+                    <p><strong>${i18n.t('salary')}:</strong> ${inputCurrency} ${salary.toLocaleString()}/${i18n.t('monthly')}</p>
+                    <p><strong>${i18n.t('displayCurrency')}</strong> ${displayCurrency}</p>
+                    <p><strong>${i18n.t('countriesAnalyzed')}:</strong> ${taxResults.length}</p>
+                    <p><strong>${i18n.t('exchangeRates')}:</strong> ${rateSource} ${lastUpdated ? `(${lastUpdated.toLocaleTimeString()})` : ''}</p>
+                    <p>${i18n.t('clickCountryLabel')}</p>
                 `;
 
             } catch (error) {
                 console.error('❌ Error during calculation:', error);
                 infoPanel.innerHTML = `
-                    <h3>⚠️ Calculation Error</h3>
-                    <p>There was an error calculating taxes. Please try again.</p>
+                    <h3>⚠️ ${i18n.t('calculationError')}</h3>
+                    <p>${i18n.t('calculationErrorOccurred')}</p>
                     <p><small>Error: ${error.message}</small></p>
                 `;
             } finally {
                 calculateBtn.classList.remove('loading');
-                calculateBtn.textContent = 'Calculate Taxes';
+                calculateBtn.textContent = i18n.t('calculateTaxes');
             }
         }
 
