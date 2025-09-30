@@ -92,6 +92,14 @@ export const languages = {
             enterValidSalary: "Please enter a valid salary amount",
             countryDataNotFound: "Country data not found",
             calculationError: "Error calculating taxes",
+            calculationErrorOccurred: "There was an error calculating taxes. Please try again.",
+
+            // Results panel
+            taxCalculationComplete: "Tax Calculation Complete",
+            salary: "Salary",
+            countriesAnalyzed: "Countries Analyzed",
+            exchangeRates: "Exchange Rates",
+            clickCountryLabel: "Click on any country label to see detailed tax breakdown.",
 
             // Ready state
             ready: "Ready",
@@ -269,6 +277,14 @@ export const languages = {
             enterValidSalary: "Будь ласка, введіть правильну суму зарплати",
             countryDataNotFound: "Дані країни не знайдено",
             calculationError: "Помилка розрахунку податків",
+            calculationErrorOccurred: "Виникла помилка при розрахунку податків. Спробуйте ще раз.",
+
+            // Results panel
+            taxCalculationComplete: "Розрахунок Податків Завершено",
+            salary: "Зарплата",
+            countriesAnalyzed: "Проаналізовано Країн",
+            exchangeRates: "Курси Валют",
+            clickCountryLabel: "Клікніть на будь-яку країну, щоб побачити детальну розбивку податків.",
 
             // Ready state
             ready: "Готово",
@@ -471,6 +487,14 @@ export const languages = {
             enterValidSalary: "Bitte geben Sie einen gültigen Gehaltsbetrag ein",
             countryDataNotFound: "Länderdaten nicht gefunden",
             calculationError: "Fehler bei Steuerberechnung",
+            calculationErrorOccurred: "Bei der Steuerberechnung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+
+            // Results panel
+            taxCalculationComplete: "Steuerberechnung Abgeschlossen",
+            salary: "Gehalt",
+            countriesAnalyzed: "Analysierte Länder",
+            exchangeRates: "Wechselkurse",
+            clickCountryLabel: "Klicken Sie auf ein beliebiges Land, um eine detaillierte Steueraufschlüsselung zu sehen.",
 
             // Ready state
             ready: "Bereit",
@@ -629,6 +653,14 @@ export const languages = {
             enterValidSalary: "Inserisci un importo di stipendio valido",
             countryDataNotFound: "Dati paese non trovati",
             calculationError: "Errore nel calcolo delle tasse",
+            calculationErrorOccurred: "Si è verificato un errore nel calcolo delle tasse. Riprova.",
+
+            // Results panel
+            taxCalculationComplete: "Calcolo Fiscale Completato",
+            salary: "Stipendio",
+            countriesAnalyzed: "Paesi Analizzati",
+            exchangeRates: "Tassi di Cambio",
+            clickCountryLabel: "Clicca su qualsiasi paese per vedere la ripartizione fiscale dettagliata.",
 
             // Ready state
             ready: "Pronto",
@@ -764,6 +796,14 @@ export const languages = {
             enterValidSalary: "Por favor ingresa una cantidad de salario válida",
             countryDataNotFound: "Datos del país no encontrados",
             calculationError: "Error calculando impuestos",
+            calculationErrorOccurred: "Ocurrió un error al calcular los impuestos. Por favor, inténtelo de nuevo.",
+
+            // Results panel
+            taxCalculationComplete: "Cálculo de Impuestos Completado",
+            salary: "Salario",
+            countriesAnalyzed: "Países Analizados",
+            exchangeRates: "Tipos de Cambio",
+            clickCountryLabel: "Haga clic en cualquier país para ver el desglose fiscal detallado.",
 
             // Ready state
             ready: "Listo",
